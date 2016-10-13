@@ -21,7 +21,7 @@ class App:
 		# Main root instance for the window.
 		self.root = Tk()
 		self.root.wm_title(self.wm_title);
-		self.root.resizable(width=False, height=False)
+		self.root.resizable(width=True, height=True)
 		# Organize the window into sections for the individual widgets.
 		self.root.grid_columnconfigure(0, weight=1)
 		self.root.grid_columnconfigure(1, weight=8)
@@ -55,6 +55,17 @@ class App:
 		# Tracking the number of widgets.
 		self.wm_num += 1
 
+	
+	def add_button(self):
+		def helloWorld():
+			self.root.overrideredirect(True)
+			print "hello world"
+		B = Tkinter.Button(self.root, text = "Search", command = helloWorld)
+		
+		B.grid(row = 10, column = 1 )
+
+
+
 
 
 
@@ -73,6 +84,8 @@ jsonGene.create_Window()
 jsonGene.add_TextField("Text 1", 20)
 jsonGene.add_TextField("Text 2", 20)
 jsonGene.add_TextField("Text 3", 20)
+jsonGene.add_button()
+
 jsonGene.show_Window()
 
 
