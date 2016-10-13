@@ -1,4 +1,4 @@
-# ClinicalInterface
+# Clinical Interface
 
 Currently works on Windows, Mac OS X, and Ubuntu
 
