@@ -1,0 +1,17 @@
+{
+	"Household": [
+
+	{
+		"CAT_ID" : "102938109238021",
+		"Height" : 3, 
+		"Weight" : 25, 
+		"Type" : "Cheetah"
+	},
+
+	{	
+		"CAT_ID" : "102938109238022",
+		"Height" : 4, 
+		"Weight" : 30, 
+		"Type" : "Panther"
+	}]
+}
