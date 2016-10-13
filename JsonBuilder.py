@@ -1,5 +1,6 @@
 #!/usr/bin/python
-from tkinter import *
+import Tkinter
+from Tkinter import *
 import json
 
 ##### The class definitions that support this script.
