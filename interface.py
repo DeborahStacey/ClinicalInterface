@@ -7,12 +7,11 @@ import json
 
 # The Application class that is used to encapsulate the GUI object.
 class App:
-	# Creates an Application instance.
-	#	@param: The name of the Application. 
+
 	def __init__(self, title):
 		self.wm_title = title
-		self.wm_width = 300
-		self.wm_height = 500
+		self.wm_width = 800
+		self.wm_height = 800
 		self.wm_num = 0
 
 	# Creates a non-resizable window instance (other variables are set separately).
@@ -56,11 +55,6 @@ class App:
 		# Tracking the number of widgets.
 		self.wm_num += 1
 
-	def add_radiobutton(self):
-		R1 = Radiobutton(self.root, text = "Male")
-		R1.pack()
-            
-
 
 
 
@@ -72,12 +66,13 @@ class App:
 ###### The main execution of this script.
 
 # Declaring an Application instance.
-jsonGene = App("JSON Generator")
+jsonGene = App("Clinical Interface")
 # Creating the Application interface.
 jsonGene.create_Window()
 
-jsonGene.add_TextField("Cat's Name", 20)
-jsonGene.add_TextField("Cat's Breed", 20)
-jsonGene.add_TextField("Cat's Gender", 20)
-jsonGene.add_radiobutton()
+jsonGene.add_TextField("Text 1", 20)
+jsonGene.add_TextField("Text 2", 20)
+jsonGene.add_TextField("Text 3", 20)
 jsonGene.show_Window()
+
+
