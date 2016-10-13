@@ -1,11 +1,22 @@
 #!/usr/bin/python
 import Tkinter
 from Tkinter import *
+import random
 import json
 
-##### The class definitions that support this script.
-
-listOfButtons = []
+# The list of all JSON-related information (household is already set).
+	# THIS IS THE BASE STRUCTURE OF OUR JSON FILE...
+listOfEntries = {"household" : [{}]}
+# The list of all specified entries to be prompted by the Application.
+	# MORE TEXTFIELDS CAN BE ADDED HERE...
+listOfPrompts = [ "Name", "Breed", "Gender" ]
+# The list of all dummy entries to be auto-filled into the Application.
+	# THE DUMMY CONTENTS CAN BE CHANGED HERE...
+listOfDummies = [ 
+	["Manga", "Luna", "Oliver", "Chloe", "Smokey", "Gigi"], 
+	["Siamese", "Persian", "Ocicat", "Siberian", "Pizza"],
+	["Male", "Female", "Other"] 
+]
 
 # The Application class that is used to encapsulate the GUI object.
 class App:
@@ -15,7 +26,7 @@ class App:
 		self.wm_title = title
 		self.wm_width = 300
 		self.wm_height = 500
-		self.wm_num = 0
+		self.wm_num = 1
 
 	# Creates a non-resizable window instance (other variables are set separately).
 	#	@param:	The maximum width of the window.
@@ -31,9 +42,6 @@ class App:
 
 	# Presents the window instance to the user.
 	def show_Window(self):
-		# Adding a divider and button for the main functionality.
-		PanedWindow(self.root, orient=HORIZONTAL).grid(row=self.wm_num, column=0, sticky='ew')
-		Button(self.root, text="Create JSON-Object")
 		# Positioning the window onto the center of the screen.
 		px = (self.root.winfo_screenwidth() - self.wm_width) / 2
 		py = (self.root.winfo_screenheight() - self.wm_height) / 2
@@ -41,68 +49,68 @@ class App:
 		# Main event-based loop for the window.
 		self.root.mainloop();
 
-	# Destroys the window instance.
-	def destroy_Window(self):
-		self.root.destroy()
-
 	# Adds a custom text-field to the Application GUI.
-	def add_Fields(self):
-		#Variables
-		listOfFields = ["Name", "Breed", "Gender", "Hi"]
-		listOfDummy = ["Manga", "Norwegian Forest Cat", "Male"]
-		count = 1
+	def add_Widgets(self, inputs):
+		# The list of all current widgets/fields in the Application.
+		listOfWidgets = {}
+		# The textfield that conatins the HouseHold name.
+		houseWidget = None
 
 		def submit_Fields():
-			for x in listOfButtons:
-				inputText = x.get()
-				print inputText
+			# Name if the JSON file.
+			fName = houseWidget.get()
+			# Recplace the file name if household is not present. 
+			if (fName == ""):
+				fName = "temp"
+			# Retrieve all entries and contain them to the lists.
+			for i in listOfWidgets:
+				listOfEntries["household"][0][i] = listOfWidgets[i].get()
+			# Generate JSON file from entries.
+			with open(fName + ".json", "w") as outFile:
+				json.dump(listOfEntries, outFile)
+			# Destroy window after successful JSON file creation.
+			self.root.destroy()
 
 		def auto_Fill():
-			for x in listOfButtons:
-				inputText = x.insert(0, "dummy")
-				#print listOfDummy[i]
+			for i in range(0, len(listOfPrompts)):
+				listOfWidgets[listOfPrompts[i]].delete(0, "end")
+				listOfWidgets[listOfPrompts[i]].insert(0, random.choice(listOfDummies[i])) 
 
-		for x in listOfFields:
+		# Adding Household-Label to the left-side of the grid.
+		houseLabel = Label(self.root, text="HouseHold")
+		houseLabel.grid(row=0, column=0, padx=12, pady=0, sticky='nsew')
+		# Adding Household-Prompt to the right-side of the grid.
+		houseEntry = Entry(self.root)
+		houseEntry.grid(row=0, column=1, padx=12, pady=1, sticky='nsew')
+		# Adding Household widget (label & prompt) to the list.
+		houseWidget = houseEntry
+
+		for i in inputs:
 			# Adding Label to the left-side of the grid.
-			name = Label(self.root, text=x)
-			name.grid(row=count, column=0, padx=12, pady=0, sticky='nsew')
-			# Adding Entry to the right-side of the grid.
-			nameEntry = Entry(self.root)
-			listOfButtons.append(nameEntry)
-			nameEntry.grid(row=count, column=1, padx=12, pady=1, sticky='nsew')
-			# Re-adjust the height of the window.
-			count = count + 1
+			newLabel = Label(self.root, text=i)
+			newLabel.grid(row=self.wm_num, column=0, padx=12, pady=0, sticky='nsew')
+			# Adding Prompt to the right-side of the grid.
+			newPrompt = Entry(self.root)
+			newPrompt.grid(row=self.wm_num, column=1, padx=12, pady=1, sticky='nsew')
+			# Adding widget (label & prompt) to the list.
+			listOfWidgets[i] = newPrompt
+			# Increment the number of widgets on the window.
+			self.wm_num += 1
 
 		# Submit Button
-		b = Button(self.root, text="Submit", command=submit_Fields)
-		b.grid(row=count, column=1, padx=12, pady=0, sticky='nsew')
+		btnSubmit = Button(self.root, text="Submit", command=submit_Fields)
+		btnSubmit.grid(row=self.wm_num, column=1, padx=12, pady=0, sticky='nsew')
 
-		# Autofill Button with dummy input
-		b2 = Button(self.root, text="Autofill", command=auto_Fill)
-		b2.grid(row=count, column=0, padx=12, pady=0, sticky='nsew')
-
-#
-#	def sendJSON():
-#		data = {
-#			'name' : 'ACME',
-#			'breed' : ,
-#			'gender' : 542.23
-#		}
-
-		
-
-
-
-# The JsonData class that is used to contain all relevant data.
-# class JsonData:
+		# Autofill Button (using Dummy-Text)
+		btnAutoFill = Button(self.root, text="Autofill", command=auto_Fill)
+		btnAutoFill.grid(row=self.wm_num, column=0, padx=12, pady=0, sticky='nsew')
 
 ###### The main execution of this script.
 
 # Declaring an Application instance.
 jsonGene = App("JSON Generator")
-# Creating the Application interface.
+# Assembling the Application interface.
 jsonGene.create_Window()
-
-jsonGene.add_Fields()
-
+jsonGene.add_Widgets(listOfPrompts)
+# Presenting the Application interface.
 jsonGene.show_Window()
