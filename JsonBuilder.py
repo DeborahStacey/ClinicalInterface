@@ -1,8 +1,9 @@
-#!/usr/bin/python
-import Tkinter
-from Tkinter import *
+#!c:/Python34/python
+
+from tkinter import *
 import random
 import json
+import hello
 
 # The list of all JSON-related information (household is already set).
 	# THIS IS THE BASE STRUCTURE OF OUR JSON FILE...
@@ -46,6 +47,8 @@ class App:
 		px = (self.root.winfo_screenwidth() - self.wm_width) / 2
 		py = (self.root.winfo_screenheight() - self.wm_height) / 2
 		self.root.geometry('%dx%d+%d+%d' % (self.wm_width, self.wm_height, px, py))
+		#
+		hello.hello();
 		# Main event-based loop for the window.
 		self.root.mainloop();
 
