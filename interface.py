@@ -58,11 +58,11 @@ class App:
 	
 	def add_button(self):
 		def helloWorld():
-			self.root.overrideredirect(True)
-			print "hello world"
+			print "Search"
+			s.connect
 		B = Tkinter.Button(self.root, text = "Search", command = helloWorld)
 		
-		B.grid(row = 10, column = 1 )
+		B.grid(row = 0, column = 2)
 
 
 
@@ -81,9 +81,8 @@ jsonGene = App("Clinical Interface")
 # Creating the Application interface.
 jsonGene.create_Window()
 
-jsonGene.add_TextField("Text 1", 20)
-jsonGene.add_TextField("Text 2", 20)
-jsonGene.add_TextField("Text 3", 20)
+jsonGene.add_TextField("Search:", 20)
+
 jsonGene.add_button()
 
 jsonGene.show_Window()
