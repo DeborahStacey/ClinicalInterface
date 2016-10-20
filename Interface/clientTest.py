@@ -23,6 +23,7 @@ objPath = input("Enter JSON search obj name: ")
 #objPath = "cat.JSON"
 objFile = open(objPath, 'r')
 jsonString = objFile.read()
+objFile.close()
 # load data from json string into a parse object
 
 s.sendall(jsonString.encode('utf-8'))

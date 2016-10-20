@@ -1,0 +1,5 @@
+{
+  "animals": "all",
+  "operation": "lookup",
+  "field": "weight" 
+}

@@ -1,6 +1,6 @@
 #!/usr/bin/python
-import Tkinter
-from Tkinter import *
+from tkinter import *
+from tkinter import ttk
 import json
 
 ##### The class definitions that support this script.
@@ -48,6 +48,7 @@ class App:
 		new_label = Label(self.root, text=tag_name)
 		new_label.grid(row=self.wm_num, column=0, padx=12, pady=0, sticky='nsew')
 		# Adding Entry to the right-side of the grid.
+		global new_entry
 		new_entry = Entry(self.root)
 		new_entry.grid(row=self.wm_num, column=1, padx=12, pady=1, sticky='nsew')
 		# Re-adjust the height of the window.
@@ -58,9 +59,11 @@ class App:
 	
 	def add_button(self):
 		def helloWorld():
-			print "Search"
+			print ("Search")
 			s.connect
-		B = Tkinter.Button(self.root, text = "Search", command = helloWorld)
+		def getInput():
+			print (new_entry.get())
+		B = ttk.Button(self.root, text = "Search", command = getInput)
 		
 		B.grid(row = 0, column = 2)
 
