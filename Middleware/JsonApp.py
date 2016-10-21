@@ -33,51 +33,77 @@ class JsonApp:
 	#	@param:  The name of the Application. 
 	def __init__(self, title):
 		self.wm_title = title
-		self.wm_height = 400
-		self.wm_width = 500
 		self.client_widgets = []
 		self.patient_widgets = []
 		self.patient_count = 1
 
 # The Command Section of the JsonApp.
-	def newSinglePrompt(self, prompt):
-		return
+	def newPrompts(self, frame, prompts):
+		# Divide the frame into six equally-spaced columns for prompts.
+		for x in range(0, 12):
+			frame.grid_columnconfigure(x, weight=1)
+		# Adding each prompt to their specified parameters.
+		for i in prompts:
+			#
+			configIndex = 2
+			extIndex = 8
+			#
+			numOfWidgets = len(self.patient_widgets)
+			# If prompt is actually a divider, create a horizontal line.
+			if (i[0] == "--divider--"):
+				tempLine = ttk.Separator(frame, orient="horizontal")
+				tempLine.grid(row=i[1], column=i[2], columnspan=12, padx=3, pady=(6,0), sticky='nsew')
+				continue
+			# Otherwise, add the specified prompt to the frame.
+			if (i[0] != "--none--"):
+				if (i[7]):
+					tempLabel = Label(frame, text=str(i[0]+"*:"))
+				else:
+					tempLabel = Label(frame, text=str(i[0]+":"))
+				tempLabel.grid(row=i[2], column=i[3], padx=0, pady=(6,0), sticky='nsew')
+			else:
+				configIndex = 1
+				extIndex = 6
+			#	
+			if (i[configIndex+4] == "text"):
+				tempWidget = Entry(frame)
+				tempWidget.grid(row=i[configIndex], column=i[configIndex+1]+1, rowspan=i[configIndex+2], 
+									columnspan=i[configIndex+3], padx=(0,6), pady=(6,0), sticky='nsew')
+			elif (i[configIndex+4] == "menu"):
+				tempWidget = ttk.Combobox(frame, width=10, state="readonly", values=i[extIndex])
+				tempWidget.grid(row=i[configIndex], column=i[configIndex+1]+1, rowspan=i[configIndex+2], 
+									columnspan=i[configIndex+3], padx=(0,6), pady=(6,0), sticky='nsew')
+			elif (i[configIndex+4] == "spinbox-i"):
+				tempWidget = Spinbox(frame, from_=i[extIndex][0], to=i[extIndex][1], increment=i[extIndex][2])
+				tempWidget.grid(row=i[configIndex], column=i[configIndex+1]+1, rowspan=i[configIndex+2], 
+									columnspan=i[configIndex+3], padx=(0,6), pady=(6,0), sticky='nsew')	
+				tempWidget.delete(0, "end")
+				tempWidget.insert(0, 0)
+			elif (i[configIndex+4] == "spinbox-f"):
+				tempWidget = Spinbox(frame, format="%.1f", from_=i[extIndex][0], to=i[extIndex][1], 
+										increment=i[extIndex][2])
+				tempWidget.grid(row=i[configIndex], column=i[configIndex+1]+1, rowspan=i[configIndex+2], 
+									columnspan=i[configIndex+3], padx=(0,6), pady=(6,0), sticky='nsew')
+				tempWidget.delete(0, "end")
+				tempWidget.insert(0, 0)
+			#
+			if (i[0] != "--none--"):
+				self.patient_widgets.append({"tag-name": i[1],"widget": [tempWidget], "is-required": i[7]})
+			else:
+				self.patient_widgets[numOfWidgets-1]["widget"].append(tempWidget)
 
 	def newAccountPrompts(self, accountPrompts):
-		accountFrame = Frame(self.root)
-		for x in range(0, 6):
-			accountFrame.grid_columnconfigure(x, weight=1)
-		for i in accountPrompts:
-			# newSinglePrompt(self, i)
-			newLabel = Label(accountFrame, text=i[0])
-			newLabel.grid(row=i[2], column=i[3], padx=0, pady=(6,0), sticky='nsew')
-			newEntry = Entry(accountFrame)
-			newEntry.grid(row=i[2], column=i[3]+1, columnspan=i[5]-1, padx=(0,6), pady=(6,0), sticky='nsew')
-			self.client_widgets.append({"widget": [newEntry], "is-required": i[6]})
-		accountFrame.grid(row=0, column=0, columnspan=4, sticky='nsew')
-
-	def newPatientPrompts(self, patientPrompts):
-		# Temproary set of widgets to be added to the list.
-		tempWidgets = []
-		# Create temporary Frame for the new Patient-tabe
-		tempFrame = Frame(self.notebook)
-		for x in range(0, 6):
-			tempFrame.grid_columnconfigure(x, weight=1)
-		for i in patientPrompts:
-			if (i[0] == "--divider--"):
-				tempLine = ttk.Separator(tempFrame, orient="horizontal")
-				tempLine.grid(row=i[1], column=i[2], columnspan=6, padx=3, pady=(6,0), sticky='nsew')
-				continue
-			if (i[0] == "--none--"):
-				continue
-			newLabel = Label(tempFrame, text=i[0])
-			newLabel.grid(row=i[2], column=i[3], padx=0, pady=(6,0), sticky='nsew')
-			newEntry = Entry(tempFrame)
-			newEntry.grid(row=i[2], column=i[3]+1, columnspan=i[5]-1, padx=(0,6), pady=(6,0), sticky='nsew')
-			self.patient_widgets.append({"widget": [newEntry], "is-required": i[6]})
+		# Temp-frame to be added to the GUI.
+		tempFrame = Frame(self.root)
+		self.newPrompts(tempFrame, accountPrompts)
+		# Place the Account prompts on the top-section of the Application.
 		tempFrame.grid(row=0, column=0, columnspan=4, sticky='nsew')
 
-		# Add the temporary Frame to the Notebook
+	def newPatientPrompts(self, patientPrompts):
+		# Temp-frame to be added to the GUI.
+		tempFrame = Frame(self.root)
+		self.newPrompts(tempFrame, patientPrompts)
+		# Place the Patient prompts in a new tab of the Notebook.
 		self.notebook.add(tempFrame, text=("Pet-"+str(self.patient_count)))
 		self.patient_count += 1
 
@@ -145,9 +171,4 @@ class JsonApp:
 
 	# Presents the window instance to the user.
 	def show_Window(self):
-		# Positioning the window onto the center of the screen.
-		p_x = (self.root.winfo_screenwidth() - self.wm_width) / 2
-		p_y = (self.root.winfo_screenheight() - self.wm_height) / 2
-		self.root.geometry('%dx%d+%d+%d' % (self.wm_width, self.wm_height, p_x, p_y))
-		# Main event-based loop for the window.
 		self.root.mainloop();
