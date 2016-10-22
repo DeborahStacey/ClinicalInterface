@@ -2,6 +2,7 @@
 from tkinter import *
 from tkinter import ttk
 import json
+import clientSocket
 
 ##### The class definitions that support this script.
 
@@ -63,10 +64,10 @@ class App:
 			s.connect
 		def getInput():
 			print (new_entry.get())
+			clientSocket.sendSearchRequest(new_entry.get())
 		B = ttk.Button(self.root, text = "Search", command = getInput)
 		
 		B.grid(row = 0, column = 2)
-
 
 
 
