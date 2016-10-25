@@ -1,0 +1,54 @@
+{
+    "firstName":["--rand-string--",
+        "Alfred", "Gary", "Milford", "Leonardo", "Sheldon", "Jean", "Elton", "Duane",
+        "Mila", "Misty", "Elizabeth", "Katy", "Holley", "Joyce", "Jacqueline", "Amber", 
+        "Samara", "Drew", "Linda", "Daren", "Yung", "Frankie", "Harold", "Maddie", "Toi", 
+        "Emilia", "Dixie", "Kami", "Patrick", "Keiko", "Nicholas", "Roma", "Kayleen", 
+        "Ralph", "Mitchell", "Jordon", "Machelle", "Ling", "Marvin", "Hong", "Tiffany"
+    ],
+    "lastName":["--rand-string--",
+        "Runyan", "Edie", "Peskin", "Dahm", "Pastor", "Maland", "Wiliams", "Steinbach",
+        "Paige", "Wegner", "Walson", "Saulters", "Schmaltz", "Vicario", "Diego", "Gully",
+        "Noone", "Crook", "Boye", "Martel", "Stacy", "Kelser", "Weiss", "Fraher", "Antes",
+        "Laufer", "Rishel", "Forbes", "Corbett", "Falkner", "Meadows", "Monte", "Eisenhart",
+        "Bloomberg", "Mckie", "Litt", "Agulia", "Wolski", "McGarvey", "Tabor", "Hammett"
+    ],
+    "eMail":["--rand-email--", 
+        "@hotmail.ca", "@gmail.com", "@yahoo.com", "@mail.uoguelph.ca"
+    ],
+    "address":["--rand-address--",
+        "Heritage Drive", "Hillside Drive", "Cypress Court", "Hanover Court",
+        "Linden Street", "Catherine Street", "Jackson Avenue", "Academy Street",
+        "Hamilton Road", "Route 20", "Rosewood Drive", "Heather Lane", "10th Street",
+        "Orange Street", "Lake Street", "Jones Street", "Route 7", "Wood Street",
+        "5th Street", "Forest Drive", "Devon Court", "Poplar Street", "Park Place",
+        "Woodland Avenue", "Williams Street", "3rd Street West", "College Avenue",
+        "Redwood Drive", "Hillcrest Avenue", "Windsor Court", "Strawberry Lane",
+        "Virginia Avenue", "Dogwood Lane", "Chestnut Avenue", "Lexington Drive",
+        "2nd Street North", "Sherman Street", "Briarwood Court", "Winding Way"
+    ],
+    "name":["--rand-string--",
+        "Bella", "Tigger", "Chloe", "Shadow", "Luna", "Oreo", "Oliver", "Kitty", "Lucy",
+        "Molly", "Jasper", "Smokey", "Gizmo", "Simba", "Tiger", "Charlie", "Angel",
+        "Jack", "Lily", "Peanut", "Toby", "Baby", "Loki", "Midnight", "Milo", "Sophie",
+        "Harley", "Max", "Missy", "Rocky", "Zoe", "CoCo", "Misty", "Pepper", "Oscar",
+        "Sassy", "Bandit", "Boots", "Felix", "Tucker", "Simon", "Lucky", "Kiki", "Buddy"
+    ],
+    "species":["--rand-option--"],
+    "gender":["--rand-string--", 
+        "Male", "Female", "Other"
+    ],
+    "breed":["--rand-option--"],
+    "sex":["--rand-option--"],
+    "color":["--rand-string--",
+        "Black", "Chocolate", "Cinnamon", "Blue", "Lilac/Lavender", "Fawn/Light-Lilac",
+        "Blue-Based Caramel", "Lilac-Based Caramel (Taupe)", "Fawn-Based Caramel",
+        "Red", "Cream", "Apricot", "Amber", "Light Amber"
+    ],
+    "age":["--rand-integer--", 1, 99],
+    "weight":["--rand-float--", 1, 99],
+    "height":["--rand-float--", 1, 99],
+    "length":["--rand-float--", 1, 99],
+    "microchipNum":["--rand-integer--", 1000000000000, 9999999999999],
+    "tagNum":["--rand-integer--", 1000000000000, 9999999999999]
+}

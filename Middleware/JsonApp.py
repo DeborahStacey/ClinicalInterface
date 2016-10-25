@@ -2,6 +2,7 @@
 from tkinter import *
 from tkinter import ttk
 from collections import *
+import random
 import json
 
 # Generates JSON-file from the list of enteries.
@@ -60,7 +61,7 @@ class JsonApp:
 				inConfig = 1
 				inExt = 6
 			# Construction of the specified prompt (labelled and no-name)
-			if (i[inConfig+4] == "text"):
+			if (i[inConfig+4] == "text" or i[inConfig+4] == "text-i" or i[inConfig+4] == "text-f"):
 				newWidget = Entry(frame)
 				newWidget.grid(row=i[inConfig], column=i[inConfig+1]+1, rowspan=i[inConfig+2], 
 									columnspan=i[inConfig+3], padx=(0,6), pady=(6,0), sticky='nsew')
@@ -68,23 +69,11 @@ class JsonApp:
 				newWidget = ttk.Combobox(frame, width=10, state="readonly", values=i[inExt])
 				newWidget.grid(row=i[inConfig], column=i[inConfig+1]+1, rowspan=i[inConfig+2], 
 									columnspan=i[inConfig+3], padx=(0,6), pady=(6,0), sticky='nsew')
-			elif (i[inConfig+4] == "spinbox-i"):
-				newWidget = Spinbox(frame, from_=i[inExt][0], to=i[inExt][1], increment=i[inExt][2])
-				newWidget.grid(row=i[inConfig], column=i[inConfig+1]+1, rowspan=i[inConfig+2], 
-									columnspan=i[inConfig+3], padx=(0,6), pady=(6,0), sticky='nsew')	
-				newWidget.delete(0, "end")
-				newWidget.insert(0, 0)
-			elif (i[inConfig+4] == "spinbox-f"):
-				newWidget = Spinbox(frame, format="%.1f", from_=i[inExt][0], to=i[inExt][1], 
-										increment=i[inExt][2])
-				newWidget.grid(row=i[inConfig], column=i[inConfig+1]+1, rowspan=i[inConfig+2], 
-									columnspan=i[inConfig+3], padx=(0,6), pady=(6,0), sticky='nsew')
-				newWidget.delete(0, "end")
-				newWidget.insert(0, 0)
 			# The widgets associated with the prompts are stored for future JSON-assembly.
 			#	- Prompts with no name, have their widgets included in the previous prompt.
 			if (i[0] != "--none--"):
-				self.setOfWidgets.append({"tag-name": i[1],"widget": [newWidget], "is-required": i[7]})
+				self.setOfWidgets.append({"tag-name": i[1],"widget": [newWidget], 
+						"widget-type": i[inConfig+4], "is-required": i[7]})
 			else:
 				self.setOfWidgets[numOfWidgets-1]["widget"].append(newWidget)
 
@@ -109,45 +98,105 @@ class JsonApp:
 
 	# Randomly enters information into the prompts for all sections.
 	def autofill(self):
-		print ("Auto-fill")
-		return
+		#
+		def randomEmailAddress(baseSet, firstName, lastName):
+			randDomain = random.choice(baseSet["eMail"][1:])
+			return firstName[0].lower()+lastName.lower()+randDomain
+		#
+		def randomHomeAddress(baseSet):
+			randHouseNumber = random.randint(1, 9999)
+			randHomeAddress = random.choice(baseSet["address"][1:])
+			return randHouseNumber + " " + randHomeAddress
+		#
+		def randomMenuOption(widgetSet):
+			return random.randint(0, len(widgetSet["values"])-1)
+		#
+		def randomStringValue(baseSet, key):
+			randStringValue = random.choice(baseSet[key][1:])
+			return randStringValue
 
-	# Compiles an ordered-set of values from the set of widgets into a JSON-object.
+		def randomIntegerValue(baseSet, key):
+			randIntegerValue = random.randint(int(baseSet[key][1]), int(baseSet[key][2]))
+			return randIntegerValue
+		#
+		def randomFloatValue(baseSet, key):
+			randFloatValue = random.uniform(float(baseSet[key][1]), float(baseSet[key][2]))
+			return "{0:.2f}".format(randFloatValue)
+		# The master-list of constants that is used to auto-fill all widgets.
+		setOfConst = read_JsonFile("use_for_autofill_only")
+		#
+		for i in range(0, len(self.setOfWidgets)):
+			#
+			paramWidget = self.setOfWidgets[i]
+			#
+			paramWidget["widget"][0].delete(0, "end")
+			if (paramWidget["widget-type"] == "text"):
+				if (setOfConst[paramWidget["tag-name"]][0] == "--rand-string--"):
+					paramWidget["widget"][0].insert(0, randomStringValue(setOfConst, 
+						paramWidget["tag-name"]))
+				if (setOfConst[paramWidget["tag-name"]][0] == "--rand-email--"):
+					paramWidget["widget"][0].insert(0, randomEmailAddress(setOfConst,
+						self.setOfWidgets[0]["widget"][0].get(),
+						self.setOfWidgets[1]["widget"][0].get()))
+				if (setOfConst[paramWidget["tag-name"]][0] == "--rand-address--"):
+					paramWidget["widget"][0].insert(0, randomHomeAddress(setOfConst))
+			#
+			elif (paramWidget["widget-type"] == "text-i"):
+				if (setOfConst[paramWidget["tag-name"]][0] == "--rand-integer--"):
+					paramWidget["widget"][0].insert(0, randomIntegerValue(setOfConst, 
+						paramWidget["tag-name"]))
+			#
+			elif (paramWidget["widget-type"] == "text-f"):
+				if (setOfConst[paramWidget["tag-name"]][0] == "--rand-float--"):
+					paramWidget["widget"][0].insert(0, randomFloatValue(setOfConst, 
+						paramWidget["tag-name"]))
+			#
+			elif (paramWidget["widget-type"] == "menu"):
+				if (setOfConst[paramWidget["tag-name"]][0] == "--rand-option--"):
+					paramWidget["widget"][0].current(randomMenuOption(paramWidget["widget"][0]))
+			#
+			for n in range(1, len(paramWidget["widget"])):
+				paramWidget["widget"][n].current(randomMenuOption(paramWidget["widget"][n]))
+    # Compiles an ordered-set of values from the set of widgets into a JSON-object.
 	def submitProfile(self):
+		#
+		def insertValueIntoJSON(baseSet, key, value):
+			baseSet.update({key: str(value[0].get())})
+			for n in range(1, len(value)):
+				extraValues = baseSet[key] + " " + str(value[n].get())
+				baseSet.update({key: extraValues})
+		#
+		def insertSetIntoJSON(baseSet, key, createNewSetWhen):
+			if (createNewSetWhen):
+				baseSet.update({key: [OrderedDict()]})
+			else:
+				baseSet[key].append(OrderedDict())
+		#
+		def createSignature(baseSet):
+			return baseSet["firstName"][0].lower()+baseSet["lastName"].lower()
 		# The master-list of values that is used to construct the JSON-object.
 		setOfValues = OrderedDict()
 		# Traversing the master-list of widgets and sending inputs to an ordered-set.
 		for i in range(0, len(self.setOfWidgets)):
 			# The index of the patient that is currently being added to the set.
-			inPatient = int((i-self.clientWidgetCount) / self.patientWidgetCount)
-			print (inPatient)
-			# The parameters of the widget sets that are used to rettrieve information.
-			paramName = self.setOfWidgets[i]["tag-name"]
-			paramWidget = self.setOfWidgets[i]["widget"]
-			paramState = self.setOfWidgets[i]["is-required"]
-			# The account widgets are always handled before all other sections.
+			pIndex = int((i-self.clientWidgetCount) / self.patientWidgetCount)
+			#
+			paramWidget = self.setOfWidgets[i]
+			# 
 			if (i < self.clientWidgetCount):
-				setOfValues.update({paramName: paramWidget[0].get()})
-				for n in range(1, len(paramWidget)):
-					setOfValues.update({paramName: " "+paramWidget[n].get()})
-			# Separate sets are created for each tab (represents each patient).
+				insertValueIntoJSON(setOfValues, paramWidget["tag-name"], 
+					paramWidget["widget"])
+			# 
 			elif ((i-self.clientWidgetCount) % self.patientWidgetCount == 0):
-				# Creates a new set for the next patient and their respective values.
-				#	- If the account widgets were recently completed, create "Household" group.
-				if (i == self.clientWidgetCount):
-					setOfValues.update({"houseHold": [OrderedDict()]})
-				else:
-					setOfValues["houseHold"].append(OrderedDict())
-				setOfValues["houseHold"][inPatient].update({paramName: paramWidget[0].get()})
-				for n in range(1, len(paramWidget)):
-					setOfValues["houseHold"][inPatient].update({paramName: " "+paramWidget[n].get()})
-			# The patient widgets are grouped for each tab in the Notebook. 
+				insertSetIntoJSON(setOfValues, "household", i == self.clientWidgetCount)
+				insertValueIntoJSON(setOfValues["household"][pIndex], paramWidget["tag-name"], 
+					paramWidget["widget"])
+			# 
 			else:
-				setOfValues["houseHold"][inPatient].update({paramName: str(paramWidget[0].get())})
-				for n in range(1, len(paramWidget)):
-					setOfValues["houseHold"][inPatient].update({paramName: " "+str(paramWidget[n].get())})
+				insertValueIntoJSON(setOfValues["household"][pIndex], paramWidget["tag-name"], 
+					paramWidget["widget"])
 		# Create the JSON-File and exit the program.
-		write_JsonFile("temp", setOfValues)
+		write_JsonFile(createSignature(setOfValues), setOfValues)
 		self.root.destroy()
 
 	# Creates a non-resizable window instance (other variables are set separately).

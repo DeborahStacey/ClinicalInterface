@@ -38,18 +38,18 @@ listOfPatientPrompts = [
     ["Color", "color", 3, 0, 1, 12, "text", False],
     ["--divider--", 4, 0, 1, 12],
 
-    ["Age", "age", 5, 0, 1, 3, "spinbox-i", True, [0, 99, 1]],
+    ["Age", "age", 5, 0, 1, 3, "text-i", True],
         ["--none--", 5, 4, 1, 1, "menu", ["Year(s)", "Month(s)", "Week(s)", "Day(s)"]],
-    ["Weight", "weight", 5, 6, 1, 3, "spinbox-f", True, [0, 99, 0.1]],
+    ["Weight", "weight", 5, 6, 1, 3, "text-f", True],
         ["--none--", 5, 10, 1, 1, "menu", ["kg", "g", "lbs", "oz"]],
-    ["Height", "height", 6, 0, 1, 3, "spinbox-f", True, [0, 99, 0.1]],
+    ["Height", "height", 6, 0, 1, 3, "text-f", True],
         ["--none--", 6, 4, 1, 1, "menu", ["m", "cm", "ft", "in"]],
-    ["Length", "length", 6, 6, 1, 3, "spinbox-f", True, [0, 99, 0.1]],
+    ["Length", "length", 6, 6, 1, 3, "text-f", True],
         ["--none--", 6, 10, 1, 1, "menu", ["m", "cm", "ft", "in"]],
     ["--divider--", 7, 0, 1, 12],
 
-    ["Micro-Num", "microchipNum", 8, 0, 1, 5, "text", True],
-    ["Tag-Num", "tagNum", 8, 6, 1, 5, "text", True],
+    ["Micro-Num", "microchipNum", 8, 0, 1, 5, "text-i", True],
+    ["Tag-Num", "tagNum", 8, 6, 1, 5, "text-i", True],
     ["--divider--", 9, 0, 1, 12]]
 
 # Declaring an Application interface and initializing all related variables.
