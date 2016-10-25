@@ -106,7 +106,7 @@ class JsonApp:
 		def randomHomeAddress(baseSet):
 			randHouseNumber = random.randint(1, 9999)
 			randHomeAddress = random.choice(baseSet["address"][1:])
-			return randHouseNumber + " " + randHomeAddress
+			return str(randHouseNumber) + " " + randHomeAddress
 		#
 		def randomMenuOption(widgetSet):
 			return random.randint(0, len(widgetSet["values"])-1)
