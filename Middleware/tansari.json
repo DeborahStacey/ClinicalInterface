@@ -1,22 +1,18 @@
-{
-    "firstName":"Taha",
-    "lastName":"Ansari",
-    "eMail":"tansari@mail.uoguelph.ca",
-    "address":"810 shepherd place",
-    "household":[
         {
+			"ownerid": "1234312",
+			"petid":"ab231h212",
             "name":"Shadow",
-            "species":"Feline",
-            "gender":"Male",
-            "breed":"Bengal",
-            "sex":"Male(Neutered)",
-            "color":"Black",
-            "age":"1 Year(s)",
-            "weight":"10 lbs",
-            "height":"25 cm",
-            "length":"50 cm",
-            "microchipNum":"",
-            "tagNum":""
+            "breedid":2,
+            "gender":1,
+			"microchip":true,
+			"fitcat":false,
+			"dateofbirth":"03/16/1995",            
+            "weight":10,
+            "height":25,
+            "length":50,
+			"dateofdeath":"",
+			"reasonfordeath":"",
+			"lastupdate":"2016-03-15 01:21:05",
+			"dateadded":"2016-03-15 01:21:05"
         }
-    ]
-}
+
