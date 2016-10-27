@@ -1,0 +1,22 @@
+{
+    "firstName":"Taha",
+    "lastName":"Ansari",
+    "eMail":"tansari@mail.uoguelph.ca",
+    "address":"810 shepherd place",
+    "household":[
+        {
+            "name":"Shadow",
+            "species":"Feline",
+            "gender":"Male",
+            "breed":"Bengal",
+            "sex":"Male(Neutered)",
+            "color":"Black",
+            "age":"1 Year(s)",
+            "weight":"10 lbs",
+            "height":"25 cm",
+            "length":"50 cm",
+            "microchipNum":"",
+            "tagNum":""
+        }
+    ]
+}
