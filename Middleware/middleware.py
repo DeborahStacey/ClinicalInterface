@@ -9,8 +9,7 @@ def readJson(objName):
 	recieveJson(parsedObj)
 
 def recieveJson(parsedObj):
-	print (parsedObj[0]["ownerid"])
 
-
+	print(parsedObj.get("ownerid"))
 
 readJson("tansari.json")	

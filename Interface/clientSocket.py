@@ -30,6 +30,5 @@ def sendSearchRequest(requests):
 	data = s.recv(1024)
 	print('server returned: ' + data.decode('utf-8'))
 
-
 	s.close()
 
