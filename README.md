@@ -10,6 +10,6 @@ Requires Python v.3.5
 * run `python3 JsonGenerate.py`
 
 # Files: 
-* JsonGenerate.py -- PMS generator. A basic GUI that has text fields where the clinician can enter data. Uses the JsonApp file to create the GUI.
-* JsonApp.py -- The GUI code
+* Middleware/JsonGenerate.py -- PMS generator. A basic GUI that has text fields where the clinician can enter data. Calls the JsonApp.py file in order to build the GUI.
+* Middleware/JsonApp.py -- The GUI code
 
