@@ -7,7 +7,7 @@ Requires Python v.3.5
 
 # In order to run the PMS: 
 * Navigate to the Middleware Directory
-* run ./JsonGenerate.py
+* run `python3 JsonGenerate.py`
 
 # Files: 
 * JsonGenerate.py -- PMS generator. A basic GUI that has text fields where the clinician can enter data. Uses the JsonApp file to create the GUI.
