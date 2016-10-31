@@ -2,15 +2,14 @@
 
 Currently works on Windows, Mac OS X, and Ubuntu
 
-Requires Python v.2.7
+Requires Python v.3.5
 
-Requires permission. In order to do this for now, run "chmod u+x JsonBuilder.py" after cloning the repo.
 
-# In order to run: 
-* ./JsonBuilder.py -- Since this is just the second build, we will manually run this one file like so.
+# In order to run the PMS: 
+* Navigate to the Middleware Directory
+* run ./JsonGenerate.py
 
 # Files: 
-* JsonBuilder.py -- PMS generator. A basic GUI that has text fields where the clinician can enter data. Once submit is clicked, the text in the text field is converted into a JSON object, and hence creates the JSON file.
-* interface.py -- Rough GUI of the Clinical Interface
-* PMS.py -- JSON extractor.
+* JsonGenerate.py -- PMS generator. A basic GUI that has text fields where the clinician can enter data. Uses the JsonApp file to create the GUI.
+* JsonApp.py -- The GUI code
 
