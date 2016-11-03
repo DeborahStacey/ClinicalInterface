@@ -6,7 +6,7 @@ from random import *
 
 from InputGenerator import *
 from InputVariables import *
-#from middleware import *
+from middleware import *
 
 class MockInterface:
 	# Creates a MockInterface Instance.
@@ -88,13 +88,13 @@ class MockInterface:
 			self.setOfWidgets[7].insert(1.0, str(randString(constDeaths)))
 		# Specific Pet-Information
 		self.setOfWidgets[8].delete(0, "end")
-		self.setOfWidgets[8].insert(0, str(randint(1, 99)))
+		self.setOfWidgets[8].insert(0, str("{0:.2f}".format(uniform(1.0, 99.0))))
 
 		self.setOfWidgets[9].delete(0, "end")
-		self.setOfWidgets[9].insert(0, str(randint(1, 99)))
+		self.setOfWidgets[9].insert(0, str("{0:.2f}".format(uniform(1.0, 99.0))))
 
 		self.setOfWidgets[10].delete(0, "end")
-		self.setOfWidgets[10].insert(0, str(randint(1, 99)))
+		self.setOfWidgets[10].insert(0, str("{0:.2f}".format(uniform(1.0, 99.0))))
 		# Date-Time Information
 		dateAdded = str(randDateTime("2010-01-01 12:00:00", "2015-12-31 11:59:00", 
 						"%Y-%m-%d %H:%M:%S"))
@@ -113,25 +113,23 @@ class MockInterface:
 	# Organizes all the input-values and sends them to the database.
 	def submitRecord(self):
 		#
-		setOfValues = OrderedDict()
+		setOfValues = "{ \"ownerid\": \"" + str(self.setOfWidgets[0].get()) + "\", "
+		setOfValues += "\"petid\": \"" + str(self.setOfWidgets[1].get()) + "\", "
+		setOfValues += "\"name\": \"" + str(self.setOfWidgets[2].get()) + "\", "
+		setOfValues += "\"breedid\": " + str(self.setOfWidgets[3].current()) + ", "
+		setOfValues += "\"gender\": " + str(self.setOfWidgets[4].current()) + ", "
+		setOfValues += "\"microchip\": " + str(random.choice(["true", "false"])) + ", "
+		setOfValues += "\"fitcat\": " + str(random.choice(["true", "false"])) + ", "
+		setOfValues += "\"dateOfBirth\": \"" + str(self.setOfWidgets[5].get()) + "\", "
+		setOfValues += "\"dateofdeath\": \"" + str(self.setOfWidgets[6].get()) + "\", "
+		setOfValues += "\"reasonfordeath\": \"" + str(self.setOfWidgets[7].get(1.0, "end").strip()) + "\", "
+		setOfValues += "\"weight\": " + str(self.setOfWidgets[8].get()) + ", "
+		setOfValues += "\"height\": " + str(self.setOfWidgets[9].get()) + ", "
+		setOfValues += "\"length\": " + str(self.setOfWidgets[10].get()) + ", "
+		setOfValues += "\"lastupdate\": \"" + str(self.setOfWidgets[11].get()) + "\", "
+		setOfValues += "\"dateadded\": \"" + str(self.setOfWidgets[12].get()) + "\" }"
 		#
-		setOfValues.update({"ownerid": self.setOfWidgets[0].get()})
-		setOfValues.update({"petid": self.setOfWidgets[1].get()})
-		setOfValues.update({"name": self.setOfWidgets[2].get()})
-		setOfValues.update({"breed": int(self.setOfWidgets[3].current())})
-		setOfValues.update({"gender": int(self.setOfWidgets[4].current())})
-		setOfValues.update({"microchip": True})
-		setOfValues.update({"fitcat": False})
-		setOfValues.update({"dateOfBirth": self.setOfWidgets[5].get()})
-		setOfValues.update({"dateOfDeath": self.setOfWidgets[6].get()})
-		setOfValues.update({"reasonOfDeath": self.setOfWidgets[7].get(1.0, "end")})
-		setOfValues.update({"weight": float(self.setOfWidgets[8].get())})
-		setOfValues.update({"height": float(self.setOfWidgets[9].get())})
-		setOfValues.update({"length": float(self.setOfWidgets[10].get())})
-		setOfValues.update({"dateUpdate": self.setOfWidgets[11].get()})
-		setOfValues.update({"dateAdded": self.setOfWidgets[12].get()})
-		#
-		print (setOfValues)
+		print (sendJson(str(setOfValues)))
 
 	# Creates the Interface, along with all its required content.
 	#	@param:		None.

@@ -118,13 +118,13 @@ def sendData(obj):
 	s.close() ''' 
 
 #API example
-message = convertJson("tansari.json") 			
+'''message = convertJson("tansari.json") 			
 status = sendJson(message)
 if(status == True):
 	print ("Json object successfully sent")
 else:
 	print ("Error sending json obj")	
-
+'''
 
 
 
