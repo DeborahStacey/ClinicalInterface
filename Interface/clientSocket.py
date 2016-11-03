@@ -5,8 +5,6 @@ import sys
 host = '104.196.166.63'        # Server IP
 port = 12345                   # Port accepting connection 
 
-
-
 def sendSearchRequest(requests):
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	s.connect((host, port))

@@ -1,12 +1,20 @@
 import json
+import socket
+import sys
 
-def sendJson(objName):		
-	objFile = open(objName, 'r')
-	jsonString = objFile.read()	
+def convertJson(objName):
+    objFile = open(objName, 'r')
+    jsonString = objFile.read()
+    return jsonString	
+
+def sendJson(jsonString):		
 	parsedObj = json.loads(jsonString)
 	status = checkJson(parsedObj)
-
 	return status
+
+def checkDate(date):
+	print("checkDate called")
+	return(False)
 
 def checkJson(parsedObj):
 	canSend = False
@@ -14,72 +22,76 @@ def checkJson(parsedObj):
 	for obj in parsedObj:
 		count += 1
 
-	if(count != 15):
+	if(count > 15 or count == 0):
 		printError(1, '')
 		return canSend		
 	else:		
-		if (type(parsedObj.get("ownerid")) != str):
+		if (parsedObj.get("ownerid") != None and type(parsedObj.get("ownerid")) != str):
 			printError(2, parsedObj.get("ownerid"))
 			return canSend
-		if (type(parsedObj.get("petid")) != str):
+
+		if (parsedObj.get("petid") != None and type(parsedObj.get("petid")) != str):
 			printError(2, parsedObj.get("petid"))
 			return canSend
 
-		if (type(parsedObj.get("name")) != str):
+		if (parsedObj.get("name") != None and type(parsedObj.get("name")) != str):
 			printError(2, parsedObj.get("name"))
 			return canSend
 
-		if (type(parsedObj.get("breedid")) != int):
+		if (parsedObj.get("breedid") != None and type(parsedObj.get("breedid")) != int):
 			printError(2, parsedObj.get("breedid"))
 			return canSend
 
-		if (type(parsedObj.get("gender")) != int):
+		if (parsedObj.get("gender") != None and type(parsedObj.get("gender")) != int):
 			printError(2, parsedObj.get("gender"))
 			return canSend
 
-		if (type(parsedObj.get("microchip")) != bool):
+		if (parsedObj.get("microchip") != None and type(parsedObj.get("microchip")) != bool):
 			printError(2, parsedObj.get("microchip"))
 			return canSend
 
-		if (type(parsedObj.get("fitcat")) != bool):
+		if (parsedObj.get("fitcat") != None and type(parsedObj.get("fitcat")) != bool):
 			printError(2, parsedObj.get("fitcat"))	
 			return canSend
 
-		if (type(parsedObj.get("dateofbirth")) != str):
-			printError(2, parsedObj.get("dateofbirth"))
+		if (parsedObj.get("dateOfBirth") != None and type(parsedObj.get("dateOfBirth")) != str):
+			printError(2, parsedObj.get("dateOfBirth"))			
 			return canSend
 
-		if (type(parsedObj.get("weight")) != float):
+		if (parsedObj.get("weight") != None and type(parsedObj.get("weight")) != float):
 			printError(2, parsedObj.get("weight"))	
 			return canSend
 
-		if (type(parsedObj.get("height")) != float):
+		if (parsedObj.get("height") != None and type(parsedObj.get("height")) != float):
 			printError(2, parsedObj.get("height"))	
 			return canSend
 
-		if (type(parsedObj.get("length")) != float):
+		if (parsedObj.get("length") != None and type(parsedObj.get("length")) != float):
 			printError(2, parsedObj.get("length"))
 			return canSend
 
-		if (type(parsedObj.get("dateofdeath")) != str):
+		if (parsedObj.get("dateofdeath") != None and type(parsedObj.get("dateofdeath")) != str):
 			printError(2, parsedObj.get("dateofdeath"))
 			return canSend
 
-		if (type(parsedObj.get("reasonfordeath")) != str):
+		if (parsedObj.get("reasonfordeath") != None and type(parsedObj.get("reasonfordeath")) != str):
 			printError(2, parsedObj.get("reasonfordeath"))
 			return canSend
 
-		if (type(parsedObj.get("lastupdate")) != str):
+		if (parsedObj.get("lastupdate") != None and type(parsedObj.get("lastupdate")) != str):
 			printError(2, parsedObj.get("lastupdate"))
 			return canSend
 
-		if (type(parsedObj.get("dateadded")) != str):
-			printError(2, parsedObj.get("petid"))
+		if (parsedObj.get("dateadded") != None and type(parsedObj.get("dateadded")) != str):
+			printError(2, parsedObj.get("dateadded"))
 			return canSend
-		else:
-			canSend = True
-			sendData(parsedObj)			
-			return canSend
+		else:			
+			if(parsedObj.get("dateOfBirth") != None and checkDate(parsedObj.get("dateOfBirth")) == False):
+				print("INvalid date of birth format")
+				return canSend
+			else:
+				canSend = sendData(parsedObj)			
+				return canSend
 
 def printError(flag, field):
 	if(flag == 1):
@@ -88,11 +100,26 @@ def printError(flag, field):
 		print("Invalid field: " + str(field))
 
 def sendData(obj):
+
+	host = 'cat.ddns.net/Backend/api.php'
+	port = 1
+
+	print("sending data: ")
 	for line in obj:
 		print(line + ": " + str(obj.get(str(line))))
+	return True	
+	'''s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	s.connect((host, port))	
+	s.sendall(obj.encode('utf-8'))
+	response = data.rcv(1024) 
 
-			
-status = sendJson("tansari.json")
+	print(response) 
+
+	s.close() ''' 
+
+#API example
+message = convertJson("tansari.json") 			
+status = sendJson(message)
 if(status == True):
 	print ("Json object successfully sent")
 else:

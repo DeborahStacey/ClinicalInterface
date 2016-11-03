@@ -1,18 +1,9 @@
-        {
-			"ownerid": "1234312",
-			"petid":"ab231h212",
-            "name":"Shadow",
-            "breedid":2,
-            "gender":1,
-			"microchip":true,
-			"fitcat":false,
-			"dateofbirth":"03/16/1995",            
-            "weight":10.1,
-            "height":25.2,
-            "length":50.3,
-			"dateofdeath":"",
-			"reasonfordeath":"",
-			"lastupdate":"2016-03-15 01:21:05",
-			"dateadded":"2016-03-15 01:21:05"
-        }
-
+{
+    "name": "Fluffy",
+    "breed": 1,
+    "gender": 1,
+    "dateOfBirth": "2016-10-23",
+    "weight": 15.2,
+    "height": 5.12,
+    "length": 13.56
+}
