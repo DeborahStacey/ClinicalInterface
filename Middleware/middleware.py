@@ -14,7 +14,7 @@ def sendJson(jsonString):
 
 def checkDate(date):
 	print("checkDate called")
-	return(False)
+	return(True)
 
 def checkJson(parsedObj):
 	canSend = False
@@ -87,7 +87,7 @@ def checkJson(parsedObj):
 			return canSend
 		else:			
 			if(parsedObj.get("dateOfBirth") != None and checkDate(parsedObj.get("dateOfBirth")) == False):
-				print("INvalid date of birth format")
+				print("Invalid date of birth format")
 				return canSend
 			else:
 				canSend = sendData(parsedObj)			
@@ -102,7 +102,7 @@ def printError(flag, field):
 def sendData(obj):
 
 	host = 'cat.ddns.net/Backend/api.php'
-	port = 1
+	port = 80
 
 	print("sending data: ")
 	for line in obj:
