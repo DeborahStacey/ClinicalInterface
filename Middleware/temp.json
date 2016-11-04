@@ -1,0 +1,22 @@
+{
+    "firstName":"Jacky",
+    "lastName":"Chen",
+    "eMail":"",
+    "address":"",
+    "houseHold":[
+        {
+            "name":"",
+            "species":"Feline",
+            "gender":"",
+            "breed":"Abyssinian",
+            "sex":"Male",
+            "color":"",
+            "age":" Month(s)",
+            "weight":" kg",
+            "height":" m",
+            "length":" cm",
+            "microchipNum":"",
+            "tagNum":""
+        }
+    ]
+}

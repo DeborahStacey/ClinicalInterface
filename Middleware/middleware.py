@@ -1,6 +1,7 @@
 import json
 import socket
 import sys
+import datetime
 
 def convertJson(objName):
     objFile = open(objName, 'r')
@@ -13,8 +14,12 @@ def sendJson(jsonString):
 	return status
 
 def checkDate(date):
-	print("checkDate called")
-	return(True)
+	newDate = date.split('-', 2)
+	try:
+		newDate = datetime.datetime(int(newDate[0]), int(newDate[1]), int(newDate[2]))
+		return(True)
+	except ValueError:
+		return(False)
 
 def checkJson(parsedObj):
 	canSend = False
