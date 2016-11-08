@@ -15,10 +15,13 @@ def sendJson(jsonString):
 
 def checkDate(date):
 	newDate = date.split('-', 2)
-	try:
-		newDate = datetime.datetime(int(newDate[0]), int(newDate[1]), int(newDate[2]))
-		return(True)
-	except ValueError:
+	if(len(newDate) == 3):
+		try:
+			newDate = datetime.datetime(int(newDate[0]), int(newDate[1]), int(newDate[2]))
+			return(True)
+		except ValueError:
+			return(False)
+	else:
 		return(False)
 
 def checkJson(parsedObj):
