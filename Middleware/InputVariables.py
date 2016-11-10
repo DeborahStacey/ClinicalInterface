@@ -33,13 +33,13 @@ constName = [
 
 # A generalized compilation of all available causes of death.
 constDeaths = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
+    "Cardiac Disease.",
+    "Parasitic Disorder.",
+    "Life-Threatening Injuries.",
+    "Neoplasia.",
+    "Anaemia.",
+    "Malnutrition.",
+    "Dehydration.",
+    "Cancer-related Death.",
+    "No Specific Cause of Death.",
 ]

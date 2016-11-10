@@ -1,6 +1,7 @@
 #!c:/Python34/python
 from collections import *
 from tkinter import *
+from tkinter import messagebox
 from tkinter import ttk
 from random import *
 
@@ -53,15 +54,11 @@ class MockInterface:
 	# Generates random input-values for all of the fields in the interface.
 	def generateRecord(self):
 		# OwnerID and PetID
-		self.setOfWidgets[0].config(state="normal")
 		self.setOfWidgets[0].delete(0, "end")
 		self.setOfWidgets[0].insert(0, str(randCode()))
-		self.setOfWidgets[0].config(state="disabled")
 
-		self.setOfWidgets[1].config(state="normal")
 		self.setOfWidgets[1].delete(0, "end")
 		self.setOfWidgets[1].insert(0, str(randCode()))
-		self.setOfWidgets[1].config(state="disabled")
 		# General Pet-Information
 		self.setOfWidgets[2].delete(0, "end")
 		self.setOfWidgets[2].insert(0, str(randString(constName)))
@@ -73,7 +70,7 @@ class MockInterface:
 		self.setOfWidgets[4].current(randint(0, len(self.setOfWidgets[4]["values"])-1))
 
 		#
-		dateBirth = str(randDateTime("1/1/2010", "12/31/2015", "%m/%d/%Y"))
+		dateBirth = str(randDateTime("2010-1-1", "2015-12-31", "%Y-%m-%d"))
 
 		self.setOfWidgets[5].delete(0, "end")
 		self.setOfWidgets[5].insert(0, dateBirth)
@@ -81,7 +78,7 @@ class MockInterface:
 		if (self.isDead):
 			self.setOfWidgets[6].delete(0, "end")
 			self.setOfWidgets[6].insert(0, 
-				str(randDateTime(dateBirth, "3/11/2016", "%m/%d/%Y")))
+				str(randDateTime(dateBirth, "2016-11-8", "%Y-%m-%d")))
 
 		if (self.hasKnownDeath):
 			self.setOfWidgets[7].delete(1.0, "end")
@@ -123,13 +120,26 @@ class MockInterface:
 		setOfValues += "\"dateOfBirth\": \"" + str(self.setOfWidgets[5].get()) + "\", "
 		setOfValues += "\"dateofdeath\": \"" + str(self.setOfWidgets[6].get()) + "\", "
 		setOfValues += "\"reasonfordeath\": \"" + str(self.setOfWidgets[7].get(1.0, "end").strip()) + "\", "
-		setOfValues += "\"weight\": " + str(self.setOfWidgets[8].get()) + ", "
-		setOfValues += "\"height\": " + str(self.setOfWidgets[9].get()) + ", "
-		setOfValues += "\"length\": " + str(self.setOfWidgets[10].get()) + ", "
+		#
+		if (str(self.setOfWidgets[8].get()) != ""):
+			setOfValues += "\"weight\": " + str(self.setOfWidgets[8].get()) + ", "
+		else:
+			setOfValues += "\"weight\": \"\", "
+		if (str(self.setOfWidgets[9].get()) != ""):
+			setOfValues += "\"height\": " + str(self.setOfWidgets[9].get()) + ", "
+		else:
+			setOfValues += "\"height\": \"\", "
+		if (str(self.setOfWidgets[10].get()) != ""):
+			setOfValues += "\"length\": " + str(self.setOfWidgets[10].get()) + ", "
+		else:
+			setOfValues += "\"length\": \"\", "
+		#
 		setOfValues += "\"lastupdate\": \"" + str(self.setOfWidgets[11].get()) + "\", "
 		setOfValues += "\"dateadded\": \"" + str(self.setOfWidgets[12].get()) + "\" }"
 		#
-		print (sendJson(str(setOfValues)))
+		if (not sendJson(str(setOfValues))):
+			messagebox.showerror("Invalid Registration", "Request could not be sent.")
+			return
 
 	# Creates the Interface, along with all its required content.
 	#	@param:		None.
@@ -145,12 +155,12 @@ class MockInterface:
 
 		# Widgets for the OwnerID and PetID fields (disabled state).
 		Label(self.root, text="Owner ID:").grid(row=0, column=0, padx=0, pady=(6,0), sticky='nsew')
-		widgetOwnerID = Entry(self.root, state="readonly")
+		widgetOwnerID = Entry(self.root)
 		widgetOwnerID.grid(row=0, column=1, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
 		self.setOfWidgets.append(widgetOwnerID)
 
 		Label(self.root, text="Pet ID:").grid(row=0, column=6, padx=0, pady=(6,0), sticky='nsew')
-		widgetPetID = Entry(self.root, state="readonly")
+		widgetPetID = Entry(self.root)
 		widgetPetID.grid(row=0, column=7, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
 		self.setOfWidgets.append(widgetPetID)
 
@@ -248,15 +258,11 @@ class MockInterface:
 	#	@return:	None.
 	def update(self):
 		#
-		self.setOfWidgets[0].config(state="normal")
 		self.setOfWidgets[0].delete(0, "end")
 		self.setOfWidgets[0].insert(0, str(randCode()))
-		self.setOfWidgets[0].config(state="disabled")
 
-		self.setOfWidgets[1].config(state="normal")
 		self.setOfWidgets[1].delete(0, "end")
 		self.setOfWidgets[1].insert(0, str(randCode()))
-		self.setOfWidgets[1].config(state="disabled")
 		#
 		dateAdded = str(randDateTime("2010-01-01 12:00:00", "2015-12-31 11:59:00", 
 						"%Y-%m-%d %H:%M:%S"))

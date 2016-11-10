@@ -42,7 +42,7 @@ def checkJson(parsedObj):
 			printError(2, parsedObj.get("petid"))
 			return canSend
 
-		if (parsedObj.get("name") != None and type(parsedObj.get("name")) != str):
+		if (parsedObj.get("name") != None and type(parsedObj.get("name")) != str or parsedObj.get("name") == ""):
 			printError(2, parsedObj.get("name"))
 			return canSend
 
@@ -105,7 +105,10 @@ def printError(flag, field):
 	if(flag == 1):
 		print("Invalid Json Format not enough fields")
 	if(flag==2):
-		print("Invalid field: " + str(field))
+		if(field == ""):
+			print ("Missing an important field")
+		else:	
+			print("Invalid field: " + str(field))
 
 def sendData(obj):
 
