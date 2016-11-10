@@ -2,15 +2,16 @@ import json
 import socket
 import sys
 import datetime
+import requests
 
 def convertJson(objName):
     objFile = open(objName, 'r')
     jsonString = objFile.read()
     return jsonString	
 
-def sendJson(jsonString):		
+def sendJson(jsonString, action):		
 	parsedObj = json.loads(jsonString)
-	status = checkJson(parsedObj)
+	status = checkJson(parsedObj, action)
 	return status
 
 def checkDate(date):
@@ -24,7 +25,7 @@ def checkDate(date):
 	else:
 		return(False)
 
-def checkJson(parsedObj):
+def checkJson(parsedObj, action):
 	canSend = False
 	count = 0
 	for obj in parsedObj:
@@ -34,7 +35,7 @@ def checkJson(parsedObj):
 		printError(1, '')
 		return canSend		
 	else:		
-		if (parsedObj.get("ownerid") != None and type(parsedObj.get("ownerid")) != str):
+		if (parsedObj.get("ownerid") == None or parsedObj.get("ownerid") == "" or type(parsedObj.get("ownerid")) != str):
 			printError(2, parsedObj.get("ownerid"))
 			return canSend
 
@@ -98,7 +99,7 @@ def checkJson(parsedObj):
 				print("Invalid date of birth format")
 				return canSend
 			else:
-				canSend = sendData(parsedObj)			
+				canSend = sendData(parsedObj, action)			
 				return canSend
 
 def printError(flag, field):
@@ -110,24 +111,19 @@ def printError(flag, field):
 		else:	
 			print("Invalid field: " + str(field))
 
-def sendData(obj):
+def sendData(obj, action):
 
-	host = 'cat.ddns.net/Backend/api.php'
-	port = 80
+	url = "http://localhost/post.php"
 
-	print("sending data: ")
+	print("Sending data: \n")
 	for line in obj:
 		print(line + ": " + str(obj.get(str(line))))
+	print("\n-----------connecting to backend--------------\n")
+	r=requests.post(url,data=obj)
+	print(r.url, "returned: ",r.text)
+
 	return True	
-	'''s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	s.connect((host, port))	
-	s.sendall(obj.encode('utf-8'))
-	response = data.rcv(1024) 
-
-	print(response) 
-
-	s.close() ''' 
-
+	
 #API example
 '''message = convertJson("tansari.json") 			
 status = sendJson(message)
