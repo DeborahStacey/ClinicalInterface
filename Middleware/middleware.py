@@ -2,14 +2,14 @@ import json
 import socket
 import sys
 import datetime
-import requests
+#import requests
 
 def convertJson(objName):
     objFile = open(objName, 'r')
     jsonString = objFile.read()
     return jsonString	
 
-def sendJson(jsonString):		
+def sendJson(jsonString, action):		
 	parsedObj = json.loads(jsonString)
 	status = checkJson(parsedObj)
 	return status
@@ -102,7 +102,7 @@ def checkJson(parsedObj):
 				canSend = sendData(parsedObj)			
 				return canSend
 
-def printError(flag):
+def printError(flag, field):
 	if(flag == 1):
 		print("Invalid Json Format not enough fields")
 	if(flag==2):
@@ -112,6 +112,8 @@ def printError(flag):
 			print("Invalid field: " + str(field))
 
 def sendData(obj):
+	print ("send request")
+	'''
 	#url = "http://localhost/post.php"
 	url = "http://10.12.204.218/Backend/api.php/PM/create"
 	print("Sending data: \n")
@@ -122,7 +124,7 @@ def sendData(obj):
 	print(r.url, "returned: ",r.text)
 
 	return True	
-	
+
 #API example
 message = convertJson("tansari.json") 			
 status = sendJson(message)
@@ -130,7 +132,4 @@ if(status == True):
 	print ("Json object successfully sent")
 else:
 	print ("Error sending json obj")	
-
-
-
-
+'''

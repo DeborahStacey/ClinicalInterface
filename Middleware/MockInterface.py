@@ -107,8 +107,39 @@ class MockInterface:
 		self.setOfWidgets[12].insert(0, dateAdded)
 		self.setOfWidgets[12].config(state="disabled")
 
+	# Clears all normal input-fields.
+	def removeRecord(self):
+		self.setOfWidgets[0].delete(0, "end")
+		self.setOfWidgets[1].delete(0, "end")
+		self.setOfWidgets[2].delete(0, "end")
+		self.setOfWidgets[3].set("")
+		self.setOfWidgets[4].set("")
+		self.setOfWidgets[5].delete(0, "end")
+		self.setOfWidgets[6].delete(0, "end")
+		self.setOfWidgets[7].delete(1.0, "end")
+		self.setOfWidgets[8].delete(0, "end")
+		self.setOfWidgets[9].delete(0, "end")
+		self.setOfWidgets[10].delete(0, "end")
+
+		# Date-Time Information
+		dateAdded = str(randDateTime("2010-01-01 12:00:00", "2015-12-31 11:59:00", 
+						"%Y-%m-%d %H:%M:%S"))
+
+		self.setOfWidgets[11].config(state="normal")
+		self.setOfWidgets[11].delete(0, "end")
+		self.setOfWidgets[11].insert(0, 
+			str(randDateTime(dateAdded, "2016-12-31 11:59:00", "%Y-%m-%d %H:%M:%S")))
+		self.setOfWidgets[11].config(state="disabled")
+
+		self.setOfWidgets[12].config(state="normal")
+		self.setOfWidgets[12].delete(0, "end")
+		self.setOfWidgets[12].insert(0, dateAdded)
+		self.setOfWidgets[12].config(state="disabled")
+
 	# Organizes all the input-values and sends them to the database.
-	def submitRecord(self):
+	#	@param:		The option that determines the operation of the function.
+	#	@return:	None.
+	def submitRecord(self, option):
 		#
 		setOfValues = "{ \"ownerid\": \"" + str(self.setOfWidgets[0].get()) + "\", "
 		setOfValues += "\"petid\": \"" + str(self.setOfWidgets[1].get()) + "\", "
@@ -137,9 +168,10 @@ class MockInterface:
 		setOfValues += "\"lastupdate\": \"" + str(self.setOfWidgets[11].get()) + "\", "
 		setOfValues += "\"dateadded\": \"" + str(self.setOfWidgets[12].get()) + "\" }"
 		#
-		if (not sendJson(str(setOfValues))):
-			messagebox.showerror("Invalid Registration", "Request could not be sent.")
-			return
+		if (option == "add" and not sendJson(str(setOfValues), option)):
+			messagebox.showerror("Invalid Registration", "Registration Request could not be sent.")
+		if (option == "update" and not sendJson(str(setOfValues), option)):
+			messagebox.showerror("Invalid Upadte", "Update Request could not be sent.")
 
 	# Creates the Interface, along with all its required content.
 	#	@param:		None.
@@ -240,12 +272,25 @@ class MockInterface:
 		# Horizontal line that separates the widgets as groups.
 		ttk.Separator(self.root, orient="horizontal").grid(row=11, columnspan=12, padx=3, pady=(6,0), sticky='nsew')
 
+		buttonFrame = Frame(self.root)
+		buttonFrame.grid(row=12, column=0, columnspan=12, sticky='nsew')
+		buttonFrame.grid_columnconfigure(0, weight=1)
+		buttonFrame.grid_columnconfigure(1, weight=1)
+		buttonFrame.grid_columnconfigure(2, weight=1)
+		buttonFrame.grid_columnconfigure(3, weight=1)
+
 		# AutoFill Button: generates sample inputs.
-		autofillButton = Button(self.root, text="AutoFill", command=self.generateRecord)
-		autofillButton.grid(row=12, column=0, columnspan=6, padx=(12,6), pady=(4,6), sticky='nsew')
-		# Submit Button: generates JSON files.
-		submitButton = Button(self.root, text="Register", command=self.submitRecord)
-		submitButton.grid(row=12, column=6, columnspan=6, padx=(6,12), pady=(4,6), sticky='nsew')
+		autofillButton = Button(buttonFrame, text="AutoFill", command=self.generateRecord)
+		autofillButton.grid(row=0, column=0, padx=(12,6), pady=(4,6), sticky='nsew')
+		# Reset Button: resets all inputs.
+		resetButton = Button(buttonFrame, text="Reset", command=self.removeRecord)
+		resetButton.grid(row=0, column=1, padx=(6,6), pady=(4,6), sticky='nsew')
+		# Add Button: sends register requests.
+		addButton = Button(buttonFrame, text="Add", command=lambda:self.submitRecord("add"))
+		addButton.grid(row=0, column=2, padx=(6,6), pady=(4,6), sticky='nsew')
+		# Update Button: sends updates.
+		updateButton = Button(buttonFrame, text="Update", command=lambda:self.submitRecord("update"))
+		updateButton.grid(row=0, column=3, padx=(6,12), pady=(4,6), sticky='nsew')
 
 	# Destroys the Interface and all of its contents.
 	# 	@param:		None.

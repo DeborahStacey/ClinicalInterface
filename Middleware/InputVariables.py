@@ -4,17 +4,7 @@
 constBreed = [
     "Abyssinian", "American Bobtail", "American Curl",
     "American Shorthair", "American Wirehair", "Balinese",
-    "Bengal", "Birman", "Bombay", "British Shorthair",
-    "Burmese", "Burmilla", "Chartreux", "Chinese Li Hua",
-    "Colorpoint Shorthair", "Cornish Rex", "Cymric",
-    "Devon Rex", "Egyptian Mau", "European Burmese", "Exotic",
-    "Havan Brown", "Himalayan", "Japanese Bobtail", "Javanese",
-    "Korat", "LaPerm", "Maine Coon", "Manx", "Nebulung", 
-    "Norwegian Forest", "Ocicat", "Oriental", "Persian",
-    "Ragamuffin", "Ragdoll", "Russian Blue", "Savannah",
-    "Scottish Fold", "Selkirk Rex", "Siamese", "Siberian",
-    "Singapura", "Snowshoe", "Somali", "Sphynx", "Tonkinese",
-    "Turkish Angora", "Turkish Van"]
+    "Bengal", "Birman", "Bombay"]
 
 # A generalized compilation of all available sexes.
 constGender = [
