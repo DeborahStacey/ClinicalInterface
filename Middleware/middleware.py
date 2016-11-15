@@ -2,7 +2,7 @@ import json
 import socket
 import sys
 import datetime
-#import requests
+import requests
 
 def convertJson(objName):
     objFile = open(objName, 'r')
@@ -94,42 +94,64 @@ def checkJson(parsedObj):
 		if (parsedObj.get("dateadded") != None and type(parsedObj.get("dateadded")) != str):
 			printError(2, parsedObj.get("dateadded"))
 			return canSend
-		else:			
-			if(parsedObj.get("dateOfBirth") != None and checkDate(parsedObj.get("dateOfBirth")) == False):
-				print("Invalid date of birth format")
-				return canSend
-			else:
-				canSend = sendData(parsedObj)			
-				return canSend
+		if(parsedObj.get("dateOfBirth") != None and checkDate(parsedObj.get("dateOfBirth")) == False):
+			print("Invalid date of birth format")
+			return canSend
+		else:
+			canSend = sendData(parsedObj)			
+			return canSend
 
 def printError(flag, field):
 	if(flag == 1):
-		print("Invalid Json Format not enough fields")
+		print("Invalid Json Format check # of fields")
 	if(flag==2):
 		if(field == ""):
 			print ("Missing an important field")
 		else:	
 			print("Invalid field: " + str(field))
 
-def sendData(obj):
-	print ("send request")
-	'''
-	#url = "http://localhost/post.php"
-	url = "http://10.12.204.218/Backend/api.php/PM/create"
-	print("Sending data: \n")
-	for line in obj:
-		print(line + ": " + str(obj.get(str(line))))
-	print("\n-----------connecting to backend--------------\n")
-	r=requests.post(url,data=obj)
-	print(r.url, "returned: ",r.text)
+def login(userEmail, password):
+	loginString = "{\"email\": " + "\"" + userEmail + "\", \"password\": \"" + password + "\"}" 
+	print(loginString)
+	with requests.Session() as s: 
+		p = s.post("https://cat.ddns.net/Backend/api.php/user/login",data=loginString)
+		print(p.text)
+	return True
 
-	return True	
+def sendData(obj):
+
+	for line in obj:
+		print (str(obj.get(str(line))))
+	if(login("taha@mymail.com", "soccer123") == True):
+			#url = "http://localhost/post.php"
+		url = "https://cat.ddns.net/Backend/api.php/PM/create"
+		print("Sending data: \n")
+		for line in obj:
+			print(line + ": " + str(obj.get(str(line))))
+	
+		print("\n-----------connecting to backend--------------\n")
+		r=requests.post(url,data=obj)
+		print(r.url, "returned: ",r.text)
+
+		#reply = json.loads(r.text)
+		#print (reply)
+		return True
+	else:
+		print("unable to log in")	
+		
+	
+	
+	
 
 #API example
-message = convertJson("tansari.json") 			
-status = sendJson(message)
+'''message = convertJson("tansari.json") 			
+status = sendJson(message,"add")
 if(status == True):
 	print ("Json object successfully sent")
 else:
-	print ("Error sending json obj")	
-'''
+	print ("Error sending json obj")
+'''	
+
+
+
+
