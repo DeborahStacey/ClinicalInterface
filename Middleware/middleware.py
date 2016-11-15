@@ -9,9 +9,9 @@ def convertJson(objName):
     jsonString = objFile.read()
     return jsonString	
 
-def sendJson(jsonString, action):		
+def sendJson(jsonString):		
 	parsedObj = json.loads(jsonString)
-	status = checkJson(parsedObj, action)
+	status = checkJson(parsedObj)
 	return status
 
 def checkDate(date):
@@ -25,7 +25,7 @@ def checkDate(date):
 	else:
 		return(False)
 
-def checkJson(parsedObj, action):
+def checkJson(parsedObj):
 	canSend = False
 	count = 0
 	for obj in parsedObj:
@@ -35,9 +35,9 @@ def checkJson(parsedObj, action):
 		printError(1, '')
 		return canSend		
 	else:		
-		if (parsedObj.get("ownerid") == None or parsedObj.get("ownerid") == "" or type(parsedObj.get("ownerid")) != str):
+		'''if (parsedObj.get("ownerid") == None or parsedObj.get("ownerid") == "" or type(parsedObj.get("ownerid")) != str):
 			printError(2, parsedObj.get("ownerid"))
-			return canSend
+			return canSend'''
 
 		if (parsedObj.get("petid") != None and type(parsedObj.get("petid")) != str):
 			printError(2, parsedObj.get("petid"))
@@ -99,10 +99,10 @@ def checkJson(parsedObj, action):
 				print("Invalid date of birth format")
 				return canSend
 			else:
-				canSend = sendData(parsedObj, action)			
+				canSend = sendData(parsedObj)			
 				return canSend
 
-def printError(flag, field):
+def printError(flag):
 	if(flag == 1):
 		print("Invalid Json Format not enough fields")
 	if(flag==2):
@@ -111,10 +111,9 @@ def printError(flag, field):
 		else:	
 			print("Invalid field: " + str(field))
 
-def sendData(obj, action):
-
-	url = "http://localhost/post.php"
-
+def sendData(obj):
+	#url = "http://localhost/post.php"
+	url = "http://10.12.204.218/Backend/api.php/PM/create"
 	print("Sending data: \n")
 	for line in obj:
 		print(line + ": " + str(obj.get(str(line))))
@@ -125,13 +124,13 @@ def sendData(obj, action):
 	return True	
 	
 #API example
-'''message = convertJson("tansari.json") 			
+message = convertJson("tansari.json") 			
 status = sendJson(message)
 if(status == True):
 	print ("Json object successfully sent")
 else:
 	print ("Error sending json obj")	
-'''
+
 
 
 
