@@ -84,12 +84,12 @@ class ClinicalGui:
 		self.setOfWidgets.append(widgetGender)
 
 		Label(self.root, text="Microchip:").grid(row=4, column=0, padx=0, pady=(6,0), sticky='nsew')
-		widgetMicrochip = ttk.Checkbutton(self.root)
+		widgetMicrochip = Checkbutton(self.root)
 		widgetMicrochip.grid(row=4, column=1, columnspan=3, sticky='ws')
 		self.setOfWidgets.append(widgetMicrochip)
 		
 		Label(self.root, text="FitCat:").grid(row=4, column=4, padx=0, pady=(6,0), sticky='nsew')
-		widgetMicrochip = ttk.Checkbutton(self.root)
+		widgetMicrochip = Checkbutton(self.root)
 		widgetMicrochip.grid(row=4, column=5, columnspan=3, sticky='ws')
 		self.setOfWidgets.append(widgetMicrochip)
 		
