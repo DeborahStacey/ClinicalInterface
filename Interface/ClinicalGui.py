@@ -44,7 +44,12 @@ class ClinicalGui:
 		testVar = []
 		testVar.append("weight")
 		temp = sendSearchRequest(widgetWeight.get(), testVar)
-		#self.T.insert(1.0, temp)
+		#newTemp = json.loads(temp.decode('utf-8'))
+		#for i in range(0,len(temp)):
+			#T.insert(,temp[i])
+		T.configure(state='normal')
+		T.insert(END,temp)
+		T.configure(state='disabled')
 		print ("Search")
 		return
 		
@@ -158,9 +163,9 @@ class ClinicalGui:
 
 		#labelframe = ttk.LabelFrame(self.root, text="Search Results").grid(row=14,columnspan = 12)
 		global T
-		T = Text(self.root, height=20, width=70, state = DISABLED).grid(row=15, columnspan=12, padx=12,pady=(0,6))
-		T.configure(state='normal')
-	
+		T = Text(self.root, height=20, width=70, state = NORMAL)
+		T.grid(row=15, columnspan=12, padx=12,pady=(0,6))
+		T.configure(state='disabled')
 	# Presents the window instance to the user.
 	def show_Window(self):
 		self.root.mainloop();

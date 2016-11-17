@@ -38,11 +38,11 @@ def sendSearchRequest(requests,varNames):
 	target = open("test.txt", 'w')
 	data = s.recv(1024)
 	#test = json.loads(data)
-	print('server returned: ' + data.decode('utf-8'))
+	#print('server returned: ' + data.decode('utf-8'))
 
 	s.close()
-	test = json.loads(data)
-	return test
+	#test = json.loads(data.decode('utf-8'))
+	return data
 
 varNames = []
 """breed = raw_input("Enter Cat Breed:")
