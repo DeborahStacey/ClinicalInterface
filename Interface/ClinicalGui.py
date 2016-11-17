@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import ttk
 from collections import *
 import json
+from jsonTest import *
 
 # Generates JSON-file from the list of enteries.
 #	@param:  The name of the JSON-file to be generated.
@@ -40,6 +41,10 @@ class ClinicalGui:
 	# This function takes all the values and constructs a JSON from all the fields 
 	def Search(self):
 		# this function does nothing as of yet
+		testVar = []
+		testVar.append("weight")
+		temp = sendSearchRequest(widgetWeight.get(), testVar)
+		#self.T.insert(1.0, temp)
 		print ("Search")
 		return
 		
@@ -113,6 +118,7 @@ class ClinicalGui:
 
 		# Widgets for the fields regarding specific information of the pet (enabled state).
 		Label(self.root, text="Wt. (lbs):").grid(row=9, column=0, padx=0, pady=(6,0), sticky='nsew')
+		global widgetWeight
 		widgetWeight = Entry(self.root, width=12)
 		widgetWeight.grid(row=9, column=1, columnspan=2, padx=(0,6), pady=(6,0), sticky='w')
 		self.setOfWidgets.append(widgetWeight)
@@ -151,9 +157,10 @@ class ClinicalGui:
 		searchButton.grid(row=13, column=0, columnspan=12, padx=12, pady=(0,6), sticky='nsew')
 
 		#labelframe = ttk.LabelFrame(self.root, text="Search Results").grid(row=14,columnspan = 12)
-		textField = Text(self.root, height=20, width=70, state = DISABLED).grid(row=15, columnspan=12)
-
-
+		global T
+		T = Text(self.root, height=20, width=70, state = DISABLED).grid(row=15, columnspan=12, padx=12,pady=(0,6))
+		T.configure(state='normal')
+	
 	# Presents the window instance to the user.
 	def show_Window(self):
 		self.root.mainloop();
