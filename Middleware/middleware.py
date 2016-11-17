@@ -127,11 +127,11 @@ def sendData(session, obj):
 
 	for line in obj:
 		print (str(obj.get(str(line))))
-			#url = "http://localhost/post.php"
+		
 		url = "https://cat.ddns.net/Backend/api.php/PM/create"
 		print("Sending data: \n")
 		for line in obj:
-			print(line + ": " + str(obj.get(str(line))))
+		print(line + ": " + str(obj.get(str(line))))
 	
 		print("\n-----------connecting to backend--------------\n")
 		r=session.post(url,data=obj)
@@ -146,13 +146,13 @@ def sendData(session, obj):
 	
 
 #API example
-'''message = convertJson("tansari.json") 			
+message = convertJson("tansari.json") 			
 status = sendJson(message,"add")
 if(status == True):
 	print ("Json object successfully sent")
 else:
 	print ("Error sending json obj")
-'''	
+	
  # login example
 
 #login("taha@mymail.com", "soccer123")
