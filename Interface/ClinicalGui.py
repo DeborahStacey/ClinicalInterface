@@ -38,7 +38,7 @@ class ClinicalGui:
 		return
 
 	# This function takes all the values and constructs a JSON from all the fields 
-	def submitProfile(self):
+	def Search(self):
 		# this function does nothing as of yet
 		print ("Search")
 		return
@@ -142,11 +142,16 @@ class ClinicalGui:
 		self.setOfWidgets.append(widgetDateAdded)
 
 		# Horizontal line that separates the widgets as groups.
-		ttk.Separator(self.root, orient="horizontal").grid(row=12, columnspan=12, padx=3, pady=(6,0), sticky='nsew')
+		ttk.Separator(self.root, orient="horizontal").grid(row=12, columnspan=12)
 
+		
+		
 		# Search button that takes all input and constructs a JSON object to query to the database
-		searchButton = Button(self.root, text="Search", command=self.submitProfile)
-		searchButton.grid(row=14, column=0, columnspan=12, padx=12, pady=(0,6), sticky='nsew')
+		searchButton = Button(self.root, text="Search", command=self.Search)
+		searchButton.grid(row=13, column=0, columnspan=12, padx=12, pady=(0,6), sticky='nsew')
+
+		#labelframe = ttk.LabelFrame(self.root, text="Search Results").grid(row=14,columnspan = 12)
+		textField = Text(self.root, height=20, width=70, state = DISABLED).grid(row=15, columnspan=12)
 
 
 	# Presents the window instance to the user.
