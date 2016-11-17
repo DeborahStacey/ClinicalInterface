@@ -98,7 +98,10 @@ def checkJson(parsedObj):
 			print("Invalid date of birth format")
 			return canSend
 		else:
-			canSend = sendData(parsedObj)			
+			username = "taha@mymail.com"
+			password = "soccer123"
+			canSend = login(username, password, parsedObj)
+			#canSend = sendData(parsedObj)			
 			return canSend
 
 def printError(flag, field):
@@ -110,19 +113,21 @@ def printError(flag, field):
 		else:	
 			print("Invalid field: " + str(field))
 
-def login(userEmail, password):
-	loginString = "{\"email\": " + "\"" + userEmail + "\", \"password\": \"" + password + "\"}" 
-	print(loginString)
-	with requests.Session() as s: 
-		p = s.post("https://cat.ddns.net/Backend/api.php/user/login",data=loginString)
-		print(p.text)
-	return True
+def login(userEmail, password, parseObj):
+	loginString = {"email": userEmail,"password": password}
+	loginObj = json.dumps(loginString)
+	print(json.loads(loginObj))
 
-def sendData(obj):
+	with requests.Session() as s: 
+		p = s.post("https://cat.ddns.net/Backend/api.php/user/login", data=json.loads(loginObj))
+		print(p.text)
+		canSend = sendData(s, parseObj)		
+	return canSend
+
+def sendData(session, obj):
 
 	for line in obj:
 		print (str(obj.get(str(line))))
-	if(login("taha@mymail.com", "soccer123") == True):
 			#url = "http://localhost/post.php"
 		url = "https://cat.ddns.net/Backend/api.php/PM/create"
 		print("Sending data: \n")
@@ -130,28 +135,28 @@ def sendData(obj):
 			print(line + ": " + str(obj.get(str(line))))
 	
 		print("\n-----------connecting to backend--------------\n")
-		r=requests.post(url,data=obj)
+		r=session.post(url,data=obj)
 		print(r.url, "returned: ",r.text)
 
 		#reply = json.loads(r.text)
 		#print (reply)
 		return True
-	else:
-		print("unable to log in")	
-		
+	
 	
 	
 	
 
 #API example
-'''message = convertJson("tansari.json") 			
+message = convertJson("tansari.json") 			
 status = sendJson(message,"add")
 if(status == True):
 	print ("Json object successfully sent")
 else:
 	print ("Error sending json obj")
-'''	
+	
+ # login example
 
+#login("taha@mymail.com", "soccer123")
 
 
 
