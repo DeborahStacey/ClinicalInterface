@@ -42,7 +42,7 @@ def sendSearchRequest(requests,varNames):
 
 	s.close()
 	#test = json.loads(data.decode('utf-8'))
-	return data
+	return data.decode('utf-8')
 
 varNames = []
 """breed = raw_input("Enter Cat Breed:")

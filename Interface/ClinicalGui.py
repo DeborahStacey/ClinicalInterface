@@ -44,11 +44,28 @@ class ClinicalGui:
 		testVar = []
 		testVar.append("weight")
 		temp = sendSearchRequest(widgetWeight.get(), testVar)
-		#newTemp = json.loads(temp.decode('utf-8'))
-		#for i in range(0,len(temp)):
-			#T.insert(,temp[i])
+		test = json.loads(temp)
 		T.configure(state='normal')
-		T.insert(END,temp)
+		#newTemp = json.loads(temp.decode('utf-8'))
+		for i in range(0,len(test["cats"])):
+			T.insert(END,"Name:" + test["cats"][i]['name'] + "\n")
+			T.insert(END,"Petid:" + test["cats"][i]['petid'] + "\n")
+			T.insert(END,"Ownerid" + test["cats"][i]['ownerid'] + "\n")
+			T.insert(END,"Gender" + test["cats"][i]['gender'] + "\n")
+			T.insert(END,"ReasonforDeath:" + test["cats"][i]['reasonfordeath'] + "\n")
+			T.insert(END,"Dateofdeath:"+test["cats"][i]['dateofdeath'] + "\n")
+			T.insert(END,"fitcat:" + test["cats"][i]['fitcat'] + "\n")
+			T.insert(END,"Microchip:" + test["cats"][i]['microchip'] + "\n")
+			T.insert(END,"Breed:" + test["cats"][i]['breed'] + "\n")
+			T.insert(END,"Lastupdated:" + test["cats"][i]['lastupdated'] + "\n")
+			T.insert(END,"Weight:" + test["cats"][i]['weight'] + "\n")
+			T.insert(END,"Height:" + test["cats"][i]['height'] + "\n")
+			T.insert(END,"DateAdded:" + test["cats"][i]['dateadded'] + "\n")
+			T.insert(END,"-------------------------" +"\n")
+
+		
+
+		#T.insert(END,test["cats"][1])
 		T.configure(state='disabled')
 		print ("Search")
 		return
