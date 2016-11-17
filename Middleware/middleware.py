@@ -101,7 +101,6 @@ def checkJson(parsedObj):
 			username = "taha@mymail.com"
 			password = "soccer123"
 			canSend = login(username, password, parsedObj)
-			#canSend = sendData(parsedObj)			
 			return canSend
 
 def printError(flag, field):
@@ -147,13 +146,13 @@ def sendData(session, obj):
 	
 
 #API example
-message = convertJson("tansari.json") 			
+'''message = convertJson("tansari.json") 			
 status = sendJson(message,"add")
 if(status == True):
 	print ("Json object successfully sent")
 else:
 	print ("Error sending json obj")
-	
+'''	
  # login example
 
 #login("taha@mymail.com", "soccer123")
