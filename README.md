@@ -15,7 +15,7 @@
 
 | Function  | Use | Example |
 | ------------- | ------------- || ------------- |
-| ConvertJson  | Content Cell  | jsonString = convertJson("test.json") |
+| ConvertJson  | Content Cell  | jsonString = convertJson\("test.json"\) |
 | Content Cell  | Content Cell  | 
 
 ## API use example 
