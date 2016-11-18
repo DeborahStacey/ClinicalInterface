@@ -131,7 +131,7 @@ def sendData(session, obj):
 		url = "https://cat.ddns.net/Backend/api.php/PM/create"
 		print("Sending data: \n")
 		for line in obj:
-		print(line + ": " + str(obj.get(str(line))))
+		        print(line + ": " + str(obj.get(str(line))))
 	
 		print("\n-----------connecting to backend--------------\n")
 		r=session.post(url,data=obj)

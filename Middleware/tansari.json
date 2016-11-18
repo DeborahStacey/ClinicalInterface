@@ -1,7 +1,7 @@
 {
     "ownerEmail": "taha@mymail.com",
     "name": "puffy",
-    "animalTypeID": 1,
+    "animalTypeID": 2,
     "breed": 1,
     "gender": 1,
     "dateOfBirth": "2016-10-23",
