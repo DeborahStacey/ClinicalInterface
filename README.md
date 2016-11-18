@@ -13,11 +13,12 @@
 
 ## Middleware API 
 
-| Function  | Use | Example |
-| ------------- | ------------- || ------------- |
-| ConvertJson  | Content Cell  | jsonString = convertJson\("test.json"\) |
+| Function  | Use |
+| ------------- | ------------- |
+| ConvertJson(objName)  | Accepts a json obj file path and returns a json object in string format   | 
 | Content Cell  | Content Cell  | 
 
 ## API use example 
-
+```
+```
 	 
