@@ -1,15 +1,25 @@
 # Clinical Interface
 
+##Description
+
+The Clinical Interface team is in charge of creating three seperate systems for the use of clinicians wanting to add, update and search more advanced data in the wellcat database. The three systems include the Practice Management System Generator, Middleware, and the Clinical Interface. The Practice Management System (Mock PMS) is tasked with generating “dummy” data that we can use to test the functionality of our Middleware's API. The Middleware is a system that is tasked with receiving data and validating it in order to be inserted into the backend (database). Finally, the Clinical Interface is tasked with displaying a user friendly graphical interface that allows the clinicians to search for specific data stored within the backend. The Middleware, Practice Management System, and backend (provided by a different team) interact with each other in order to send and receive data, while the Clinical Interface interacts directly with the backend (with no direct association to the practice management system and the middleware).
+
+
+## Version Information
+
 * Currently works on Windows, Mac OS X, and Ubuntu
 * Requires Python v.3.5
-* We have provided a Mock PMS system as an example of how to use the middlware API 
+        * Python Requests library maybe need to be additionally installed  
+
 
 ## How to run the Mock PMS System: 
-* Navigate to the Middleware Directory
+* We have provided a Mock PMS system as an example of how to integrate the middlware API with a system 
+* Navigate to the middleware directory
 * run `python3 MockPMS.py`
 
 ## How to run the Clinical interface 
-
+* Navigate to the interface directory 
+* run `python3 `
 
 ## Middleware API 
 
