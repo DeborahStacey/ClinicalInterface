@@ -4,13 +4,16 @@ import sys
 import datetime
 import requests
 
+globalJsonString = ""
+
 def convertJson(objName):
-    objFile = open(objName, 'r')
-    jsonString = objFile.read()
-    return jsonString	
+	objFile = open(objName, 'r')
+	jsonString = objFile.read()
+	return jsonString	
 
 def sendJson(jsonString, action):		
 	parsedObj = json.loads(jsonString)
+	globalJsonString = jsonString
 	status = checkJson(parsedObj)
 	return status
 
@@ -35,13 +38,15 @@ def checkJson(parsedObj):
 		printError(1, '')
 		return canSend		
 	else:		
-		'''if (parsedObj.get("ownerid") == None or parsedObj.get("ownerid") == "" or type(parsedObj.get("ownerid")) != str):
-			printError(2, parsedObj.get("ownerid"))
-			return canSend'''
-
-		if (parsedObj.get("petid") != None and type(parsedObj.get("petid")) != str):
-			printError(2, parsedObj.get("petid"))
+		if (parsedObj.get("ownerEmail") == None or parsedObj.get("ownerEmail") == "" or type(parsedObj.get("ownerEmail")) != str):
+			printError(2, parsedObj.get("ownerEmail"))
 			return canSend
+
+		if (parsedObj.get("animalTypeID") != None and type(parsedObj.get("animalTypeID")) != int):
+			printError(2, parsedObj.get("animalTypeID"))
+			return canSend
+		else:
+			print("Animal Id is an integer")
 
 		if (parsedObj.get("name") != None and type(parsedObj.get("name")) != str or parsedObj.get("name") == ""):
 			printError(2, parsedObj.get("name"))
@@ -125,24 +130,28 @@ def login(userEmail, password, parseObj):
 
 def sendData(session, obj):
 
+	url = "https://cat.ddns.net/Backend/api.php/PM/create"
+
+	print("Sending data: ")
 	for line in obj:
-		print (str(obj.get(str(line))))
-		
-		url = "https://cat.ddns.net/Backend/api.php/PM/create"
-		print("Sending data: \n")
-		for line in obj:
-		        print(line + ": " + str(obj.get(str(line))))
-	
-		print("\n-----------connecting to backend--------------\n")
-		r=session.post(url,data=obj)
-		print(r.url, "returned: ",r.text)
+		if(type(obj.get(line)) == int):
+			print(line + " is an int: " + str(obj.get(str(line))))
+		elif(type(obj.get(line)) == float):
+			print(line + " is a float: " + str(obj.get(str(line))))
+		elif(type(obj.get(line)) == bool):
+			print(line + " is a boolean: "+ str(obj.get(str(line))))
+		else:
+			print(line + " is a str: " + str(obj.get(str(line))))
+			#print(line + ": " + str(obj.get(str(line))))'''
+	print("\n-----------connecting to backend--------------\n")
+	print(json.dumps(obj))
+	r=session.post(url,data=json.dumps(obj))
+	print(r.url, "returned: ",r.text)
 
 		#reply = json.loads(r.text)
 		#print (reply)
-		return True
-	
-	
-	
+	return True
+		
 	
 
 #API example
