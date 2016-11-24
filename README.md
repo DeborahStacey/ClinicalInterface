@@ -19,7 +19,7 @@ The Clinical Interface team is in charge of creating systems for the use of clin
 
 ## How to run the Clinical interface 
 * Navigate to the interface directory 
-* run `python3 `
+* run `python3 ClinicalApp.py`
 
 ## Middleware API 
 
