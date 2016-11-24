@@ -80,7 +80,7 @@ class ClinicalGui:
 		self.root.resizable(width=False, height=False)
 
 
-		# Widgets for the OwnerID and PetID fields (disabled state).
+		# Widgets for the OwnerID and PetID fields.
 		Label(self.root, text="Owner ID:").grid(row=0, column=0, padx=0, pady=(6,0), sticky='nsew')
 		widgetOwnerID = Entry(self.root)
 		widgetOwnerID.grid(row=0, column=1, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
