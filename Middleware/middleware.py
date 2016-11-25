@@ -4,8 +4,6 @@ import sys
 import datetime
 import requests
 
-globalJsonString = ""
-
 def convertJson(objName):
 	objFile = open(objName, 'r')
 	jsonString = objFile.read()
@@ -13,8 +11,7 @@ def convertJson(objName):
 
 def sendJson(jsonString, action):		
 	parsedObj = json.loads(jsonString)
-	globalJsonString = jsonString
-	status = checkJson(parsedObj)
+	status = checkJson(parsedObj, action)
 	return status
 
 def checkDate(date):
@@ -28,7 +25,7 @@ def checkDate(date):
 	else:
 		return(False)
 
-def checkJson(parsedObj):
+def checkJson(parsedObj, action):
 	canSend = False
 	count = 0
 	for obj in parsedObj:
@@ -45,15 +42,13 @@ def checkJson(parsedObj):
 		if (parsedObj.get("animalTypeID") != None and type(parsedObj.get("animalTypeID")) != int):
 			printError(2, parsedObj.get("animalTypeID"))
 			return canSend
-		else:
-			print("Animal Id is an integer")
 
 		if (parsedObj.get("name") != None and type(parsedObj.get("name")) != str or parsedObj.get("name") == ""):
 			printError(2, parsedObj.get("name"))
 			return canSend
 
-		if (parsedObj.get("breedid") != None and type(parsedObj.get("breedid")) != int):
-			printError(2, parsedObj.get("breedid"))
+		if (parsedObj.get("breed") != None and type(parsedObj.get("breed")) != int):
+			printError(2, parsedObj.get("breed"))
 			return canSend
 
 		if (parsedObj.get("gender") != None and type(parsedObj.get("gender")) != int):
@@ -66,10 +61,6 @@ def checkJson(parsedObj):
 
 		if (parsedObj.get("fitcat") != None and type(parsedObj.get("fitcat")) != bool):
 			printError(2, parsedObj.get("fitcat"))	
-			return canSend
-
-		if (parsedObj.get("dateOfBirth") != None and type(parsedObj.get("dateOfBirth")) != str):
-			printError(2, parsedObj.get("dateOfBirth"))			
 			return canSend
 
 		if (parsedObj.get("weight") != None and type(parsedObj.get("weight")) != float):
@@ -96,16 +87,19 @@ def checkJson(parsedObj):
 			printError(2, parsedObj.get("lastupdate"))
 			return canSend
 
-		if (parsedObj.get("dateadded") != None and type(parsedObj.get("dateadded")) != str):
-			printError(2, parsedObj.get("dateadded"))
+		if (parsedObj.get("dateAdded") != None and type(parsedObj.get("dateAdded")) != str):
+			print("Invalid date added format")
+			printError(2, parsedObj.get("dateAdded"))
 			return canSend
+
 		if(parsedObj.get("dateOfBirth") != None and checkDate(parsedObj.get("dateOfBirth")) == False):
 			print("Invalid date of birth format")
+			printError(2, parsedObj.get("dateOfBirth"))			
 			return canSend
 		else:
 			username = "taha@mymail.com"
 			password = "soccer123"
-			canSend = login(username, password, parsedObj)
+			canSend = login(username, password, parsedObj, action)
 			return canSend
 
 def printError(flag, field):
@@ -117,7 +111,7 @@ def printError(flag, field):
 		else:	
 			print("Invalid field: " + str(field))
 
-def login(userEmail, password, parseObj):
+def login(userEmail, password, parseObj, action):
 	loginString = {"email": userEmail,"password": password}
 	loginObj = json.dumps(loginString)
 	print(json.loads(loginObj))
@@ -125,35 +119,46 @@ def login(userEmail, password, parseObj):
 	with requests.Session() as s: 
 		p = s.post("https://cat.ddns.net/Backend/api.php/user/login", data=json.loads(loginObj))
 		print(p.text)
-		canSend = sendData(s, parseObj)		
+		canSend = sendData(s, parseObj, action)		
 	return canSend
 
-def sendData(session, obj):
+def sendData(session, obj, action):
 
-	url = "https://cat.ddns.net/Backend/api.php/PM/create"
-
+	url1 = "https://cat.ddns.net/Backend/api.php/PM/create"
+	url2 = "https://cat.ddns.net/Backend/api.php/PM/update"
+	
+	postData = {}
 	print("Sending data: ")
 	for line in obj:
-		if(type(obj.get(line)) == int):
-			print(line + " is an int: " + str(obj.get(str(line))))
-		elif(type(obj.get(line)) == float):
-			print(line + " is a float: " + str(obj.get(str(line))))
-		elif(type(obj.get(line)) == bool):
-			print(line + " is a boolean: "+ str(obj.get(str(line))))
-		else:
-			print(line + " is a str: " + str(obj.get(str(line))))
-			#print(line + ": " + str(obj.get(str(line))))'''
+		postData[line] = (obj.get(str(line))) 
+			
 	print("\n-----------connecting to backend--------------\n")
-	print(json.dumps(obj))
-	r=session.post(url,data=json.dumps(obj))
-	print(r.url, "returned: ",r.text)
-
-		#reply = json.loads(r.text)
-		#print (reply)
-	return True
-		
 	
+	postObj = json.dumps(postData)
+	objString = json.dumps(obj)
 
+	if(action == "add"):
+		r=session.post(url1,data=json.loads(objString))
+		print(r.url, "returned: ",r.text)
+
+		if(r.text.find("true") > 0):
+			return True
+		else:
+			return False
+	elif(action == "update"):
+		print("Note: Update currently has no endpoint")
+		r=session.post(url2,data=json.loads(objString))
+		print(r.url, "returned: ",r.text)
+
+		if(r.text.find("true") > 0):
+			return True
+		else:
+			return False
+			
+	else:
+		print("Incorrect action. Must be add or update. ")
+		return False				
+	
 #API example
 message = convertJson("tansari.json") 			
 status = sendJson(message,"add")
