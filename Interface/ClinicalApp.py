@@ -10,7 +10,7 @@ loginApp = login("Login")
 
 # Assembling the Application interface and presenting it to the user.
 loginApp.create_Window()
-loginApp.show_Window()
+temp = loginApp.show_Window()
 
 interfaceApp.create_Window()
 interfaceApp.show_Window()

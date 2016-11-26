@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import ttk
 from collections import *
 import json
+import requests
 from jsonTest import *
 
 # The Application class that is used to encapsulate the GUI object.
@@ -17,12 +18,19 @@ class login:
 		#print (username.get() + "\n" + password.get() + "\n")
 		#print (password.get())
 
-		if (username.get() != "sameer" or password.get() != "password"):
-			print ("Wrong password")
-		else:
-			print ("Correct")
+		loginString = {"email": username.get(), "password": password.get()}
+		loginObj = json.dumps(loginString)
+
+		with requests.Session() as s:
+			post = s.post("https://cat.ddns.net/Backend/api.php/user/login", data=json.loads(loginObj))
+			print(post.text)
+
+		print (post.text[0] + " " + post.text[1])
+		if(post.text.find("true")>1):
 			self.root.destroy()
 
+	def get_loginStatus(self):
+		return temp
 	# Creates a non-resizable window instance (other variables are set separately).
 	#	@param:	 The list of prompts to be included in the App.
 	def create_Window(self):
