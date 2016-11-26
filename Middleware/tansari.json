@@ -1,5 +1,6 @@
 {
-    "ownerEmail": "taha@mymail.com",
+	"petID": 16,
+    "owner": "taha@mymail.com",
     "name": "ruffins",
     "animalTypeID": 2,
     "breed": 1,

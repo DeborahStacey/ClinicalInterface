@@ -35,8 +35,8 @@ def checkJson(parsedObj, action):
 		printError(1, '')
 		return canSend		
 	else:		
-		if (parsedObj.get("ownerEmail") == None or parsedObj.get("ownerEmail") == "" or type(parsedObj.get("ownerEmail")) != str):
-			printError(2, parsedObj.get("ownerEmail"))
+		if (parsedObj.get("owner") == None or parsedObj.get("owner") == "" or type(parsedObj.get("owner")) != str):
+			printError(2, parsedObj.get("owner"))
 			return canSend
 
 		if (parsedObj.get("animalTypeID") != None and type(parsedObj.get("animalTypeID")) != int):
@@ -125,10 +125,10 @@ def login(userEmail, password, parseObj, action):
 def sendData(session, obj, action):
 
 	url1 = "https://cat.ddns.net/Backend/api.php/PM/create"
-	url2 = "https://cat.ddns.net/Backend/api.php/PM/update"
+	url2 = "https://cat.ddns.net/Backend/api.php/pet/update"
+	url3 = "https://cat.ddns.net/Backend/api.php/pet/pets"
 	
 	postData = {}
-	print("Sending data: ")
 	for line in obj:
 		postData[line] = (obj.get(str(line))) 
 			
@@ -146,22 +146,26 @@ def sendData(session, obj, action):
 		else:
 			return False
 	elif(action == "update"):
-		print("Note: Update currently has no endpoint")
-		r=session.post(url2,data=json.loads(objString))
+		r=session.put(url2,data=json.loads(objString))
 		print(r.url, "returned: ",r.text)
 
 		if(r.text.find("true") > 0):
 			return True
 		else:
-			return False
-			
+			r=session.get(url3)
+			ownerCats = json.loads(r.text)
+			print("Please ensure the petid is set for the update")
+			print(ownerCats["personal"][0]["firstname"] + " has the following pets: ")
+
+			for x in range(0,len(ownerCats)):
+				print(str(ownerCats["personal"][x]["name"]) + " has id: " + str(ownerCats["personal"][x]["petid"]))			
 	else:
 		print("Incorrect action. Must be add or update. ")
 		return False				
 	
 #API example
 message = convertJson("tansari.json") 			
-status = sendJson(message,"add")
+status = sendJson(message,"update")
 if(status == True):
 	print ("Json object successfully sent")
 else:
