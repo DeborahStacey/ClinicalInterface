@@ -1,6 +1,7 @@
 {
-    "ownerEmail": "taha@mymail.com",
-    "name": "puffy",
+	"petID": 16,
+    "owner": "taha@mymail.com",
+    "name": "ruffins",
     "animalTypeID": 2,
     "breed": 1,
     "gender": 1,
@@ -12,4 +13,3 @@
     "outdoor": "false",
     "fixed": "true"
 }
-
