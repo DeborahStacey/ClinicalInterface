@@ -5,12 +5,15 @@ from login import *
 
 # Declaring an Application interface and initializing all related variables.
 interfaceApp = ClinicalGui("Clinical Interface")
-loginApp = login("Login")
+loginApp = login("Login", 0)
 
 
-# Assembling the Application interface and presenting it to the user.
+# Open the login window
 loginApp.create_Window()
 temp = loginApp.show_Window()
+status = loginApp.get_loginStatus()
 
-interfaceApp.create_Window()
-interfaceApp.show_Window()
+if (status == True):
+	# Open the Clinical Interface window
+	interfaceApp.create_Window()
+	interfaceApp.show_Window()

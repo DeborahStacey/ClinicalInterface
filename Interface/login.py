@@ -10,8 +10,22 @@ from jsonTest import *
 class login:
 	# Creates an Application instance.
 	#	@param:  The name of the Application. 
-	def __init__(self, title):
+	global loginStatus
+	loginStatus = 0
+
+	def __init__(self, title, status):
 		self.windowTitle = title
+		self.status = status
+
+
+	def get_loginStatus(self):
+
+		
+		if(self.status == 1):
+			return True
+			print("successful Log in")
+		else:
+			return False
 
 	#login function that validates user credentials
 	def loginFunction(self):
@@ -23,14 +37,17 @@ class login:
 
 		with requests.Session() as s:
 			post = s.post("https://cat.ddns.net/Backend/api.php/user/login", data=json.loads(loginObj))
-			print(post.text)
 
-		print (post.text[0] + " " + post.text[1])
+		#if correct password credentials are entered
 		if(post.text.find("true")>1):
 			self.root.destroy()
+			self.status = 1
+			test = self.get_loginStatus()
+			print("Successfully logged in")
 
-	def get_loginStatus(self):
-		return temp
+		else:
+			print("Invalid log in")
+
 	# Creates a non-resizable window instance (other variables are set separately).
 	#	@param:	 The list of prompts to be included in the App.
 	def create_Window(self):
@@ -48,11 +65,11 @@ class login:
 
 		Label(self.root, text="Password: ").grid(row=1, column=0, padx=0, pady=(6,0), sticky='nsew')
 		global password
-		password = Entry(self.root)
+		password = Entry(self.root, show="*")
 		password.grid(row=1, column=1, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
 
 		# Search button that takes all input and constructs a JSON object to query to the database
-		loginButton = Button(self.root, text="Sign In", command=self.loginFunction)
+		loginButton = Button(self.root, text="Log In", command=self.loginFunction)
 		loginButton.grid(row=2, column=0, columnspan=2, padx=(100,0), pady=(30), sticky='nsew')
 
 	def show_Window(self):
