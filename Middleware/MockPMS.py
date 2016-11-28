@@ -5,4 +5,3 @@ from MockInterface import *
 mainApp = MockInterface("Mock Practice-Management-System (JSON)")
 # Assembling the interface and checking for events.
 mainApp.createWindow()
-mainApp.update()

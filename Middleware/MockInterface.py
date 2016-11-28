@@ -7,6 +7,7 @@ from random import *
 
 from InputGenerator import *
 from InputVariables import *
+from LoginInterface import *
 from middleware import *
 
 class MockInterface:
@@ -19,11 +20,22 @@ class MockInterface:
 		self.isDead = False
 		self.hasKnownDeath = False
 
+	# Updates the Breed Selection based on the selected Species.
+	#	@param:		The Combobox widget that will be verified.
+	#				The Combobox widget that will be updated.
+	#	@return:	None.
+	def updateBreedWidget(self, widgetSpecies, widgetBreeds):
+		if (widgetSpecies.get() == ""):
+			widgetBreeds.config(values=[])
+		else:
+			widgetBreeds.config(values=constBreeds[widgetSpecies.get()])
+
 	# Toggles the TextArea widget depending on the "Reason Of Death?" checkbox.
 	#	@param:		The TextArea widget that will be placed/removed.
+	#	@return:	None.
 	def toggleDeathWidget(self, widgetTextArea):
 		if (not self.hasKnownDeath):
-			widgetTextArea.grid(row=6, column=1, columnspan=11, padx=(0,6), pady=(6,0), sticky='nsew')
+			widgetTextArea.grid(row=7, column=1, columnspan=11, padx=(0,6), pady=(6,0), sticky='nsew')
 			self.hasKnownDeath = True
 		else:
 			widgetTextArea.delete(1.0, "end")
@@ -34,6 +46,7 @@ class MockInterface:
 	#	@param:		The TextBar widget that will be enabled/disabled.
 	#				The CheckBox widget that will be enabled/disabled.
 	#				The TextArea widget that might be placed/removed.
+	#	@return:	None.
 	def toggleDeathState(self, widgetTextBar, widgetCheckBox, widgetTextArea):
 		if (not self.isDead):
 			widgetTextBar.config(state="normal")
@@ -52,131 +65,130 @@ class MockInterface:
 				self.hasKnownDeath = False
 
 	# Generates random input-values for all of the fields in the interface.
-	def generateRecord(self):
-		# OwnerID and PetID
+	#	@param:		None.
+	#	@return:	None.
+	def autoPetInputs(self):
+		# Generating information from the General-Information Section.
 		self.setOfWidgets[0].delete(0, "end")
-		self.setOfWidgets[0].insert(0, str(randCode()))
+		self.setOfWidgets[0].insert(0, str(randString(constNames)))
 
-		self.setOfWidgets[1].delete(0, "end")
-		self.setOfWidgets[1].insert(0, str(randCode()))
-		# General Pet-Information
+		# Generate the species before the breed (since it's important).
 		self.setOfWidgets[2].delete(0, "end")
-		self.setOfWidgets[2].insert(0, str(randString(constName)))
+		self.setOfWidgets[2].current(randint(0, len(self.setOfWidgets[2]["values"])-1))
+		# Update the breed selection acordingly.
+		self.updateBreedWidget(self.setOfWidgets[2], self.setOfWidgets[1])
+		# Generate the breed after.
+		self.setOfWidgets[1].delete(0, "end")
+		self.setOfWidgets[1].current(randint(0, len(self.setOfWidgets[1]["values"])-1))
 
 		self.setOfWidgets[3].delete(0, "end")
 		self.setOfWidgets[3].current(randint(0, len(self.setOfWidgets[3]["values"])-1))
-
 		self.setOfWidgets[4].delete(0, "end")
 		self.setOfWidgets[4].current(randint(0, len(self.setOfWidgets[4]["values"])-1))
 
-		#
-		dateBirth = str(randDateTime("2010-1-1", "2015-12-31", "%Y-%m-%d"))
+		# Generating information from the Date/Time Section.
+		dateBirth = str(randDateTime("2008-1-1", "2015-12-31", "%Y-%m-%d"))
 
 		self.setOfWidgets[5].delete(0, "end")
 		self.setOfWidgets[5].insert(0, dateBirth)
-
 		if (self.isDead):
 			self.setOfWidgets[6].delete(0, "end")
-			self.setOfWidgets[6].insert(0, 
-				str(randDateTime(dateBirth, "2016-11-8", "%Y-%m-%d")))
-
+			self.setOfWidgets[6].insert(0, str(randDateTime(dateBirth, "2016-12-1", "%Y-%m-%d")))
 		if (self.hasKnownDeath):
 			self.setOfWidgets[7].delete(1.0, "end")
-			self.setOfWidgets[7].insert(1.0, str(randString(constDeaths)))
-		# Specific Pet-Information
+			self.setOfWidgets[7].insert(1.0, str(randString(constDeathReasons)))
+
+		# Generating information from the Statistics Section.
 		self.setOfWidgets[8].delete(0, "end")
 		self.setOfWidgets[8].insert(0, str("{0:.2f}".format(uniform(1.0, 99.0))))
-
 		self.setOfWidgets[9].delete(0, "end")
 		self.setOfWidgets[9].insert(0, str("{0:.2f}".format(uniform(1.0, 99.0))))
-
 		self.setOfWidgets[10].delete(0, "end")
 		self.setOfWidgets[10].insert(0, str("{0:.2f}".format(uniform(1.0, 99.0))))
-		# Date-Time Information
-		dateAdded = str(randDateTime("2010-01-01 12:00:00", "2015-12-31 11:59:00", 
-						"%Y-%m-%d %H:%M:%S"))
-
-		self.setOfWidgets[11].config(state="normal")
-		self.setOfWidgets[11].delete(0, "end")
-		self.setOfWidgets[11].insert(0, 
-			str(randDateTime(dateAdded, "2016-12-31 11:59:00", "%Y-%m-%d %H:%M:%S")))
-		self.setOfWidgets[11].config(state="disabled")
-
-		self.setOfWidgets[12].config(state="normal")
-		self.setOfWidgets[12].delete(0, "end")
-		self.setOfWidgets[12].insert(0, dateAdded)
-		self.setOfWidgets[12].config(state="disabled")
 
 	# Clears all normal input-fields.
-	def removeRecord(self):
+	#	@param:		None.
+	#	@return:	None.
+	def clearPetInputs(self):
+		# Compiling information from the General-Information Section.
 		self.setOfWidgets[0].delete(0, "end")
-		self.setOfWidgets[1].delete(0, "end")
-		self.setOfWidgets[2].delete(0, "end")
+
+		self.setOfWidgets[2].set("")
+		self.setOfWidgets[1].set("")
+		self.updateBreedWidget(self.setOfWidgets[2], self.setOfWidgets[1])
+
 		self.setOfWidgets[3].set("")
 		self.setOfWidgets[4].set("")
+
+		# Compiling information from the Date/Time Section.
 		self.setOfWidgets[5].delete(0, "end")
 		self.setOfWidgets[6].delete(0, "end")
 		self.setOfWidgets[7].delete(1.0, "end")
+
+		# Compiling information from the Statistics Section.
 		self.setOfWidgets[8].delete(0, "end")
 		self.setOfWidgets[9].delete(0, "end")
 		self.setOfWidgets[10].delete(0, "end")
 
-		# Date-Time Information
-		dateAdded = str(randDateTime("2010-01-01 12:00:00", "2015-12-31 11:59:00", 
-						"%Y-%m-%d %H:%M:%S"))
-
-		self.setOfWidgets[11].config(state="normal")
-		self.setOfWidgets[11].delete(0, "end")
-		self.setOfWidgets[11].insert(0, 
-			str(randDateTime(dateAdded, "2016-12-31 11:59:00", "%Y-%m-%d %H:%M:%S")))
-		self.setOfWidgets[11].config(state="disabled")
-
-		self.setOfWidgets[12].config(state="normal")
-		self.setOfWidgets[12].delete(0, "end")
-		self.setOfWidgets[12].insert(0, dateAdded)
-		self.setOfWidgets[12].config(state="disabled")
+		# Compiling information from the Extras Section.
+		self.setOfWidgets[11].delete(1.0, "end")
 
 	# Organizes all the input-values and sends them to the database.
 	#	@param:		The option that determines the operation of the function.
 	#	@return:	None.
-	def submitRecord(self, option):
-		#
-		setOfValues = "{ \"ownerid\": \"" + str(self.setOfWidgets[0].get()) + "\", "
-		setOfValues += "\"petid\": \"" + str(self.setOfWidgets[1].get()) + "\", "
-		setOfValues += "\"name\": \"" + str(self.setOfWidgets[2].get()) + "\", "
-		setOfValues += "\"breedid\": " + str(self.setOfWidgets[3].current()) + ", "
-		setOfValues += "\"gender\": " + str(self.setOfWidgets[4].current()) + ", "
-		setOfValues += "\"microchip\": " + str(random.choice(["true", "false"])) + ", "
-		setOfValues += "\"fitcat\": " + str(random.choice(["true", "false"])) + ", "
+	def sendPetInputs(self, option):
+		# Compiling information from the login credentials.
+		setOfValues = "{ \"ownerEmail\": \"" + str("") + "\", "
+
+		# Compiling information from the General-Information Section.
+		setOfValues += "\"name\": \"" + str(self.setOfWidgets[0].get()) + "\", "
+		setOfValues += "\"animalTypeID\": " + str(self.setOfWidgets[2].current()) + ", "
+		setOfValues += "\"breed\": " + str(self.setOfWidgets[1].current()) + ", "
+		setOfValues += "\"gender\": " + str(self.setOfWidgets[3].current()) + ", "
+	#### MAYBE: these values should be added when a feline has been added. 
+		setOfValues += "\"fixed\": " + str(self.setOfWidgets[3].current() % 2 == 1) + ", " 
+		setOfValues += "\"outdoor\": " + str(self.setOfWidgets[4].current() == 1) + ", "
+		setOfValues += "\"declawed\": " + str(self.setOfWidgets[4].current() == 0) + ", "
+
+		# Compiling information from the Date/Time Section.
 		setOfValues += "\"dateOfBirth\": \"" + str(self.setOfWidgets[5].get()) + "\", "
-		setOfValues += "\"dateofdeath\": \"" + str(self.setOfWidgets[6].get()) + "\", "
-		setOfValues += "\"reasonfordeath\": \"" + str(self.setOfWidgets[7].get(1.0, "end").strip()) + "\", "
-		#
-		if (str(self.setOfWidgets[8].get()) != ""):
-			setOfValues += "\"weight\": " + str(self.setOfWidgets[8].get()) + ", "
-		else:
-			setOfValues += "\"weight\": \"\", "
-		if (str(self.setOfWidgets[9].get()) != ""):
-			setOfValues += "\"height\": " + str(self.setOfWidgets[9].get()) + ", "
-		else:
-			setOfValues += "\"height\": \"\", "
-		if (str(self.setOfWidgets[10].get()) != ""):
-			setOfValues += "\"length\": " + str(self.setOfWidgets[10].get()) + ", "
-		else:
-			setOfValues += "\"length\": \"\", "
-		#
-		setOfValues += "\"lastupdate\": \"" + str(self.setOfWidgets[11].get()) + "\", "
-		setOfValues += "\"dateadded\": \"" + str(self.setOfWidgets[12].get()) + "\" }"
-		#
+		setOfValues += "\"dateOfDeath\": \"" + str(self.setOfWidgets[6].get()) + "\", "
+		setOfValues += "\"reasonOfDeath\": \"" + str(self.setOfWidgets[7].get(1.0, "end").strip()) + "\", "
+
+		# Compiling information from the Statistics Section.
+		setOfValues += "\"weight\": " + str(self.setOfWidgets[8].get()) + ", "
+		setOfValues += "\"height\": " + str(self.setOfWidgets[9].get()) + ", "
+		setOfValues += "\"length\": " + str(self.setOfWidgets[10].get()) + ", "
+
+		# Compiling information from the Extras Section.
+		setOfValues += "\"other\": \"" + str(self.setOfWidgets[11].get(1.0, "end").strip()) + "\"}"
+
+		# Send the JSON-string to the middleware for processing.
 		if (option == "add" and not sendJson(str(setOfValues), option)):
 			messagebox.showerror("Invalid Registration", "Registration Request could not be sent.")
 		if (option == "update" and not sendJson(str(setOfValues), option)):
 			messagebox.showerror("Invalid Upadte", "Update Request could not be sent.")
 
+	# Creates the Login Interface and re-opens the PMS upon successful login.
+	#	@param:		None.
+	#	@return:	None.
+	def createLoginPrompt(self):
+		# Clear the current profile and open the login prompt.
+		self.clearPetInputs()
+		self.root.destroy()
+		self.createWindow()
+
 	# Creates the Interface, along with all its required content.
 	#	@param:		None.
 	#	@return:	None.
 	def createWindow(self):
+		# Attempt to login into the backend.
+		loginApp = LoginInterface()
+		loginApp.promptLogin()
+		# Exit the program if the login prompt ends abruptly.
+		if (not loginApp.getLoginStatus()):
+			return 
+
 		# Creating the root-frame of the interface.
 		self.root = Tk()
 		self.root.wm_title(self.title);
@@ -185,142 +197,119 @@ class MockInterface:
 		# Initializing our Set of Widgets to an empty list.
 		self.setOfWidgets = []
 
-		# Widgets for the OwnerID and PetID fields (disabled state).
-		Label(self.root, text="Owner ID:").grid(row=0, column=0, padx=0, pady=(6,0), sticky='nsew')
-		widgetOwnerID = Entry(self.root)
-		widgetOwnerID.grid(row=0, column=1, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
-		self.setOfWidgets.append(widgetOwnerID)
-
-		Label(self.root, text="Pet ID:").grid(row=0, column=6, padx=0, pady=(6,0), sticky='nsew')
-		widgetPetID = Entry(self.root)
-		widgetPetID.grid(row=0, column=7, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
-		self.setOfWidgets.append(widgetPetID)
-
-		# Horizontal line that separates the widgets as groups.
-		ttk.Separator(self.root, orient="horizontal").grid(row=1, columnspan=12, padx=3, pady=(6,0), sticky='nsew')
-
-		# Widgets for the fields regarding general information of the pet (enabled state).
-		Label(self.root, text="Name:").grid(row=2, column=0, padx=0, pady=(6,0), sticky='nsew')
+		### GENERAL-INFORMATION SECTION
+		# Standard TextField widget for the Pet's Name.
+		Label(self.root, text="Name:").grid(row=0, column=0, padx=0, pady=(6,0), sticky='nsew')
 		widgetPetName = Entry(self.root)
-		widgetPetName.grid(row=2, column=1, columnspan=11, padx=(0,6), pady=(6,0), sticky='nsew')
+		widgetPetName.grid(row=0, column=1, columnspan=11, padx=(0,6), pady=(6,0), sticky='nsew')
 		self.setOfWidgets.append(widgetPetName)
-		
-		Label(self.root, text="Breed:").grid(row=3, column=0, padx=0, pady=(6,0), sticky='nsew')
-		widgetBreed = ttk.Combobox(self.root, width=1, state="readonly", values=constBreed)
-		widgetBreed.grid(row=3, column=1, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
-		self.setOfWidgets.append(widgetBreed)
-		
-		Label(self.root, text="Gender:").grid(row=3, column=6, padx=0, pady=(6,0), sticky='nsew')
-		widgetGender = ttk.Combobox(self.root, width=1, state="readonly", values=constGender)
-		widgetGender.grid(row=3, column=7, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
-		self.setOfWidgets.append(widgetGender)
-		
-		Label(self.root, text="Date of Birth:").grid(row=4, column=0, padx=0, pady=(6,0), sticky='nsew')
-		widgetDateBirth = Entry(self.root)
-		widgetDateBirth.grid(row=4, column=1, columnspan=8, padx=(0,6), pady=(6,0), sticky='nsew')
-		self.setOfWidgets.append(widgetDateBirth)
-		#
-		Label(self.root, text="Date of Death:").grid(row=5, column=0, padx=0, pady=(6,0), sticky='nsew')
-		widgetDateDeath = Entry(self.root, state="disabled", textvariable="")
-		widgetDateDeath.grid(row=5, column=1, columnspan=8, padx=(0,6), pady=(6,0), sticky='nsew')
-		self.setOfWidgets.append(widgetDateDeath)
 
+		### GENERAL-INFORMATION (PET-SPECIFIC) SECTION
+		ttk.Separator(self.root, orient="horizontal").grid(row=1, columnspan=12, padx=3, pady=(6,0), sticky='nsew')
+		# Standard DropDown-List widget for the Pet's Breed (respective to Species).
+		Label(self.root, text="Breed:").grid(row=2, column=6, padx=0, pady=(6,0), sticky='nsew')
+		widgetBreed = ttk.Combobox(self.root, width=1, state="readonly")
+		widgetBreed.grid(row=2, column=7, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
+		self.setOfWidgets.append(widgetBreed)
+		# Standard DropDown-List widget for the Pet's Species.
+		Label(self.root, text="Species:").grid(row=2, column=0, padx=0, pady=(6,0), sticky='nsew')
+		widgetSpecies = ttk.Combobox(self.root, width=1, state="readonly", values=constSpecies)
+		widgetSpecies.grid(row=2, column=1, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
+		widgetSpecies.bind("<<ComboboxSelected>>", lambda e:self.updateBreedWidget(widgetSpecies, widgetBreed))
+		self.setOfWidgets.append(widgetSpecies)
+		# Standard DropDown-List widget for the Pet's Gender.
+		Label(self.root, text="Gender:").grid(row=3, column=0, padx=0, pady=(6,0), sticky='nsew')
+		widgetGender = ttk.Combobox(self.root, width=1, state="readonly", values=constGenders)
+		widgetGender.grid(row=3, column=1, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
+		self.setOfWidgets.append(widgetGender)
+		# Standard DropDown-List widget for the Pet's LifeStyle.
+		Label(self.root, text="LifeStyle:").grid(row=3, column=6, padx=0, pady=(6,0), sticky='nsew')
+		widgetLifestyle = ttk.Combobox(self.root, width=1, state="readonly", values=constLifeStyles)
+		widgetLifestyle.grid(row=3, column=7, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
+		self.setOfWidgets.append(widgetLifestyle)
+
+		### DATE/TIME SECTION
+		ttk.Separator(self.root, orient="horizontal").grid(row=4, columnspan=12, padx=3, pady=(6,0), sticky='nsew')
+		# Standard TextField widget for the Pet's Date of Birth.
+		Label(self.root, text="Date of Birth:").grid(row=5, column=0, padx=0, pady=(6,0), sticky='nsew')
+		widgetDateBirth = Entry(self.root)
+		widgetDateBirth.grid(row=5, column=1, columnspan=8, padx=(0,6), pady=(6,0), sticky='nsew')
+		self.setOfWidgets.append(widgetDateBirth)
+		# Standard TextField widget for the Pet's Date of Death.
+		Label(self.root, text="Date of Death:").grid(row=6, column=0, padx=0, pady=(6,0), sticky='nsew')
+		widgetDateDeath = Entry(self.root, state="disabled", textvariable="")
+		widgetDateDeath.grid(row=6, column=1, columnspan=8, padx=(0,6), pady=(6,0), sticky='nsew')
+		self.setOfWidgets.append(widgetDateDeath)
+		# Standard TextField widget for the Pet's Reason of Death.
 		widgetKnownDeath = Text(self.root, width=10, height=3)
 		self.setOfWidgets.append(widgetKnownDeath)
-		#
-		widgetHasKnownDeath = Checkbutton(self.root, state="disabled", text="Reason of Death?")
-		widgetHasKnownDeath.grid(row=5, column=9, columnspan=3, sticky='ws')
-		widgetHasKnownDeath.config(command=lambda:self.toggleDeathWidget(widgetKnownDeath))
 
+		# Toggle the TextField widget for the Pet's Reason of Death.
+		widgetHasKnownDeath = Checkbutton(self.root, state="disabled", text="Reason of Death?")
+		widgetHasKnownDeath.grid(row=6, column=9, columnspan=3, sticky='ws')
+		widgetHasKnownDeath.config(command=lambda:self.toggleDeathWidget(widgetKnownDeath))
+		# Toggle the TextField widget for the Pet's Date of Death.
 		widgetIsDead = Checkbutton(self.root, text="Deceased?")
-		widgetIsDead.grid(row=4, column=9, columnspan=3, sticky='ws')
+		widgetIsDead.grid(row=5, column=9, columnspan=3, sticky='ws')
 		widgetIsDead.config(command=lambda:self.toggleDeathState(widgetDateDeath, widgetHasKnownDeath, widgetKnownDeath))
 
-		# Horizontal line that separates the widgets as groups.
-		ttk.Separator(self.root, orient="horizontal").grid(row=7, columnspan=12, padx=3, pady=(6,0), sticky='nsew')
-
-		# Widgets for the fields regarding specific information of the pet (enabled state).
-		Label(self.root, text="Wt. (lbs):").grid(row=8, column=0, padx=0, pady=(6,0), sticky='nsew')
+		### STATISTICS SECTION
+		ttk.Separator(self.root, orient="horizontal").grid(row=8, columnspan=12, padx=3, pady=(6,0), sticky='nsew')
+		# Standard TextField widget for the Pet's Weight.
+		Label(self.root, text="Wt. (lbs):").grid(row=9, column=0, padx=0, pady=(6,0), sticky='nsew')
 		widgetWeight = Entry(self.root, width=12)
-		widgetWeight.grid(row=8, column=1, columnspan=2, padx=(0,6), pady=(6,0), sticky='w')
+		widgetWeight.grid(row=9, column=1, columnspan=2, padx=(0,6), pady=(6,0), sticky='w')
 		self.setOfWidgets.append(widgetWeight)
-
-		Label(self.root, text="Ht. (cm):").grid(row=8, column=5, padx=0, pady=(6,0), sticky='nsew')
+		# Standard TextField widget for the Pet's Height.
+		Label(self.root, text="Ht. (cm):").grid(row=9, column=5, padx=0, pady=(6,0), sticky='nsew')
 		widgetHeight = Entry(self.root, width=12)
-		widgetHeight.grid(row=8, column=6, columnspan=2, padx=(0,6), pady=(6,0), sticky='w')
+		widgetHeight.grid(row=9, column=6, columnspan=2, padx=(0,6), pady=(6,0), sticky='w')
 		self.setOfWidgets.append(widgetHeight)
-
-		Label(self.root, text="Len. (cm):").grid(row=8, column=9, padx=0, pady=(6,0), sticky='nsew')
+		# Standard TextField widget for the Pet's Length.
+		Label(self.root, text="Len. (cm):").grid(row=9, column=9, padx=0, pady=(6,0), sticky='nsew')
 		widgetLength = Entry(self.root, width=12)
-		widgetLength.grid(row=8, column=10, columnspan=2, padx=(0,6), pady=(6,0), sticky='w')
+		widgetLength.grid(row=9, column=10, columnspan=2, padx=(0,6), pady=(6,0), sticky='w')
 		self.setOfWidgets.append(widgetLength)
-		
-		# Horizontal line that separates the widgets as groups.
-		ttk.Separator(self.root, orient="horizontal").grid(row=9, columnspan=12, padx=3, pady=(6,0), sticky='nsew')
 
-		# Widgets for the DateUpdated and DateAdded fields (disabled state).
-		Label(self.root, text="Date Updated:").grid(row=10, column=0, padx=0, pady=(6,0), sticky='nsew')
-		widgetDateUpdate = Entry(self.root, state="readonly")
-		widgetDateUpdate.grid(row=10, column=1, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
-		self.setOfWidgets.append(widgetDateUpdate)
+		### EXTRAS SECTION
+		ttk.Separator(self.root, orient="horizontal").grid(row=10, columnspan=12, padx=3, pady=(6,0), sticky='nsew')
+		# Standard TextField widget for Other Information about the Pet.
+		Label(self.root, text="Other:").grid(row=11, column=0, padx=0, pady=(6,0), sticky='new')
+		widgetOther = Text(self.root, width=10, height=3)
+		widgetOther.grid(row=11, column=1, columnspan=11, padx=(0,6), pady=(6,0), sticky='nsew')
+		self.setOfWidgets.append(widgetOther)
 
-		Label(self.root, text="Date Registered:").grid(row=10, column=6, padx=0, pady=(6,0), sticky='nsew')
-		widgetDateAdded = Entry(self.root, state="readonly")
-		widgetDateAdded.grid(row=10, column=7, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
-		self.setOfWidgets.append(widgetDateAdded)
+		### BUTTON-PANEL SECTION
+		ttk.Separator(self.root, orient="horizontal").grid(row=12, columnspan=12, padx=3, pady=(6,0), sticky='nsew')
 
-		# Horizontal line that separates the widgets as groups.
-		ttk.Separator(self.root, orient="horizontal").grid(row=11, columnspan=12, padx=3, pady=(6,0), sticky='nsew')
+		# Creating a separate frame for the buttons (for independant alignment).
 
-		buttonFrame = Frame(self.root)
-		buttonFrame.grid(row=12, column=0, columnspan=12, sticky='nsew')
-		buttonFrame.grid_columnconfigure(0, weight=1)
-		buttonFrame.grid_columnconfigure(1, weight=1)
-		buttonFrame.grid_columnconfigure(2, weight=1)
-		buttonFrame.grid_columnconfigure(3, weight=1)
+		buttonTopFrame = Frame(self.root)
+		buttonTopFrame.grid(row=13, column=0, columnspan=12, sticky='nsew')
+		for i in range(0, 3):
+			buttonTopFrame.grid_columnconfigure(i, weight=1)
 
 		# AutoFill Button: generates sample inputs.
-		autofillButton = Button(buttonFrame, text="AutoFill", command=self.generateRecord)
+		autofillButton = Button(buttonTopFrame, text="AutoFill", command=self.autoPetInputs)
 		autofillButton.grid(row=0, column=0, padx=(12,6), pady=(4,6), sticky='nsew')
 		# Reset Button: resets all inputs.
-		resetButton = Button(buttonFrame, text="Reset", command=self.removeRecord)
+		resetButton = Button(buttonTopFrame, text=" Reset  ", command=self.clearPetInputs)
 		resetButton.grid(row=0, column=1, padx=(6,6), pady=(4,6), sticky='nsew')
+		# Change-User Button: prompts the login interface.
+		userButton = Button(buttonTopFrame, text=" Logout ", command=self.createLoginPrompt)
+		userButton.grid(row=0, column=2, padx=(6,12), pady=(4,6), sticky='nsew')
+
+		buttonBotFrame = Frame(self.root)
+		buttonBotFrame.grid(row=14, column=0, columnspan=12, sticky='nsew')
+		for i in range(0, 2):
+			buttonBotFrame.grid_columnconfigure(i, weight=1)
+
 		# Add Button: sends register requests.
-		addButton = Button(buttonFrame, text="Add", command=lambda:self.submitRecord("add"))
-		addButton.grid(row=0, column=2, padx=(6,6), pady=(4,6), sticky='nsew')
+		addButton = Button(buttonBotFrame, text="  Add ", command=lambda:self.sendPetInputs("add"))
+		addButton.grid(row=0, column=0, padx=(12,6), pady=(4,6), sticky='nsew')
 		# Update Button: sends updates.
-		updateButton = Button(buttonFrame, text="Update", command=lambda:self.submitRecord("update"))
-		updateButton.grid(row=0, column=3, padx=(6,12), pady=(4,6), sticky='nsew')
+		updateButton = Button(buttonBotFrame, text="Update", command=lambda:self.sendPetInputs("update"))
+		updateButton.grid(row=0, column=1, padx=(6,12), pady=(4,6), sticky='nsew')
 
-	# Destroys the Interface and all of its contents.
-	# 	@param:		None.
-	#	@return:	None.
-	def destroyWindow(self):
-		self.root.destroy();
-
-	# Updates the Interface of all occurring events.
-	# 	@param:		None.
-	#	@return:	None.
-	def update(self):
-		#
-		self.setOfWidgets[0].delete(0, "end")
-		self.setOfWidgets[0].insert(0, str(randCode()))
-
-		self.setOfWidgets[1].delete(0, "end")
-		self.setOfWidgets[1].insert(0, str(randCode()))
-		#
-		dateAdded = str(randDateTime("2010-01-01 12:00:00", "2015-12-31 11:59:00", 
-						"%Y-%m-%d %H:%M:%S"))
-
-		self.setOfWidgets[11].config(state="normal")
-		self.setOfWidgets[11].delete(0, "end")
-		self.setOfWidgets[11].insert(0, 
-			str(randDateTime(dateAdded, "2016-12-31 11:59:00", "%Y-%m-%d %H:%M:%S")))
-		self.setOfWidgets[11].config(state="disabled")
-
-		self.setOfWidgets[12].config(state="normal")
-		self.setOfWidgets[12].delete(0, "end")
-		self.setOfWidgets[12].insert(0, dateAdded)
-		self.setOfWidgets[12].config(state="disabled")
-		#
+		# Updates the Interface of all occurring events.
 		self.root.mainloop();
