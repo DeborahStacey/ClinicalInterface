@@ -14,23 +14,25 @@ def sendSearchRequest(requests,varNames):
 
 	print ("Server connected \nhost: " + host + "\nPort: " + str(port))
 
-	searchFields = requests.split(" ")
+	searchFields = requests
 
 	jsonMessage2 = '{"operation": "lookup", "animals": "cat",'
 	counter = 0
 	jsonMessage2 += '"field":' 
-	if(len(varNames)>1):
-		jsonMessage2 += '{"$and":['
+	print("number of varnames" + str(len(varNames)))
+	if(len(varNames)>2):
+		jsonMessage2 += '[{"$and":['
 	for field in searchFields: 
-	    jsonMessage2 += '{' +'"' + varNames[counter] + '"' + ':' + '{' + '"' + "gt" + '"' + ':' + field + '}' + '}'
-	    #if(len(varNames)>1):
-	    	#jsonMessage2 += ','
+	    jsonMessage2 += '{' +'"' + varNames[counter] + '"' + ':' + '{' + '"' + "eq" + '"' + ':' + field + '}' + '}'
+	    if(len(varNames)>2 and counter<(len(varNames)-2) ):
+	    	jsonMessage2 += ','
 	    counter+= 1
 
-	if(len(varNames)>1):
-		jsonMessage2+= ']}'
+	if(len(varNames)>2):
+		jsonMessage2+= ']}]'
 	jsonMessage2 += '}'
 
+	print (jsonMessage2)
 	#print "Created JSON search: " + jsonMessage2
 	s.sendall(jsonMessage2.encode('utf-8'))
   
@@ -38,7 +40,7 @@ def sendSearchRequest(requests,varNames):
 	target = open("test.txt", 'w')
 	data = s.recv(1024)
 	#test = json.loads(data)
-	#print('server returned: ' + data.decode('utf-8'))
+	print('server returned: ' + data.decode('utf-8'))
 
 	s.close()
 	#test = json.loads(data.decode('utf-8'))

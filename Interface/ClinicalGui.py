@@ -42,11 +42,32 @@ class ClinicalGui:
 	def Search(self):
 		# this function does nothing as of yet
 		testVar = []
-		testVar.append("weight")
-		temp = sendSearchRequest(widgetWeight.get(), testVar)
+		requests = []
+		if(widgetOwnerID.get()):
+			print("value entered")
+			testVar.append("ownerid")
+			requests.append(widgetOwnerID.get())
+		if(widgetPetName.get()):
+			print("value entered")
+			testVar.append("name")
+			requests.append(widgetPetName.get())
+		if(widgetPetID.get()):
+			testVar.append("petid")
+			print("value entered")
+			requests.append(widgetPetID.get())
+		if(widgetWeight.get()):
+			testVar.append("weight")
+			requests.append(widgetWeight.get())
+			print("value entered")
+		if(widgetHeight.get()):
+			testVar.append("height")
+			print("value entered")
+			requests.append(widgetHeight.get())
+		testVar.append("height")
+		temp = sendSearchRequest(requests, testVar)
 		test = json.loads(temp)
 		T.configure(state='normal')
-		#newTemp = json.loads(temp.decode('utf-8'))
+
 		for i in range(0,len(test["cats"])):
 			T.insert(END,"Name:" + test["cats"][i]['name'] + "\n")
 			T.insert(END,"Petid:" + test["cats"][i]['petid'] + "\n")
@@ -63,8 +84,6 @@ class ClinicalGui:
 			T.insert(END,"DateAdded:" + test["cats"][i]['dateadded'] + "\n")
 			T.insert(END,"-------------------------" +"\n")
 
-		
-
 		#T.insert(END,test["cats"][1])
 		T.configure(state='disabled')
 		print ("Search")
@@ -77,16 +96,18 @@ class ClinicalGui:
 		# Main root instance for the window.
 		self.root = Tk()
 		self.root.wm_title(self.windowTitle);
-		self.root.resizable(width=False, height=False)
+		self.root.resizable(width=True, height=True)
 
 
-		# Widgets for the OwnerID and PetID fields.
+		# Widgets for the OwnerID and PetID fields (disabled state).
 		Label(self.root, text="Owner ID:").grid(row=0, column=0, padx=0, pady=(6,0), sticky='nsew')
+		global widgetOwnerID
 		widgetOwnerID = Entry(self.root)
 		widgetOwnerID.grid(row=0, column=1, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
 		self.setOfWidgets.append(widgetOwnerID)
 
 		Label(self.root, text="Pet ID:").grid(row=0, column=6, padx=0, pady=(6,0), sticky='nsew')
+		global widgetPetID
 		widgetPetID = Entry(self.root)
 		widgetPetID.grid(row=0, column=7, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
 		self.setOfWidgets.append(widgetPetID)
@@ -96,41 +117,49 @@ class ClinicalGui:
 
 		# Widgets for the fields regarding general information of the pet (enabled state).
 		Label(self.root, text="Name:").grid(row=2, column=0, padx=0, pady=(6,0), sticky='nsew')
+		global widgetPetName
 		widgetPetName = Entry(self.root)
 		widgetPetName.grid(row=2, column=1, columnspan=11, padx=(0,6), pady=(6,0), sticky='nsew')
 		self.setOfWidgets.append(widgetPetName)
 		
 		Label(self.root, text="Breed:").grid(row=3, column=0, padx=0, pady=(6,0), sticky='nsew')
+		global widgetBreed
 		widgetBreed = ttk.Combobox(self.root, width=1, state="readonly", values=["Feline", "Improvius", "Coder", "Persian"])
 		widgetBreed.grid(row=3, column=1, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
 		self.setOfWidgets.append(widgetBreed)
 		
 		Label(self.root, text="Gender:").grid(row=3, column=6, padx=0, pady=(6,0), sticky='nsew')
+		global widgetGender
 		widgetGender = ttk.Combobox(self.root, width=1, state="readonly", values=["male","female","whatever is left","test"])
 		widgetGender.grid(row=3, column=7, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
 		self.setOfWidgets.append(widgetGender)
 
 		Label(self.root, text="Microchip:").grid(row=4, column=0, padx=0, pady=(6,0), sticky='nsew')
+		global widgetMicrochip
 		widgetMicrochip = Checkbutton(self.root)
 		widgetMicrochip.grid(row=4, column=1, columnspan=3, sticky='ws')
 		self.setOfWidgets.append(widgetMicrochip)
 		
 		Label(self.root, text="FitCat:").grid(row=4, column=4, padx=0, pady=(6,0), sticky='nsew')
-		widgetMicrochip = Checkbutton(self.root)
-		widgetMicrochip.grid(row=4, column=5, columnspan=3, sticky='ws')
-		self.setOfWidgets.append(widgetMicrochip)
+		global widgetFitCat
+		widgetFitCat = Checkbutton(self.root)
+		widgetFitCat.grid(row=4, column=5, columnspan=3, sticky='ws')
+		self.setOfWidgets.append(widgetFitCat)
 		
 		Label(self.root, text="Date of Birth:").grid(row=6, column=0, padx=0, pady=(6,0), sticky='nsew')
+		global widgetDateBirth
 		widgetDateBirth = Entry(self.root)
 		widgetDateBirth.grid(row=6, column=1, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
 		self.setOfWidgets.append(widgetDateBirth)
 
 		Label(self.root, text="Date of Death:").grid(row=6, column=6, padx=0, pady=(6,0), sticky='nsew')
+		global widgetDeathDate
 		widgetDeathDate = Entry(self.root)
 		widgetDeathDate.grid(row=6, column=7, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
 		self.setOfWidgets.append(widgetDeathDate)
 
 		Label(self.root, text="Reason for Death:").grid(row=7, column=6, padx=0, pady=(6,0), sticky='nsew')
+		global widgetReasonDeath
 		widgetReasonDeath = Entry(self.root)
 		widgetReasonDeath.grid(row=7, column=8, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
 		self.setOfWidgets.append(widgetReasonDeath)
@@ -146,11 +175,13 @@ class ClinicalGui:
 		self.setOfWidgets.append(widgetWeight)
 
 		Label(self.root, text="Ht. (cm):").grid(row=9, column=4, padx=0, pady=(6,0), sticky='nsew')
+		global widgetHeight
 		widgetHeight = Entry(self.root, width=12)
 		widgetHeight.grid(row=9, column=5, columnspan=2, padx=(0,6), pady=(6,0), sticky='w')
 		self.setOfWidgets.append(widgetHeight)
 
 		Label(self.root, text="Len. (cm):").grid(row=9, column=9, padx=0, pady=(6,0), sticky='nsew')
+		global widgetLength
 		widgetLength = Entry(self.root, width=12)
 		widgetLength.grid(row=9, column=10, columnspan=2, padx=(0,6), pady=(6,0), sticky='w')
 		self.setOfWidgets.append(widgetLength)
@@ -160,11 +191,13 @@ class ClinicalGui:
 
 		# Widgets for the DateUpdated and DateAdded fields.
 		Label(self.root, text="Date Updated:").grid(row=11, column=0, padx=0, pady=(6,0), sticky='nsew')
+		global widgetDateUpdate
 		widgetDateUpdate = Entry(self.root)
 		widgetDateUpdate.grid(row=11, column=1, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
 		self.setOfWidgets.append(widgetDateUpdate)
 
 		Label(self.root, text="Date Registered:").grid(row=11, column=6, padx=0, pady=(6,0), sticky='nsew')
+		global widgetDateAdded
 		widgetDateAdded = Entry(self.root)
 		widgetDateAdded.grid(row=11, column=7, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
 		self.setOfWidgets.append(widgetDateAdded)
@@ -186,3 +219,4 @@ class ClinicalGui:
 	# Presents the window instance to the user.
 	def show_Window(self):
 		self.root.mainloop();
+		
