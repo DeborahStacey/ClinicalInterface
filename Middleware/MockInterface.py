@@ -312,7 +312,7 @@ class MockInterface:
 			buttonBotFrame.grid_columnconfigure(i, weight=1)
 
 		# Add Button: sends register requests.
-		addButton = Button(buttonBotFrame, text="  Add ", command=lambda:self.sendPetInputs("add"))
+		addButton = Button(buttonBotFrame, text="  Add ", command=lambda:self.sendPetInputs(loginApp.getUserName(), "add"))
 		addButton.grid(row=0, column=0, padx=(12,6), pady=(4,6), sticky='nsew')
 		# Update Button: sends updates.
 		updateButton = Button(buttonBotFrame, text="Update", command=lambda:self.sendPetInputs(loginApp.getUserName(), "update"))
