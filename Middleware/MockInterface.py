@@ -150,9 +150,20 @@ class MockInterface:
 		setOfValues += "\"breed\": " + str(self.setOfWidgets[2].current() + 1) + ", "
 		setOfValues += "\"gender\": " + str(int(self.setOfWidgets[4].current() / 2) + 1) + ", "
 
-		setOfValues += "\"fixed\": " + str(self.setOfWidgets[4].current() % 2 == 1) + ", " 
-		setOfValues += "\"outdoor\": " + str(self.setOfWidgets[5].current() == 1) + ", "
-		setOfValues += "\"declawed\": " + str(self.setOfWidgets[5].current() == 0) + ", "
+		if (self.setOfWidgets[4].current() % 2 == 1):
+			setOfValues += "\"fixed\": \"true\", " 
+		else:
+			setOfValues += "\"fixed\": \"false\", "
+
+		if (self.setOfWidgets[5].current() == 1):
+			setOfValues += "\"outdoor\": \"true\", " 
+		else:
+			setOfValues += "\"outdoor\": \"false\", "
+
+		if (self.setOfWidgets[5].current() == 0):
+			setOfValues += "\"declawed\": \"true\", " 
+		else:
+			setOfValues += "\"declawed\": \"false\", "
 
 		# Compiling information from the Date/Time Section.
 		setOfValues += "\"dateOfBirth\": \"" + str(self.setOfWidgets[6].get()) + "\", "
