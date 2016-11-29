@@ -167,8 +167,10 @@ class MockInterface:
 
 		# Compiling information from the Date/Time Section.
 		setOfValues += "\"dateOfBirth\": \"" + str(self.setOfWidgets[6].get()) + "\", "
-		setOfValues += "\"dateOfDeath\": \"" + str(self.setOfWidgets[7].get()) + "\", "
-		setOfValues += "\"reasonOfDeath\": \"" + str(self.setOfWidgets[8].get(1.0, "end").strip()) + "\", "
+		if (self.setOfWidgets[7].get() != ""):
+			setOfValues += "\"dateOfDeath\": \"" + str(self.setOfWidgets[7].get()) + "\", "
+		if (self.setOfWidgets[8].get(1.0, "end").strip() != ""):
+			setOfValues += "\"reasonOfDeath\": \"" + str(self.setOfWidgets[8].get(1.0, "end").strip()) + "\", "
 
 		# Compiling information from the Statistics Section.
 		setOfValues += "\"weight\": " + str(self.setOfWidgets[9].get()) + ", "
