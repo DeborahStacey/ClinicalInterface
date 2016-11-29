@@ -3,6 +3,7 @@ import socket
 import sys
 import datetime
 import requests
+from tkinter import *
 
 def convertJson(objName):
 	objFile = open(objName, 'r')
@@ -41,6 +42,10 @@ def checkJson(parsedObj, action):
 
 		if (parsedObj.get("animalTypeID") != None and type(parsedObj.get("animalTypeID")) != int):
 			printError(2, parsedObj.get("animalTypeID"))
+			return canSend
+
+		if (parsedObj.get("petID") != None and type(parsedObj.get("petID")) != int):
+			printError(2, parsedObj.get("petID"))
 			return canSend
 
 		if (parsedObj.get("name") != None and type(parsedObj.get("name")) != str or parsedObj.get("name") == ""):
