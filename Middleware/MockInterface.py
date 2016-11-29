@@ -8,7 +8,7 @@ from random import *
 from InputGenerator import *
 from InputVariables import *
 from LoginInterface import *
-#from middleware import *
+from middleware import *
 
 class MockInterface:
 	# Creates a MockInterface Instance.
@@ -165,15 +165,11 @@ class MockInterface:
 		# Compiling information from the Extras Section.
 		setOfValues += "\"other\": \"" + str(self.setOfWidgets[12].get(1.0, "end").strip()) + "\"}"
 
-		print (setOfValues)
-
-		'''
 		# Send the JSON-string to the middleware for processing.
 		if (option == "add" and not sendJson(str(setOfValues), option)):
 			messagebox.showerror("Invalid Registration", "Registration Request could not be sent.")
 		if (option == "update" and not sendJson(str(setOfValues), option)):
 			messagebox.showerror("Invalid Upadte", "Update Request could not be sent.")
-			'''
 
 	# Creates the Login Interface and re-opens the PMS upon successful login.
 	#	@param:		None.
