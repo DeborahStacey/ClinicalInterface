@@ -32,7 +32,7 @@ def checkJson(parsedObj, action):
 	for obj in parsedObj:
 		count += 1
 
-	if(count > 15 or count == 0):
+	if(count > 20 or count == 0):
 		printError(1, '')
 		return canSend		
 	else:		
@@ -116,6 +116,20 @@ def printError(flag, field):
 		else:	
 			print("Invalid field: " + str(field))
 
+def mockLogin(userEmail, password):
+	loginString = {"email": userEmail,"password": password}
+	loginObj = json.dumps(loginString)
+	with requests.Session() as s: 
+		p = s.post("https://cat.ddns.net/Backend/api.php/user/login", data=json.loads(loginObj))		
+		if(text.find("true")):
+			s.close()
+			return True
+		else:
+			s.close()
+			return False	
+
+
+
 def login(userEmail, password, parseObj, action):
 	loginString = {"email": userEmail,"password": password}
 	loginObj = json.dumps(loginString)
@@ -169,13 +183,13 @@ def sendData(session, obj, action):
 		return False				
 	
 #API example
-message = convertJson("tansari.json") 			
+'''message = convertJson("tansari.json") 			
 status = sendJson(message,"update")
 if(status == True):
 	print ("Json object successfully sent")
 else:
 	print ("Error sending json obj")
-	
+	'''
  # login example
 
 #login("taha@mymail.com", "soccer123")
