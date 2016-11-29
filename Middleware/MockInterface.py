@@ -8,7 +8,7 @@ from random import *
 from InputGenerator import *
 from InputVariables import *
 from LoginInterface import *
-from middleware import *
+#from middleware import *
 
 class MockInterface:
 	# Creates a MockInterface Instance.
@@ -26,7 +26,7 @@ class MockInterface:
 	#	@return:	None.
 	def updateBreedWidget(self, widgetSpecies, widgetBreeds):
 		if (widgetSpecies.get() == ""):
-			widgetBreeds.config(values=[])
+			widgetBreeds.config(values=None)
 		else:
 			widgetBreeds.config(values=constBreeds[widgetSpecies.get()])
 
@@ -138,16 +138,18 @@ class MockInterface:
 	#	@param:		The option that determines the operation of the function.
 	#	@return:	None.
 	def sendPetInputs(self, userID, option):
+		setOfValues = "{"
 		# Compiling information from the login credentials.
-		setOfValues = "{ \"petID\": " + str(self.setOfWidgets[1].get()) + ", "
+		if (self.setOfWidgets[1].get() != ""):
+			setOfValues += "\"petID\": " + str(self.setOfWidgets[1].get()) + ", "
 		setOfValues += "\"owner\": \"" + str(userID) + "\", "
 
 		# Compiling information from the General-Information Section.
 		setOfValues += "\"name\": \"" + str(self.setOfWidgets[0].get()) + "\", "
-		setOfValues += "\"animalTypeID\": " + str(self.setOfWidgets[3].current()) + ", "
-		setOfValues += "\"breed\": " + str(self.setOfWidgets[2].current()) + ", "
-		setOfValues += "\"gender\": " + str(self.setOfWidgets[4].current()) + ", "
-	#### MAYBE: these values should be added when a feline has been added. 
+		setOfValues += "\"animalTypeID\": " + str(self.setOfWidgets[3].current() + 1) + ", "
+		setOfValues += "\"breed\": " + str(self.setOfWidgets[2].current() + 1) + ", "
+		setOfValues += "\"gender\": " + str(int(self.setOfWidgets[4].current() / 2) + 1) + ", "
+
 		setOfValues += "\"fixed\": " + str(self.setOfWidgets[4].current() % 2 == 1) + ", " 
 		setOfValues += "\"outdoor\": " + str(self.setOfWidgets[5].current() == 1) + ", "
 		setOfValues += "\"declawed\": " + str(self.setOfWidgets[5].current() == 0) + ", "
@@ -165,11 +167,15 @@ class MockInterface:
 		# Compiling information from the Extras Section.
 		setOfValues += "\"other\": \"" + str(self.setOfWidgets[12].get(1.0, "end").strip()) + "\"}"
 
+		print (setOfValues)
+		
+		'''
 		# Send the JSON-string to the middleware for processing.
 		if (option == "add" and not sendJson(str(setOfValues), option)):
 			messagebox.showerror("Invalid Registration", "Registration Request could not be sent.")
 		if (option == "update" and not sendJson(str(setOfValues), option)):
 			messagebox.showerror("Invalid Upadte", "Update Request could not be sent.")
+		'''
 
 	# Creates the Login Interface and re-opens the PMS upon successful login.
 	#	@param:		None.
