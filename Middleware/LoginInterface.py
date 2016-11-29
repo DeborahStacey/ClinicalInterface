@@ -31,7 +31,7 @@ class LoginInterface:
 	#	@return:	None.
 	def checkLogin(self, widgetFlavorText, widgetUserName, widgetPassWord):
 		##### TO-DO: Implement the actual login-checking.
-		if (mockLogin(widgetUserName.get(), widgetPassWord.get())
+		if (mockLogin(widgetUserName.get(), widgetPassWord.get())):
 			self.loginUserName = widgetUserName.get()
 			self.loginStatus = True
 			self.root.destroy()

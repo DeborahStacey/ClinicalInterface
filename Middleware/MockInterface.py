@@ -175,20 +175,20 @@ class MockInterface:
 		# Compiling information from the Statistics Section.
 		setOfValues += "\"weight\": " + str(self.setOfWidgets[9].get()) + ", "
 		setOfValues += "\"height\": " + str(self.setOfWidgets[10].get()) + ", "
-		setOfValues += "\"length\": " + str(self.setOfWidgets[11].get()) + ", "
+		setOfValues += "\"length\": " + str(self.setOfWidgets[11].get()) 
 
 		# Compiling information from the Extras Section.
 		if (self.setOfWidgets[12].get(1.0, "end").strip() != ""):
-			setOfValues += "\"other\": \"" + str(self.setOfWidgets[12].get(1.0, "end").strip()) + "\"}"
-
+			setOfValues += ", \"other\": \"" + str(self.setOfWidgets[12].get(1.0, "end").strip()) + "\"}"
+		setOfValues +="}"
 		# Send the JSON-string to the middleware for processing.
 		if (option == "add" and not sendJson(str(setOfValues), option)):
 			messagebox.showerror("Invalid Registration", "Registration Request could not be sent.")
-		else:
+		elif (option == "add"):
 			messagebox.showinfo("Successful Registration", "Registration Request was successful.")
 		if (option == "update" and not sendJson(str(setOfValues), option)):
 			messagebox.showerror("Invalid Upadte", "Update Request could not be sent.")
-		else:
+		elif (option == "update"):
 			messagebox.showinfo("Successful Update", "Update Request was successful.")
 
 	# Creates the Login Interface and re-opens the PMS upon successful login.

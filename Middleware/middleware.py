@@ -120,13 +120,15 @@ def mockLogin(userEmail, password):
 	loginString = {"email": userEmail,"password": password}
 	loginObj = json.dumps(loginString)
 	with requests.Session() as s: 
-		p = s.post("https://cat.ddns.net/Backend/api.php/user/login", data=json.loads(loginObj))		
-		if(text.find("true")):
-			s.close()
+		p = s.post("https://cat.ddns.net/Backend/api.php/user/login", data=json.loads(loginObj))
+		print(p.text)		
+
+		if(p.text.find("true") > 0):
+			print("false")
 			return True
 		else:
-			s.close()
-			return False	
+			print("false")
+			return False
 
 
 
