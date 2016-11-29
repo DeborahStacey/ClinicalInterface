@@ -2,14 +2,21 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
-from middleware import *
+#from middleware import *
 
 class LoginInterface:
 	# Creates a LoginInterface Instance.
 	# 	@param:		The Name of the Interface.
 	#	@return:	None.
 	def __init__(self):
+		self.loginUserName = ""
 		self.loginStatus = False
+
+	# Retrieves the username of the login credentials
+	# 	@param:		None.
+	#	@return:	The string that represents the username.
+	def getUserName(self):
+		return self.loginUserName
 
 	# Identifies whether the login was successful/failure.
 	# 	@param:		None.
@@ -25,6 +32,7 @@ class LoginInterface:
 	def checkLogin(self, widgetFlavorText, widgetUserName, widgetPassWord):
 		##### TO-DO: Implement the actual login-checking.
 		if (widgetUserName.get() == "taha@mymail.com" and widgetPassWord.get() == "soccer123"):
+			self.loginUserName = widgetUserName.get()
 			self.loginStatus = True
 			self.root.destroy()
 		else:

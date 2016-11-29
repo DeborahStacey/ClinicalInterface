@@ -8,7 +8,7 @@ from random import *
 from InputGenerator import *
 from InputVariables import *
 from LoginInterface import *
-from middleware import *
+#from middleware import *
 
 class MockInterface:
 	# Creates a MockInterface Instance.
@@ -73,38 +73,38 @@ class MockInterface:
 		self.setOfWidgets[0].insert(0, str(randString(constNames)))
 
 		# Generate the species before the breed (since it's important).
-		self.setOfWidgets[2].delete(0, "end")
-		self.setOfWidgets[2].current(randint(0, len(self.setOfWidgets[2]["values"])-1))
-		# Update the breed selection acordingly.
-		self.updateBreedWidget(self.setOfWidgets[2], self.setOfWidgets[1])
-		# Generate the breed after.
-		self.setOfWidgets[1].delete(0, "end")
-		self.setOfWidgets[1].current(randint(0, len(self.setOfWidgets[1]["values"])-1))
-
 		self.setOfWidgets[3].delete(0, "end")
 		self.setOfWidgets[3].current(randint(0, len(self.setOfWidgets[3]["values"])-1))
+		# Update the breed selection acordingly.
+		self.updateBreedWidget(self.setOfWidgets[3], self.setOfWidgets[2])
+		# Generate the breed after.
+		self.setOfWidgets[2].delete(0, "end")
+		self.setOfWidgets[2].current(randint(0, len(self.setOfWidgets[2]["values"])-1))
+
 		self.setOfWidgets[4].delete(0, "end")
 		self.setOfWidgets[4].current(randint(0, len(self.setOfWidgets[4]["values"])-1))
+		self.setOfWidgets[5].delete(0, "end")
+		self.setOfWidgets[5].current(randint(0, len(self.setOfWidgets[5]["values"])-1))
 
 		# Generating information from the Date/Time Section.
 		dateBirth = str(randDateTime("2008-1-1", "2015-12-31", "%Y-%m-%d"))
 
-		self.setOfWidgets[5].delete(0, "end")
-		self.setOfWidgets[5].insert(0, dateBirth)
+		self.setOfWidgets[6].delete(0, "end")
+		self.setOfWidgets[6].insert(0, dateBirth)
 		if (self.isDead):
-			self.setOfWidgets[6].delete(0, "end")
-			self.setOfWidgets[6].insert(0, str(randDateTime(dateBirth, "2016-12-1", "%Y-%m-%d")))
+			self.setOfWidgets[7].delete(0, "end")
+			self.setOfWidgets[7].insert(0, str(randDateTime(dateBirth, "2016-12-1", "%Y-%m-%d")))
 		if (self.hasKnownDeath):
-			self.setOfWidgets[7].delete(1.0, "end")
-			self.setOfWidgets[7].insert(1.0, str(randString(constDeathReasons)))
+			self.setOfWidgets[8].delete(1.0, "end")
+			self.setOfWidgets[8].insert(1.0, str(randString(constDeathReasons)))
 
 		# Generating information from the Statistics Section.
-		self.setOfWidgets[8].delete(0, "end")
-		self.setOfWidgets[8].insert(0, str("{0:.2f}".format(uniform(1.0, 99.0))))
 		self.setOfWidgets[9].delete(0, "end")
 		self.setOfWidgets[9].insert(0, str("{0:.2f}".format(uniform(1.0, 99.0))))
 		self.setOfWidgets[10].delete(0, "end")
 		self.setOfWidgets[10].insert(0, str("{0:.2f}".format(uniform(1.0, 99.0))))
+		self.setOfWidgets[11].delete(0, "end")
+		self.setOfWidgets[11].insert(0, str("{0:.2f}".format(uniform(1.0, 99.0))))
 
 	# Clears all normal input-fields.
 	#	@param:		None.
@@ -112,62 +112,68 @@ class MockInterface:
 	def clearPetInputs(self):
 		# Compiling information from the General-Information Section.
 		self.setOfWidgets[0].delete(0, "end")
-
-		self.setOfWidgets[2].set("")
-		self.setOfWidgets[1].set("")
-		self.updateBreedWidget(self.setOfWidgets[2], self.setOfWidgets[1])
+		self.setOfWidgets[1].delete(0, "end")
 
 		self.setOfWidgets[3].set("")
+		self.setOfWidgets[2].set("")
+		self.updateBreedWidget(self.setOfWidgets[2], self.setOfWidgets[1])
+
 		self.setOfWidgets[4].set("")
+		self.setOfWidgets[5].set("")
 
 		# Compiling information from the Date/Time Section.
-		self.setOfWidgets[5].delete(0, "end")
 		self.setOfWidgets[6].delete(0, "end")
-		self.setOfWidgets[7].delete(1.0, "end")
+		self.setOfWidgets[7].delete(0, "end")
+		self.setOfWidgets[8].delete(1.0, "end")
 
 		# Compiling information from the Statistics Section.
-		self.setOfWidgets[8].delete(0, "end")
 		self.setOfWidgets[9].delete(0, "end")
 		self.setOfWidgets[10].delete(0, "end")
+		self.setOfWidgets[11].delete(0, "end")
 
 		# Compiling information from the Extras Section.
-		self.setOfWidgets[11].delete(1.0, "end")
+		self.setOfWidgets[12].delete(1.0, "end")
 
 	# Organizes all the input-values and sends them to the database.
 	#	@param:		The option that determines the operation of the function.
 	#	@return:	None.
-	def sendPetInputs(self, option):
+	def sendPetInputs(self, userID, option):
 		# Compiling information from the login credentials.
-		setOfValues = "{ \"ownerEmail\": \"" + str("") + "\", "
+		setOfValues = "{ \"petID\": " + str(self.setOfWidgets[1].get()) + ", "
+		setOfValues += "\"owner\": \"" + str(userID) + "\", "
 
 		# Compiling information from the General-Information Section.
 		setOfValues += "\"name\": \"" + str(self.setOfWidgets[0].get()) + "\", "
-		setOfValues += "\"animalTypeID\": " + str(self.setOfWidgets[2].current()) + ", "
-		setOfValues += "\"breed\": " + str(self.setOfWidgets[1].current()) + ", "
-		setOfValues += "\"gender\": " + str(self.setOfWidgets[3].current()) + ", "
+		setOfValues += "\"animalTypeID\": " + str(self.setOfWidgets[3].current()) + ", "
+		setOfValues += "\"breed\": " + str(self.setOfWidgets[2].current()) + ", "
+		setOfValues += "\"gender\": " + str(self.setOfWidgets[4].current()) + ", "
 	#### MAYBE: these values should be added when a feline has been added. 
-		setOfValues += "\"fixed\": " + str(self.setOfWidgets[3].current() % 2 == 1) + ", " 
-		setOfValues += "\"outdoor\": " + str(self.setOfWidgets[4].current() == 1) + ", "
-		setOfValues += "\"declawed\": " + str(self.setOfWidgets[4].current() == 0) + ", "
+		setOfValues += "\"fixed\": " + str(self.setOfWidgets[4].current() % 2 == 1) + ", " 
+		setOfValues += "\"outdoor\": " + str(self.setOfWidgets[5].current() == 1) + ", "
+		setOfValues += "\"declawed\": " + str(self.setOfWidgets[5].current() == 0) + ", "
 
 		# Compiling information from the Date/Time Section.
-		setOfValues += "\"dateOfBirth\": \"" + str(self.setOfWidgets[5].get()) + "\", "
-		setOfValues += "\"dateOfDeath\": \"" + str(self.setOfWidgets[6].get()) + "\", "
-		setOfValues += "\"reasonOfDeath\": \"" + str(self.setOfWidgets[7].get(1.0, "end").strip()) + "\", "
+		setOfValues += "\"dateOfBirth\": \"" + str(self.setOfWidgets[6].get()) + "\", "
+		setOfValues += "\"dateOfDeath\": \"" + str(self.setOfWidgets[7].get()) + "\", "
+		setOfValues += "\"reasonOfDeath\": \"" + str(self.setOfWidgets[8].get(1.0, "end").strip()) + "\", "
 
 		# Compiling information from the Statistics Section.
-		setOfValues += "\"weight\": " + str(self.setOfWidgets[8].get()) + ", "
-		setOfValues += "\"height\": " + str(self.setOfWidgets[9].get()) + ", "
-		setOfValues += "\"length\": " + str(self.setOfWidgets[10].get()) + ", "
+		setOfValues += "\"weight\": " + str(self.setOfWidgets[9].get()) + ", "
+		setOfValues += "\"height\": " + str(self.setOfWidgets[10].get()) + ", "
+		setOfValues += "\"length\": " + str(self.setOfWidgets[11].get()) + ", "
 
 		# Compiling information from the Extras Section.
-		setOfValues += "\"other\": \"" + str(self.setOfWidgets[11].get(1.0, "end").strip()) + "\"}"
+		setOfValues += "\"other\": \"" + str(self.setOfWidgets[12].get(1.0, "end").strip()) + "\"}"
 
+		print (setOfValues)
+
+		'''
 		# Send the JSON-string to the middleware for processing.
 		if (option == "add" and not sendJson(str(setOfValues), option)):
 			messagebox.showerror("Invalid Registration", "Registration Request could not be sent.")
 		if (option == "update" and not sendJson(str(setOfValues), option)):
 			messagebox.showerror("Invalid Upadte", "Update Request could not be sent.")
+			'''
 
 	# Creates the Login Interface and re-opens the PMS upon successful login.
 	#	@param:		None.
@@ -201,7 +207,12 @@ class MockInterface:
 		# Standard TextField widget for the Pet's Name.
 		Label(self.root, text="Name:").grid(row=0, column=0, padx=0, pady=(6,0), sticky='nsew')
 		widgetPetName = Entry(self.root)
-		widgetPetName.grid(row=0, column=1, columnspan=11, padx=(0,6), pady=(6,0), sticky='nsew')
+		widgetPetName.grid(row=0, column=1, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
+		self.setOfWidgets.append(widgetPetName)
+		# Standard TextField widget for the Pet's ID.
+		Label(self.root, text="PetID:").grid(row=0, column=6, padx=0, pady=(6,0), sticky='nsew')
+		widgetPetName = Entry(self.root)
+		widgetPetName.grid(row=0, column=7, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
 		self.setOfWidgets.append(widgetPetName)
 
 		### GENERAL-INFORMATION (PET-SPECIFIC) SECTION
@@ -308,7 +319,7 @@ class MockInterface:
 		addButton = Button(buttonBotFrame, text="  Add ", command=lambda:self.sendPetInputs("add"))
 		addButton.grid(row=0, column=0, padx=(12,6), pady=(4,6), sticky='nsew')
 		# Update Button: sends updates.
-		updateButton = Button(buttonBotFrame, text="Update", command=lambda:self.sendPetInputs("update"))
+		updateButton = Button(buttonBotFrame, text="Update", command=lambda:self.sendPetInputs(loginApp.getUserName(), "update"))
 		updateButton.grid(row=0, column=1, padx=(6,12), pady=(4,6), sticky='nsew')
 
 		# Updates the Interface of all occurring events.
