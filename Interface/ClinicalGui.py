@@ -39,6 +39,27 @@ class ClinicalGui:
 		else:
 			widgetBreeds.config(values=constBreeds[widgetSpecies.get()])
 
+	def OnDoubleClick(self, event):
+		
+		#print("you clicked on", self.tree.item(item))
+
+		top = Toplevel()
+		top.geometry("400x500")
+		#top.config(width = 80, height = 50)
+		top.title("Cat Details")
+
+		for i in range (18):
+			item = self.tree.selection()[0]
+			#msg = Message(top, text=constColumns[i] + ": " + (self.tree.item(item,"text")))
+			#msg.grid(row = i, column = 0)
+			#Label(self.root, text="Wt. (lbs):").grid(row=9, column=0, padx=0, pady=(15,0), sticky='nsew')
+			msg = Label(top, text=constColumns[i] + ": ").grid(row=i, column=0, padx=0, pady=(6,0), sticky='nsew')
+			msg = Label(top, text=(self.tree.item(item,"values"))).grid(row=i, column=6, padx=0, pady=(6,0), sticky='nsew')
+			#widgetOwnerID.grid(row=0, column=1, columnspan=5, padx=(0,6), pady=(15,0), sticky='nsew')
+
+		button = Button(top, text="Dismiss", command=top.destroy).grid(row=i+1, column=3, pady = (6,0), padx = 40)
+		#button.pack()
+
 	# This function takes all the values and constructs a JSON from all the fields 
 	def Search(self):
 		
@@ -101,6 +122,7 @@ class ClinicalGui:
 		for i in range(0,len(test["cats"])):
 			self.tree.insert('', 'end', text = test["cats"][i]['ownerid'], values = (test["cats"][i]['petid'], test["cats"][i]['name'], test["cats"][i]['breed'], test["cats"][i]['gender'], test["cats"][i]['weight']))
 		
+		self.tree.bind("<Double-1>", self.OnDoubleClick)
 		'''
 			T.insert(END,"Name:" + test["cats"][i]['name'] + "\n")
 			T.insert(END,"Petid:" + test["cats"][i]['petid'] + "\n")

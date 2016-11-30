@@ -40,9 +40,9 @@ constDeathReasons = [
 
 constColumns = [
     'Owner ID', 'Pet ID', 'Name', 'Breed', 'Gender', 'Microchip',
-    'Fitcat', 'Weight', 'DateofBirth', 'DateofDeath',
-    'ReasonforDeath', 'LastUpdated', 'DateAdded', 'Ribcage', 'Leglength', 
-    'LastVisit', 'Disease', 'Visible'
+    'Fitcat', 'Weight', 'Date of Birth', 'Date of Death',
+    'Reason for Death', 'Last Updated', 'Date Added', 'Ribcage', 'Leg Length', 
+    'Last Visit', 'Disease', 'Visible'
 ]
 
 constReducedColumns = [
