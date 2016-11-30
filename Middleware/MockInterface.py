@@ -26,7 +26,7 @@ class MockInterface:
 	#	@return:	None.
 	def updateBreedWidget(self, widgetSpecies, widgetBreeds):
 		if (widgetSpecies.get() == ""):
-			widgetBreeds.config(values=[])
+			widgetBreeds.config(values=None)
 		else:
 			widgetBreeds.config(values=constBreeds[widgetSpecies.get()])
 
@@ -138,38 +138,58 @@ class MockInterface:
 	#	@param:		The option that determines the operation of the function.
 	#	@return:	None.
 	def sendPetInputs(self, userID, option):
+		setOfValues = "{"
 		# Compiling information from the login credentials.
-		setOfValues = "{ \"petID\": " + str(self.setOfWidgets[1].get()) + ", "
+		if (self.setOfWidgets[1].get() != ""):
+			setOfValues += "\"petID\": " + str(self.setOfWidgets[1].get()) + ", "
 		setOfValues += "\"owner\": \"" + str(userID) + "\", "
 
 		# Compiling information from the General-Information Section.
 		setOfValues += "\"name\": \"" + str(self.setOfWidgets[0].get()) + "\", "
-		setOfValues += "\"animalTypeID\": " + str(self.setOfWidgets[3].current()) + ", "
-		setOfValues += "\"breed\": " + str(self.setOfWidgets[2].current()) + ", "
-		setOfValues += "\"gender\": " + str(self.setOfWidgets[4].current()) + ", "
-	#### MAYBE: these values should be added when a feline has been added. 
-		setOfValues += "\"fixed\": " + str(self.setOfWidgets[4].current() % 2 == 1) + ", " 
-		setOfValues += "\"outdoor\": " + str(self.setOfWidgets[5].current() == 1) + ", "
-		setOfValues += "\"declawed\": " + str(self.setOfWidgets[5].current() == 0) + ", "
+		setOfValues += "\"animalTypeID\": " + str(self.setOfWidgets[3].current() + 1) + ", "
+		setOfValues += "\"breed\": " + str(self.setOfWidgets[2].current() + 1) + ", "
+		setOfValues += "\"gender\": " + str(int(self.setOfWidgets[4].current() / 2) + 1) + ", "
+
+		if (self.setOfWidgets[4].current() % 2 == 1):
+			setOfValues += "\"fixed\": \"true\", " 
+		else:
+			setOfValues += "\"fixed\": \"false\", "
+
+		if (self.setOfWidgets[5].current() == 1):
+			setOfValues += "\"outdoor\": \"true\", " 
+		else:
+			setOfValues += "\"outdoor\": \"false\", "
+
+		if (self.setOfWidgets[5].current() == 0):
+			setOfValues += "\"declawed\": \"true\", " 
+		else:
+			setOfValues += "\"declawed\": \"false\", "
 
 		# Compiling information from the Date/Time Section.
 		setOfValues += "\"dateOfBirth\": \"" + str(self.setOfWidgets[6].get()) + "\", "
-		setOfValues += "\"dateOfDeath\": \"" + str(self.setOfWidgets[7].get()) + "\", "
-		setOfValues += "\"reasonOfDeath\": \"" + str(self.setOfWidgets[8].get(1.0, "end").strip()) + "\", "
+		if (self.setOfWidgets[7].get() != ""):
+			setOfValues += "\"dateOfDeath\": \"" + str(self.setOfWidgets[7].get()) + "\", "
+		if (self.setOfWidgets[8].get(1.0, "end").strip() != ""):
+			setOfValues += "\"reasonForDeath\": \"" + str(self.setOfWidgets[8].get(1.0, "end").strip()) + "\", "
 
 		# Compiling information from the Statistics Section.
 		setOfValues += "\"weight\": " + str(self.setOfWidgets[9].get()) + ", "
 		setOfValues += "\"height\": " + str(self.setOfWidgets[10].get()) + ", "
-		setOfValues += "\"length\": " + str(self.setOfWidgets[11].get()) + ", "
+		setOfValues += "\"length\": " + str(self.setOfWidgets[11].get()) 
 
 		# Compiling information from the Extras Section.
-		setOfValues += "\"other\": \"" + str(self.setOfWidgets[12].get(1.0, "end").strip()) + "\"}"
-
+		if (self.setOfWidgets[12].get(1.0, "end").strip() != ""):
+			setOfValues += ", \"other\": \"" + str(self.setOfWidgets[12].get(1.0, "end").strip()) + "\"}"
+		setOfValues +="}"
 		# Send the JSON-string to the middleware for processing.
 		if (option == "add" and not sendJson(str(setOfValues), option)):
 			messagebox.showerror("Invalid Registration", "Registration Request could not be sent.")
+		elif (option == "add"):
+			messagebox.showinfo("Successful Registration", "Registration Request was successful.")
 		if (option == "update" and not sendJson(str(setOfValues), option)):
 			messagebox.showerror("Invalid Upadte", "Update Request could not be sent.")
+		elif (option == "update"):
+			messagebox.showinfo("Successful Update", "Update Request was successful.")
 
 	# Creates the Login Interface and re-opens the PMS upon successful login.
 	#	@param:		None.

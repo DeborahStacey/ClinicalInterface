@@ -6,7 +6,7 @@ constLogins = [
 
 # A generalized compilation of all available animal breeds.
 constSpecies = [
-    "Feline", "Canine"]
+    "Canine", "Feline"]
 constBreeds = {
     "Feline":
         ["American Short-Hair", "British Short-Hair", "Cymric",
