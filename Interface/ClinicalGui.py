@@ -91,8 +91,12 @@ class ClinicalGui:
 			requests.append(widgetDateAdded.get())
 		temp = sendSearchRequest(requests, testVar)
 		test = json.loads(temp)
-		T.configure(state='normal')
+		#T.configure(state='normal')
+
+		
 		for i in range(0,len(test["cats"])):
+			self.tree.insert('', 'end', text = test["cats"][i]['ownerid'], values = (test["cats"][i]['petid'], test["cats"][i]['name'], test["cats"][i]['breed'], test["cats"][i]['gender'], test["cats"][i]['weight']))
+		'''
 			T.insert(END,"Name:" + test["cats"][i]['name'] + "\n")
 			T.insert(END,"Petid:" + test["cats"][i]['petid'] + "\n")
 			T.insert(END,"Ownerid" + test["cats"][i]['ownerid'] + "\n")
@@ -107,8 +111,8 @@ class ClinicalGui:
 			T.insert(END,"Height:" + test["cats"][i]['height'] + "\n")
 			T.insert(END,"DateAdded:" + test["cats"][i]['dateadded'] + "\n")
 			T.insert(END,"-------------------------" +"\n")
-
-		T.configure(state='disabled')
+		'''
+		#T.configure(state='disabled')
 		print ("Search")
 		return
 		
@@ -120,8 +124,6 @@ class ClinicalGui:
 		self.root = Tk()
 		self.root.wm_title(self.windowTitle);
 		self.root.resizable(width=True, height=True)
-
-
 
 		# Widgets for the OwnerID and PetID fields (disabled state).
 		Label(self.root, text="Owner ID:").grid(row=0, column=0, padx=0, pady=(15,0), sticky='nsew')
@@ -145,13 +147,6 @@ class ClinicalGui:
 		widgetPetName = Entry(self.root)
 		widgetPetName.grid(row=2, column=1, columnspan=11, padx=(0,6), pady=(15,0), sticky='nsew')
 		self.setOfWidgets.append(widgetPetName)
-		
-		#Label(self.root, text="Species:").grid(row=3, column=0, padx=0, pady=(15,0), sticky='nsew')
-		#global widgetSpecies
-		#widgetSpecies = ttk.Combobox(self.root, width=1, state="readonly", values=constSpecies)
-		#widgetSpecies.grid(row=3, column=1, columnspan=5, padx=(0,6), pady=(15,0), sticky='nsew')
-		#widgetSpecies.bind("<<ComboboxSelected>>", lambda e:self.updateBreedWidget(widgetSpecies, widgetBreed))
-		#self.setOfWidgets.append(widgetSpecies)
 
 
 		Label(self.root, text="Breed:").grid(row=3, column=0, padx=0, pady=(15,0), sticky='nsew')
@@ -247,16 +242,29 @@ class ClinicalGui:
 		searchButton = Button(self.root, text="Search", command=self.Search)
 		searchButton.grid(row=13, column=0, columnspan=12, padx=12, pady=(15,0), sticky='nsew')
 
+		Label(self.root, text="Search Results:").grid(row=15, column=5, pady=(15,0), sticky='nsew')
+		
+		self.tree = ttk.Treeview(self.root, columns = (constReducedColumns))
+		self.tree.heading('#0', text='Owner ID')
+		self.tree.heading('#1', text='Pet ID')
+		self.tree.heading('#2', text='Name')
+		self.tree.heading('#3', text='Breed')
+		self.tree.heading('#4', text='Gender')
+		self.tree.heading('#5', text='Weight')
+		
+		self.tree.column('#0', width = 65)
+		self.tree.column('#1', width = 60)
+		self.tree.column('#2', width = 80)
+		self.tree.column('#3', width = 80)
+		self.tree.column('#4', width = 120)
+		self.tree.column('#5', width = 60)
 
-		#global results
-		#results = Text(self.root, height=20, width=20, state = NORMAL)
-		#results.grid( column = 50, columnspan=12, padx=12,pady=(15,6))
-		#results.configure(state='disabled')
-		Label(self.root, text="Search Results:").grid(row=0, column=20, padx=(30,0), pady=(15,0), sticky='nsew')
-		global T
+		self.tree.grid(row=16, columnspan=15, sticky='nsew', pady = 10)
+		self.treeview = self.tree
+		'''global T
 		T = Text(self.root, height=25, width=70, state = NORMAL)
 		T.grid(row=1, column=15, rowspan = 14, columnspan=14, padx=5,pady=5)
-		T.configure(state='disabled')
+		T.configure(state='disabled')'''
 
 	# Presents the window instance to the user.
 	def show_Window(self):

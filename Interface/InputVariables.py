@@ -23,13 +23,13 @@ constLifeStyles = [
 
 # A generalized compilation of all available names.
 constNames = [
-	"Bella", "Tigger", "Chloe", "Shadow", "Luna", "Oreo",
-	"Oliver", "Kitty", "Lucy", "Molly", "Jasper", "Smokey", 
-	"Gizmo", "Simba", "Tiger", "Charlie", "Angel", "Jack",
-	"Lily", "Peanut", "Toby", "Baby", "Loki", "Midnight", "Milo",
-	"Sophie", "Harley", "Max", "Missy", "Rocky", "Zoe","CoCo", 
-	"Misty", "Pepper", "Oscar", "Sassy", "Bandit", "Boots", 
-	"Felix", "Tucker", "Simon", "Lucky", "Kiki", "Buddy"]
+    "Bella", "Tigger", "Chloe", "Shadow", "Luna", "Oreo",
+    "Oliver", "Kitty", "Lucy", "Molly", "Jasper", "Smokey", 
+    "Gizmo", "Simba", "Tiger", "Charlie", "Angel", "Jack",
+    "Lily", "Peanut", "Toby", "Baby", "Loki", "Midnight", "Milo",
+    "Sophie", "Harley", "Max", "Missy", "Rocky", "Zoe","CoCo", 
+    "Misty", "Pepper", "Oscar", "Sassy", "Bandit", "Boots", 
+    "Felix", "Tucker", "Simon", "Lucky", "Kiki", "Buddy"]
 
 # A generalized compilation of all available causes of death.
 constDeathReasons = [
@@ -37,3 +37,15 @@ constDeathReasons = [
     "Life-Threatening Injuries.", "Anaemia.", "Malnutrition.", 
     "Dehydration.","Cancer-related Death.", 
     "No Specific Cause of Death."]
+
+constColumns = [
+    'Owner ID', 'Pet ID', 'Name', 'Breed', 'Gender', 'Microchip',
+    'Fitcat', 'Weight', 'DateofBirth', 'DateofDeath',
+    'ReasonforDeath', 'LastUpdated', 'DateAdded', 'Ribcage', 'Leglength', 
+    'LastVisit', 'Disease', 'Visible'
+]
+
+constReducedColumns = [
+    'Pet ID', 'Name', 'Breed', 'Gender',
+    'Weight'
+]
