@@ -93,9 +93,14 @@ class ClinicalGui:
 		test = json.loads(temp)
 		#T.configure(state='normal')
 
+		#clears field only if there are previous entries
+		if (self.tree.get_children()):
+			self.tree.delete(self.tree.get_children())
 		
+		#add search results to the treeview
 		for i in range(0,len(test["cats"])):
 			self.tree.insert('', 'end', text = test["cats"][i]['ownerid'], values = (test["cats"][i]['petid'], test["cats"][i]['name'], test["cats"][i]['breed'], test["cats"][i]['gender'], test["cats"][i]['weight']))
+		
 		'''
 			T.insert(END,"Name:" + test["cats"][i]['name'] + "\n")
 			T.insert(END,"Petid:" + test["cats"][i]['petid'] + "\n")
@@ -242,7 +247,7 @@ class ClinicalGui:
 		searchButton = Button(self.root, text="Search", command=self.Search)
 		searchButton.grid(row=13, column=0, columnspan=12, padx=12, pady=(15,0), sticky='nsew')
 
-		Label(self.root, text="Search Results:").grid(row=15, column=5, pady=(15,0), sticky='nsew')
+		Label(self.root, text="Search Results:").grid(row=15, column=5, padx = 10 ,pady=(15,0), sticky='nsew')
 		
 		self.tree = ttk.Treeview(self.root, columns = (constReducedColumns))
 		self.tree.heading('#0', text='Owner ID')
@@ -259,8 +264,15 @@ class ClinicalGui:
 		self.tree.column('#4', width = 120)
 		self.tree.column('#5', width = 60)
 
+
+		'''self.treeScroll = ttk.Scrollbar(self.root, orient = 'vertical', command=self.tree.yview)
+		self.treeScroll.configure(command=self.tree.yview)
+		self.tree.configure(yscroll=self.treeScroll.set)
+
+		'''
 		self.tree.grid(row=16, columnspan=15, sticky='nsew', pady = 10)
 		self.treeview = self.tree
+		
 		'''global T
 		T = Text(self.root, height=25, width=70, state = NORMAL)
 		T.grid(row=1, column=15, rowspan = 14, columnspan=14, padx=5,pady=5)
