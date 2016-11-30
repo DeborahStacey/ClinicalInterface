@@ -92,7 +92,6 @@ class ClinicalGui:
 		temp = sendSearchRequest(requests, testVar)
 		test = json.loads(temp)
 		T.configure(state='normal')
-		T.insert(END,temp)
 		for i in range(0,len(test["cats"])):
 			T.insert(END,"Name:" + test["cats"][i]['name'] + "\n")
 			T.insert(END,"Petid:" + test["cats"][i]['petid'] + "\n")

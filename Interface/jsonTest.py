@@ -20,15 +20,15 @@ def sendSearchRequest(requests,varNames):
 	counter = 0
 	jsonMessage2 += '"field":' 
 	print("number of varnames" + str(len(varNames)))
-	if(len(varNames)>2):
+	if(len(varNames)>=2):
 		jsonMessage2 += '[{"$and":['
 	for field in searchFields: 
 	    jsonMessage2 += '{' +'"' + varNames[counter] + '"' + ':' + '{' + '"' + "eq" + '"' + ':' + field + '}' + '}'
-	    if(len(varNames)>2 and counter<(len(varNames)-2) ):
+	    if(len(varNames)>=2 and counter<(len(varNames)-1) ):
 	    	jsonMessage2 += ','
 	    counter+= 1
 
-	if(len(varNames)>2):
+	if(len(varNames)>=2):
 		jsonMessage2+= ']}]'
 	jsonMessage2 += '}'
 
@@ -38,7 +38,7 @@ def sendSearchRequest(requests,varNames):
   
 	#Recieve response from server
 	target = open("test.txt", 'w')
-	data = s.recv(900000)
+	data = s.recv(32767)
 	#test = json.loads(data)
 	print('server returned: ' + data.decode('utf-8'))
 
