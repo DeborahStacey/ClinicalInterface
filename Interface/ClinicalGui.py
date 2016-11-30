@@ -40,25 +40,30 @@ class ClinicalGui:
 			widgetBreeds.config(values=constBreeds[widgetSpecies.get()])
 
 	def OnDoubleClick(self, event):
-		
-		#print("you clicked on", self.tree.item(item))
 
 		top = Toplevel()
-		top.geometry("400x500")
-		#top.config(width = 80, height = 50)
+		top.geometry("400x550")
 		top.title("Cat Details")
 
-		for i in range (18):
+		#store all details in a list for the selected cat
+		item = self.tree.selection()[0]
+		detailList = self.tree.item(item, "values")
+
+		msg = Label(top, text="Owner ID: ").grid(row=0, column=0, padx=0, pady=(6,0), sticky='nsew')
+		msg = Label(top, text=(self.tree.item(item, "text"))).grid(row=0, column=3, padx=0, pady=(6,0), sticky='nsew')
+	
+		for i in range (19):
 			item = self.tree.selection()[0]
 			#msg = Message(top, text=constColumns[i] + ": " + (self.tree.item(item,"text")))
 			#msg.grid(row = i, column = 0)
 			#Label(self.root, text="Wt. (lbs):").grid(row=9, column=0, padx=0, pady=(15,0), sticky='nsew')
-			msg = Label(top, text=constColumns[i] + ": ").grid(row=i, column=0, padx=0, pady=(6,0), sticky='nsew')
-			msg = Label(top, text=(self.tree.item(item,"values"))).grid(row=i, column=6, padx=0, pady=(6,0), sticky='nsew')
-			#widgetOwnerID.grid(row=0, column=1, columnspan=5, padx=(0,6), pady=(15,0), sticky='nsew')
-
-		button = Button(top, text="Dismiss", command=top.destroy).grid(row=i+1, column=3, pady = (6,0), padx = 40)
-		#button.pack()
+			msg = Label(top, text=constColumns[i] + ": ").grid(row=i+1, column=0, padx=0, pady=(6,0), sticky='nsew')
+			msg = Label(top, text=(detailList[i])).grid(row=i+1, column=3, padx=0, pady=(6,0), sticky='nsew')
+	
+		msg = Label(top, text=constColumns[i] + ": ").grid(row=i+1, column=0, padx=0, pady=(6,0), sticky='nsew')
+		msg = Label(top, text=(detailList[i])).grid(row=i+1, column=3, padx=0, pady=(6,0), sticky='nsew')
+		
+		button = Button(top, text="Dismiss", command=top.destroy).grid(row=i+2, column=3, pady = 6, padx = 40)
 
 	# This function takes all the values and constructs a JSON from all the fields 
 	def Search(self):
@@ -115,32 +120,17 @@ class ClinicalGui:
 		#T.configure(state='normal')
 
 		#clears field only if there are previous entries
-		if (self.tree.get_children()):
-			self.tree.delete(self.tree.get_children())
+		#if (self.tree.get_children()):
+			#self.tree.delete(self.tree.get_children())
 		
 		#add search results to the treeview
 		for i in range(0,len(test["cats"])):
-			self.tree.insert('', 'end', text = test["cats"][i]['ownerid'], values = (test["cats"][i]['petid'], test["cats"][i]['name'], test["cats"][i]['breed'], test["cats"][i]['gender'], test["cats"][i]['weight']))
-		
+			self.tree.insert('', 'end', text = test["cats"][i]['ownerid'], values = (test["cats"][i]['petid'], test["cats"][i]['name'], test["cats"][i]['breed'], test["cats"][i]['gender'], test["cats"][i]['weight'],
+			test["cats"][i]['height'], test["cats"][i]['length'], test["cats"][i]['microchip'], test["cats"][i]['fitcat'], test["cats"][i]['dateofbirth'], test["cats"][i]['dateofdeath'], test["cats"][i]['reasonfordeath'], test["cats"][i]['lastupdated'],
+			test["cats"][i]['dateadded'], test["cats"][i]['ribcage'], test["cats"][i]['leglength'], test["cats"][i]['lastvisit'], test["cats"][i]['disease'], test["cats"][i]['visible'] ))
+
 		self.tree.bind("<Double-1>", self.OnDoubleClick)
-		'''
-			T.insert(END,"Name:" + test["cats"][i]['name'] + "\n")
-			T.insert(END,"Petid:" + test["cats"][i]['petid'] + "\n")
-			T.insert(END,"Ownerid" + test["cats"][i]['ownerid'] + "\n")
-			T.insert(END,"Gender" + test["cats"][i]['gender'] + "\n")
-			T.insert(END,"ReasonforDeath:" + test["cats"][i]['reasonfordeath'] + "\n")
-			T.insert(END,"Dateofdeath:"+test["cats"][i]['dateofdeath'] + "\n")
-			T.insert(END,"fitcat:" + test["cats"][i]['fitcat'] + "\n")
-			T.insert(END,"Microchip:" + test["cats"][i]['microchip'] + "\n")
-			T.insert(END,"Breed:" + test["cats"][i]['breed'] + "\n")
-			T.insert(END,"Lastupdated:" + test["cats"][i]['lastupdated'] + "\n")
-			T.insert(END,"Weight:" + test["cats"][i]['weight'] + "\n")
-			T.insert(END,"Height:" + test["cats"][i]['height'] + "\n")
-			T.insert(END,"DateAdded:" + test["cats"][i]['dateadded'] + "\n")
-			T.insert(END,"-------------------------" +"\n")
-		'''
-		#T.configure(state='disabled')
-		print ("Search")
+		
 		return
 		
 
@@ -271,14 +261,30 @@ class ClinicalGui:
 
 		Label(self.root, text="Search Results:").grid(row=15, column=5, padx = 10 ,pady=(15,0), sticky='nsew')
 		
-		self.tree = ttk.Treeview(self.root, columns = (constReducedColumns))
+		self.tree = ttk.Treeview(self.root, columns = (constColumns))
 		self.tree.heading('#0', text='Owner ID')
 		self.tree.heading('#1', text='Pet ID')
 		self.tree.heading('#2', text='Name')
 		self.tree.heading('#3', text='Breed')
 		self.tree.heading('#4', text='Gender')
 		self.tree.heading('#5', text='Weight')
+		self.tree.heading('#6', text='Height')
+		self.tree.heading('#7', text='Length')
+		self.tree.heading('#8', text='Microchip')
+		self.tree.heading('#9', text='Fitcat')
+		self.tree.heading('#10', text='Date of Birth')
+		self.tree.heading('#11', text='Date of Death')
+		self.tree.heading('#12', text='Reason for Death')
+		self.tree.heading('#13', text='Last Updated')
+		self.tree.heading('#14', text='Date Added')
+		self.tree.heading('#15', text='Ribcage')
+		self.tree.heading('#16', text='Leg Length')
+		self.tree.heading('#17', text='Last Visit')
+		self.tree.heading('#18', text='Disease')
+		self.tree.heading('#19', text='Visible')
 		
+
+		#adjustments for each of the displayed columns
 		self.tree.column('#0', width = 65)
 		self.tree.column('#1', width = 60)
 		self.tree.column('#2', width = 80)
@@ -286,7 +292,7 @@ class ClinicalGui:
 		self.tree.column('#4', width = 120)
 		self.tree.column('#5', width = 60)
 
-
+		self.tree["displaycolumns"]=(constReducedColumns)
 		'''self.treeScroll = ttk.Scrollbar(self.root, orient = 'vertical', command=self.tree.yview)
 		self.treeScroll.configure(command=self.tree.yview)
 		self.tree.configure(yscroll=self.treeScroll.set)

@@ -39,8 +39,8 @@ constDeathReasons = [
     "No Specific Cause of Death."]
 
 constColumns = [
-    'Owner ID', 'Pet ID', 'Name', 'Breed', 'Gender', 'Microchip',
-    'Fitcat', 'Weight', 'Date of Birth', 'Date of Death',
+    'Pet ID', 'Name', 'Breed', 'Gender', 'Weight', 'Height', 'Length', 'Microchip',
+    'Fitcat', 'Date of Birth', 'Date of Death',
     'Reason for Death', 'Last Updated', 'Date Added', 'Ribcage', 'Leg Length', 
     'Last Visit', 'Disease', 'Visible'
 ]
