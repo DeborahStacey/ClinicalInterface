@@ -42,7 +42,7 @@ class ClinicalGui:
 	def OnDoubleClick(self, event):
 
 		top = Toplevel()
-		top.geometry("400x550")
+		top.geometry("380x550")
 		top.title("Cat Details")
 
 		#store all details in a list for the selected cat
@@ -63,7 +63,7 @@ class ClinicalGui:
 		msg = Label(top, text=constColumns[i] + ": ").grid(row=i+1, column=0, padx=0, pady=(6,0), sticky='nsew')
 		msg = Label(top, text=(detailList[i])).grid(row=i+1, column=3, padx=0, pady=(6,0), sticky='nsew')
 		
-		button = Button(top, text="Dismiss", command=top.destroy).grid(row=i+2, column=3, pady = 6, padx = 40)
+		button = Button(top, text="Dismiss", command=top.destroy).grid(row=i+2, column=2, pady = 6)
 
 	# This function takes all the values and constructs a JSON from all the fields 
 	def Search(self):
@@ -101,7 +101,7 @@ class ClinicalGui:
 			requests.append(widgetDeathDate.get())
 		if(checkFitCat.get() == 1):
 			testVar.append("fitcat")
-			print("YES WORKING")
+			#print("YES WORKING")
 			requests.append("\"" + "True" + "\"")
 		if(checkMicrochip.get() == 1):
 			testVar.append("microchip")
@@ -120,8 +120,8 @@ class ClinicalGui:
 		#T.configure(state='normal')
 
 		#clears field only if there are previous entries
-		#if (self.tree.get_children()):
-			#self.tree.delete(self.tree.get_children())
+		for row in self.tree.get_children():
+			self.tree.delete(row)
 		
 		#add search results to the treeview
 		for i in range(0,len(test["cats"])):

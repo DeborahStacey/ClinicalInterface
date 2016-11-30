@@ -12,7 +12,7 @@ def sendSearchRequest(requests,varNames):
 	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	s.connect((host, port))
 
-	print ("Server connected \nhost: " + host + "\nPort: " + str(port))
+	#print ("Server connected \nhost: " + host + "\nPort: " + str(port))
 
 	searchFields = requests
 
@@ -32,7 +32,7 @@ def sendSearchRequest(requests,varNames):
 		jsonMessage2+= ']}]'
 	jsonMessage2 += '}'
 
-	print (jsonMessage2)
+	#print (jsonMessage2)
 	#print "Created JSON search: " + jsonMessage2
 	s.sendall(jsonMessage2.encode('utf-8'))
   
@@ -44,8 +44,8 @@ def sendSearchRequest(requests,varNames):
 		if not data:break
 		info += data.decode('utf-8') 
 	#test = json.loads(data)
-	print (info)
-	print('server returned: ' + data.decode('utf-8'))
+	#print (info)
+	#print('server returned: ' + data.decode('utf-8'))
 
 	s.close()
 	#test = json.loads(data.decode('utf-8'))
