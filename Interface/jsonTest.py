@@ -38,7 +38,7 @@ def sendSearchRequest(requests,varNames):
   
 	#Recieve response from server
 	target = open("test.txt", 'w')
-	data = s.recv(1024)
+	data = s.recv(900000)
 	#test = json.loads(data)
 	print('server returned: ' + data.decode('utf-8'))
 
