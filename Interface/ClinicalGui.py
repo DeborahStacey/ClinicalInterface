@@ -88,6 +88,26 @@ class ClinicalGui:
 		
 		testVar = []
 		requests = []
+		
+
+		#setting temporary numerical values for breeds and genders for database
+		if(widgetBreed.get() == "Feline"):
+			breedNum = 1
+		if(widgetBreed.get() == "American Bobtail"):
+			breedNum = 2
+		if(widgetBreed.get() == "Bengal"):
+			breedNum = 3
+		if(widgetBreed.get() == "Persian"):
+			breedNum = 4
+		if (widgetGender.get() == "Male"):
+			genderNum = 1
+		if (widgetGender.get() == "Male (Neutered)"):
+			genderNum = 2
+		if (widgetGender.get() == "Female"):
+			genderNum = 3
+		if (widgetGender.get() == "Female (Spayed)"):
+			genderNum = 4
+
 		if(widgetOwnerID.get()):
 			#print("value entered")
 			testVar.append("ownerid")
@@ -110,7 +130,7 @@ class ClinicalGui:
 			requests.append(widgetHeight.get())
 		if(widgetGender.get()):
 			testVar.append("gender")
-			requests.append(widgetGender.get())
+			requests.append(str(genderNum))
 		if(widgetReasonDeath.get()):
 			testVar.append("reasonfordeath")
 			requests.append(widgetReasonDeath.get())
@@ -126,7 +146,7 @@ class ClinicalGui:
 			requests.append("\"" + "True" + "\"")
 		if(widgetBreed.get()):
 			testVar.append("breed")
-			requests.append(widgetBreed.get())
+			requests.append(str(breedNum))
 		if(widgetDateUpdate.get()):
 			testVar.append("lastupdated")
 			requests.append(widgetDateUpdate.get())
@@ -185,7 +205,7 @@ class ClinicalGui:
 
 		Label(self.root, text="Breed:").grid(row=3, column=0, padx=0, pady=(15,0), sticky='nsew')
 		global widgetBreed
-		widgetBreed = ttk.Combobox(self.root, width=1, state="readonly", values = [1,2,3,4,5])
+		widgetBreed = ttk.Combobox(self.root, width=1, state="readonly", values = ["Feline", "American Bobtail", "Bengal", "Persian"])
 		widgetBreed.grid(row=3, column=1, columnspan=5, padx=(0,6), pady=(15,0), sticky='nsew')
 		self.setOfWidgets.append(widgetBreed)
 		
