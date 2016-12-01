@@ -236,10 +236,10 @@ class ClinicalGui:
 		widgetDeathDate.grid(row=6, column=7, columnspan=5, padx=(0,6), pady=(15,0), sticky='nsew')
 		self.setOfWidgets.append(widgetDeathDate)
 
-		Label(self.root, text="Reason for Death:").grid(row=7, column=6, padx=0, pady=(15,0), sticky='nsew')
+		Label(self.root, text="Reason for Death:").grid(row=7, column=0, padx=0, pady=(15,0), sticky='nsew')
 		global widgetReasonDeath
 		widgetReasonDeath = Entry(self.root)
-		widgetReasonDeath.grid(row=7, column=8, columnspan=5, padx=(0,6), pady=(15,0), sticky='nsew')
+		widgetReasonDeath.grid(row=7, column=1, columnspan=12, padx=(0,6), pady=(15,0), sticky='nsew')
 		self.setOfWidgets.append(widgetReasonDeath)
 
 		# Horizontal line that separates the widgets as groups.
