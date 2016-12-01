@@ -307,22 +307,20 @@ class ClinicalGui:
 		self.tree.heading('#17', text='Last Visit')
 		self.tree.heading('#18', text='Disease')
 		self.tree.heading('#19', text='Visible')
-		
 
 		#adjustments for each of the displayed columns
-		self.tree.column('#0', width = 65)
-		self.tree.column('#1', width = 65)
-		self.tree.column('#2', width = 65)
-		self.tree.column('#3', width = 65)
-		self.tree.column('#4', width = 65)
-		self.tree.column('#5', width = 65)
+		self.tree.column('#0', width = 65, minwidth = 40)
+		self.tree.column('#1', width = 65, minwidth = 40)
+		self.tree.column('#2', width = 80, minwidth = 40)
+		self.tree.column('#3', width = 65, minwidth = 40)
+		self.tree.column('#4', width = 65, minwidth = 40)
+		self.tree.column('#5', width = 65, minwidth = 40)
 
 		self.tree["displaycolumns"]=(constReducedColumns)
-		'''self.treeScroll = ttk.Scrollbar(self.root, orient = 'vertical', command=self.tree.yview)
-		self.treeScroll.configure(command=self.tree.yview)
-		self.tree.configure(yscroll=self.treeScroll.set)
 
-		'''
+		self.treeScroll = ttk.Scrollbar(self.root, orient = 'vertical', command=self.tree.yview)
+		self.tree.configure(yscroll=self.treeScroll.set)
+		self.treeScroll.grid(row=16, column = 13, sticky='nsew', pady = 10)
 		self.tree.grid(row=16, columnspan=12, sticky='nsew', pady = 10)
 		self.treeview = self.tree
 
