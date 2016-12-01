@@ -9,11 +9,11 @@ loginApp = login("Login", 0)
 
 
 # Open the login window
-#loginApp.create_Window()
-#temp = loginApp.show_Window()
-#status = loginApp.get_loginStatus()
+loginApp.create_Window()
+temp = loginApp.show_Window()
+status = loginApp.get_loginStatus()
 
-#if (status == True):
+if (status == True):
 	# Open the Clinical Interface window
-interfaceApp.create_Window()
-interfaceApp.show_Window()
+	interfaceApp.create_Window()
+	interfaceApp.show_Window()

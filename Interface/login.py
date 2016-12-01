@@ -17,10 +17,8 @@ class login:
 		self.windowTitle = title
 		self.status = status
 
-
 	def get_loginStatus(self):
 
-		
 		if(self.status == 1):
 			return True
 			print("successful Log in")
@@ -29,8 +27,6 @@ class login:
 
 	#login function that validates user credentials
 	def loginFunction(self):
-		#print (username.get() + "\n" + password.get() + "\n")
-		#print (password.get())
 
 		loginString = {"email": username.get(), "password": password.get()}
 		loginObj = json.dumps(loginString)
@@ -43,10 +39,9 @@ class login:
 			self.root.destroy()
 			self.status = 1
 			test = self.get_loginStatus()
-			print("Successfully logged in")
 
 		else:
-			print("Invalid log in")
+			self.invalid = Label(self.root, text="Invalid Login", fg = "red").grid(row=2, column=1, padx=(6,0), pady=10, sticky='nsew')
 
 	# Creates a non-resizable window instance (other variables are set separately).
 	#	@param:	 The list of prompts to be included in the App.
@@ -68,9 +63,11 @@ class login:
 		password = Entry(self.root, show="*")
 		password.grid(row=1, column=1, columnspan=5, padx=(0,6), pady=(6,0), sticky='nsew')
 
+
+		#self.invalid = Label(self.root, text="").grid(row=2, column=0, padx=0, pady=10, sticky='nsew')
 		# Search button that takes all input and constructs a JSON object to query to the database
 		loginButton = Button(self.root, text="Log In", command=self.loginFunction)
-		loginButton.grid(row=2, column=0, columnspan=2, padx=(100,0), pady=(30), sticky='nsew')
+		loginButton.grid(row=3, column=0, columnspan=2, padx=(120,0), pady=(30), sticky='nsew')
 
 	def show_Window(self):
 		self.root.mainloop();

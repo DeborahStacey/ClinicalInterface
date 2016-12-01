@@ -109,24 +109,19 @@ class ClinicalGui:
 			genderNum = 4
 
 		if(widgetOwnerID.get()):
-			#print("value entered")
 			testVar.append("ownerid")
 			requests.append(widgetOwnerID.get())
 		if(widgetPetName.get()):
-			#print("value entered")
 			testVar.append("name")
 			requests.append("\""+ widgetPetName.get() +"\"")
 		if(widgetPetID.get()):
 			testVar.append("petid")
-			#print("value entered")
 			requests.append(widgetPetID.get())
 		if(widgetWeight.get()):
 			testVar.append("weight")
 			requests.append(widgetWeight.get())
-			#print("value entered")
 		if(widgetHeight.get()):
 			testVar.append("height")
-			#print("value entered")
 			requests.append(widgetHeight.get())
 		if(widgetGender.get()):
 			testVar.append("gender")
@@ -139,7 +134,6 @@ class ClinicalGui:
 			requests.append(widgetDeathDate.get())
 		if(checkFitCat.get() == 1):
 			testVar.append("fitcat")
-			#print("YES WORKING")
 			requests.append("\"" + "True" + "\"")
 		if(checkMicrochip.get() == 1):
 			testVar.append("microchip")
@@ -155,12 +149,11 @@ class ClinicalGui:
 			requests.append(widgetDateAdded.get())
 		temp = sendSearchRequest(requests, testVar)
 		test = json.loads(temp)
-		#T.configure(state='normal')
 
 		#clears field only if there are previous entries
 		for row in self.tree.get_children():
 			self.tree.delete(row)
-		
+
 		#add search results to the treeview
 		for i in range(0,len(test["cats"])):
 			self.tree.insert('', 'end', text = test["cats"][i]['ownerid'], values = (test["cats"][i]['petid'], test["cats"][i]['name'], test["cats"][i]['breed'], test["cats"][i]['gender'], test["cats"][i]['weight'],
@@ -177,7 +170,7 @@ class ClinicalGui:
 		# Main root instance for the window.
 		self.root = Tk()
 		self.root.wm_title(self.windowTitle);
-		self.root.resizable(width=True, height=True)
+		self.root.resizable(width=False, height=False)
 		self.setOfWidgets = []
 
 		# Widgets for the OwnerID and PetID fields (disabled state).
