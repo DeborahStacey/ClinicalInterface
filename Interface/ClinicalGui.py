@@ -110,13 +110,13 @@ class ClinicalGui:
 
 		if(widgetOwnerID.get()):
 			testVar.append("ownerid")
-			requests.append(widgetOwnerID.get())
+			requests.append("\"" + widgetOwnerID.get() + "\"")
 		if(widgetPetName.get()):
 			testVar.append("name")
 			requests.append("\""+ widgetPetName.get() +"\"")
 		if(widgetPetID.get()):
 			testVar.append("petid")
-			requests.append(widgetPetID.get())
+			requests.append("\""+widgetPetID.get() +"\"")
 		if(widgetWeight.get()):
 			testVar.append("weight")
 			requests.append(widgetWeight.get())
@@ -128,10 +128,10 @@ class ClinicalGui:
 			requests.append(str(genderNum))
 		if(widgetReasonDeath.get()):
 			testVar.append("reasonfordeath")
-			requests.append(widgetReasonDeath.get())
+			requests.append("\"" + widgetReasonDeath.get()+"\"")
 		if(widgetDeathDate.get()):
 			testVar.append("dateofdeath")
-			requests.append(widgetDeathDate.get())
+			requests.append("\"" + widgetDeathDate.get()+"\"")
 		if(checkFitCat.get() == 1):
 			testVar.append("fitcat")
 			requests.append("\"" + "True" + "\"")
@@ -143,10 +143,10 @@ class ClinicalGui:
 			requests.append(str(breedNum))
 		if(widgetDateUpdate.get()):
 			testVar.append("lastupdated")
-			requests.append(widgetDateUpdate.get())
+			requests.append("\"" + widgetDateUpdate.get()+"\"")
 		if(widgetDateAdded.get()):
 			testVar.append("dateadded")
-			requests.append(widgetDateAdded.get())
+			requests.append("\"" + widgetDateAdded.get()+"\"")
 		temp = sendSearchRequest(requests, testVar)
 		test = json.loads(temp)
 
@@ -211,7 +211,6 @@ class ClinicalGui:
 		Label(self.root, text="Microchip:").grid(row=4, column=0, padx=0, pady=(15,0), sticky='nsew')
 		global widgetMicrochip
 		global checkMicrochip
-	#	checkMicrochip = bool()
 		checkMicrochip = IntVar()
 		widgetMicrochip = Checkbutton(self.root,variable = checkMicrochip)
 		widgetMicrochip.grid(row=4, column=1, columnspan=3, sticky='ws')
@@ -221,7 +220,6 @@ class ClinicalGui:
 		global widgetFitCat
 		global checkFitCat
 		checkFitCat = IntVar()
-	#	checkFitCat = bool()
 		widgetFitCat = Checkbutton(self.root, variable = checkFitCat)
 		widgetFitCat.grid(row=4, column=5, columnspan=3, sticky='ws')
 		self.setOfWidgets.append(widgetFitCat)
