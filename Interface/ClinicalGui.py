@@ -284,7 +284,7 @@ class ClinicalGui:
 		clearButton = Button(buttonFrame, text=" Reset  ", command=self.resetFields, bg = "grey")
 		clearButton.grid(row=0, column=2, padx=70, pady=(4,6), sticky='nsew')
 
-		Label(self.root, text="Search Results:").grid(row=15, column=5, padx = 10 ,pady=(15,0), sticky='nsew')
+		#Label(self.root, text="Search Results:").grid(row=15, column=5, padx = 10 ,pady=(15,0), sticky='nsew')
 		
 		self.tree = ttk.Treeview(self.root, columns = (constColumns))
 		self.tree.heading('#0', text='Owner ID')
