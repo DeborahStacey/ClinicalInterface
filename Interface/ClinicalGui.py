@@ -28,7 +28,7 @@ class ClinicalGui:
 	#	@param:  The name of the Application. 
 	def __init__(self, title):
 		self.windowTitle = title
-		self.setOfWidgets = []
+		#self.setOfWidgets = []
 		self.clientWidgetCount = 0
 		self.patientWidgetCount = 0
 
@@ -38,6 +38,24 @@ class ClinicalGui:
 			widgetBreeds.config(values=[])
 		else:
 			widgetBreeds.config(values=constBreeds[widgetSpecies.get()])
+
+	#resets the fields in the search boxes
+	def resetFields(self):
+		self.setOfWidgets[0].delete(0, "end")
+		self.setOfWidgets[1].delete(0, "end")
+		self.setOfWidgets[2].delete(0, "end")
+		self.setOfWidgets[3].set("")
+		self.setOfWidgets[4].set("")
+		self.setOfWidgets[5].deselect()
+		self.setOfWidgets[6].deselect()
+		self.setOfWidgets[7].delete(0, "end")
+		self.setOfWidgets[8].delete(0, "end")
+		self.setOfWidgets[9].delete(0, "end")
+		self.setOfWidgets[10].delete(0, "end")
+		self.setOfWidgets[11].delete(0, "end")
+		self.setOfWidgets[12].delete(0, "end")
+		self.setOfWidgets[13].delete(0, "end")
+		self.setOfWidgets[14].delete(0, "end")
 
 	def OnDoubleClick(self, event):
 
@@ -71,24 +89,24 @@ class ClinicalGui:
 		testVar = []
 		requests = []
 		if(widgetOwnerID.get()):
-			print("value entered")
+			#print("value entered")
 			testVar.append("ownerid")
 			requests.append(widgetOwnerID.get())
 		if(widgetPetName.get()):
-			print("value entered")
+			#print("value entered")
 			testVar.append("name")
 			requests.append("\""+ widgetPetName.get() +"\"")
 		if(widgetPetID.get()):
 			testVar.append("petid")
-			print("value entered")
+			#print("value entered")
 			requests.append(widgetPetID.get())
 		if(widgetWeight.get()):
 			testVar.append("weight")
 			requests.append(widgetWeight.get())
-			print("value entered")
+			#print("value entered")
 		if(widgetHeight.get()):
 			testVar.append("height")
-			print("value entered")
+			#print("value entered")
 			requests.append(widgetHeight.get())
 		if(widgetGender.get()):
 			testVar.append("gender")
@@ -133,7 +151,6 @@ class ClinicalGui:
 		
 		return
 		
-
 	# Creates a non-resizable window instance (other variables are set separately).
 	#	@param:	 The list of prompts to be included in the App.
 	def create_Window(self):
@@ -141,6 +158,7 @@ class ClinicalGui:
 		self.root = Tk()
 		self.root.wm_title(self.windowTitle);
 		self.root.resizable(width=True, height=True)
+		self.setOfWidgets = []
 
 		# Widgets for the OwnerID and PetID fields (disabled state).
 		Label(self.root, text="Owner ID:").grid(row=0, column=0, padx=0, pady=(15,0), sticky='nsew')
@@ -165,10 +183,9 @@ class ClinicalGui:
 		widgetPetName.grid(row=2, column=1, columnspan=11, padx=(0,6), pady=(15,0), sticky='nsew')
 		self.setOfWidgets.append(widgetPetName)
 
-
 		Label(self.root, text="Breed:").grid(row=3, column=0, padx=0, pady=(15,0), sticky='nsew')
 		global widgetBreed
-		widgetBreed = ttk.Combobox(self.root, width=1, state="readonly")
+		widgetBreed = ttk.Combobox(self.root, width=1, state="readonly", values = [1,2,3,4,5])
 		widgetBreed.grid(row=3, column=1, columnspan=5, padx=(0,6), pady=(15,0), sticky='nsew')
 		self.setOfWidgets.append(widgetBreed)
 		
@@ -255,9 +272,17 @@ class ClinicalGui:
 		# Horizontal line that separates the widgets as groups.
 		ttk.Separator(self.root, orient="horizontal").grid(row=12, columnspan=12, pady=(15,0))
 
-		# Search button that takes all input and constructs a JSON object to query to the database
-		searchButton = Button(self.root, text="Search", command=self.Search)
-		searchButton.grid(row=13, column=0, columnspan=12, padx=12, pady=(15,0), sticky='nsew')
+		buttonFrame = Frame(self.root)
+		buttonFrame.grid(row=13, column=0, columnspan=12, sticky='nsew')
+		for i in range(0, 3):
+			buttonFrame.grid_columnconfigure(i, weight=1)
+
+		# AutoFill Button: generates sample inputs.
+		searchButton = Button(buttonFrame, text="Search", command=self.Search, bg = "grey")
+		searchButton.grid(row=0, column=0, padx=70, pady=(4,6), sticky='nsew')
+		# Reset Button: resets all inputs.
+		clearButton = Button(buttonFrame, text=" Reset  ", command=self.resetFields, bg = "grey")
+		clearButton.grid(row=0, column=2, padx=70, pady=(4,6), sticky='nsew')
 
 		Label(self.root, text="Search Results:").grid(row=15, column=5, padx = 10 ,pady=(15,0), sticky='nsew')
 		
@@ -286,11 +311,11 @@ class ClinicalGui:
 
 		#adjustments for each of the displayed columns
 		self.tree.column('#0', width = 65)
-		self.tree.column('#1', width = 60)
-		self.tree.column('#2', width = 80)
-		self.tree.column('#3', width = 80)
-		self.tree.column('#4', width = 120)
-		self.tree.column('#5', width = 60)
+		self.tree.column('#1', width = 65)
+		self.tree.column('#2', width = 65)
+		self.tree.column('#3', width = 65)
+		self.tree.column('#4', width = 65)
+		self.tree.column('#5', width = 65)
 
 		self.tree["displaycolumns"]=(constReducedColumns)
 		'''self.treeScroll = ttk.Scrollbar(self.root, orient = 'vertical', command=self.tree.yview)
@@ -298,13 +323,8 @@ class ClinicalGui:
 		self.tree.configure(yscroll=self.treeScroll.set)
 
 		'''
-		self.tree.grid(row=16, columnspan=15, sticky='nsew', pady = 10)
+		self.tree.grid(row=16, columnspan=12, sticky='nsew', pady = 10)
 		self.treeview = self.tree
-		
-		'''global T
-		T = Text(self.root, height=25, width=70, state = NORMAL)
-		T.grid(row=1, column=15, rowspan = 14, columnspan=14, padx=5,pady=5)
-		T.configure(state='disabled')'''
 
 	# Presents the window instance to the user.
 	def show_Window(self):

@@ -19,7 +19,7 @@ def sendSearchRequest(requests,varNames):
 	jsonMessage2 = '{"operation": "lookup", "animals": "cat",'
 	counter = 0
 	jsonMessage2 += '"field":' 
-	print("number of varnames" + str(len(varNames)))
+	#print("number of varnames" + str(len(varNames)))
 	if(len(varNames)>=2):
 		jsonMessage2 += '[{"$and":['
 	for field in searchFields: 
