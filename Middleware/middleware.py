@@ -130,8 +130,6 @@ def mockLogin(userEmail, password):
 			print("false")
 			return False
 
-
-
 def login(userEmail, password, parseObj, action):
 	loginString = {"email": userEmail,"password": password}
 	loginObj = json.dumps(loginString)
@@ -146,7 +144,7 @@ def login(userEmail, password, parseObj, action):
 def sendData(session, obj, action):
 
 	url1 = "https://cat.ddns.net/Backend/api.php/PM/create"
-	url2 = "https://cat.ddns.net/Backend/api.php/pet/update"
+	url2 = "https://cat.ddns.net/Backend/api.php/PM/update"
 	url3 = "https://cat.ddns.net/Backend/api.php/pet/pets"
 	
 	postData = {}
@@ -192,8 +190,7 @@ if(status == True):
 else:
 	print ("Error sending json obj")
 	'''
- # login example
-
+# login example
 #login("taha@mymail.com", "soccer123")
 
 

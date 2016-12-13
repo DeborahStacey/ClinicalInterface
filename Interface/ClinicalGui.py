@@ -62,6 +62,7 @@ class ClinicalGui:
 		top = Toplevel()
 		top.geometry("380x550")
 		top.title("Cat Details")
+		top.resizable(width = False, height = False)
 
 		#store all details in a list for the selected cat
 		item = self.tree.selection()[0]
@@ -156,35 +157,6 @@ class ClinicalGui:
 
 		#add search results to the treeview
 		for i in range(0,len(test["cats"])):
-			
-			if(test["cats"][i]['breed'] == "1"):
-				test["cats"][i]['breed'] = "Feline"
-			if(test["cats"][i]['breed'] == "2"):
-				test["cats"][i]['breed'] = "American Bobtail"
-			if(test["cats"][i]['breed'] == "3"):
-				test["cats"][i]['breed'] = "Bengal"
-			if(test["cats"][i]['breed'] == "4"):
-				test["cats"][i]['breed'] = "Persian"
-			if(test["cats"][i]['breed'] == "5"):
-				test["cats"][i]['breed'] = "Himalayan"
-			if(test["cats"][i]['breed'] == "6"):
-				test["cats"][i]['breed'] = "Somali"
-			if(test["cats"][i]['breed'] == "7"):
-				test["cats"][i]['breed'] = "Cymric"
-			if(test["cats"][i]['breed'] == "8"):
-				test["cats"][i]['breed'] = "Munchkin"
-			if(test["cats"][i]['breed'] == "8"):
-				test["cats"][i]['breed'] = "Turkish Van"
-			if(test["cats"][i]['breed'] == "12"):
-				test["cats"][i]['breed'] = "Dog"
-			if (test["cats"][i]['gender'] == "1"):
-				test["cats"][i]['gender'] = "Male"
-			if (test["cats"][i]['gender'] == "2"):
-				test["cats"][i]['gender'] = "Male (Neutered)"
-			if (test["cats"][i]['gender'] == "3"):
-				test["cats"][i]['gender'] = "Female"
-			if (test["cats"][i]['gender'] == "4"):
-				test["cats"][i]['gender'] = "Male (Spayed"
 			self.tree.insert('', 'end', text = test["cats"][i]['ownerid'], values = (test["cats"][i]['petid'], test["cats"][i]['name'], test["cats"][i]['breed'], test["cats"][i]['gender'], test["cats"][i]['weight'],
 			test["cats"][i]['height'], test["cats"][i]['length'], test["cats"][i]['microchip'], test["cats"][i]['fitcat'], test["cats"][i]['dateofbirth'], test["cats"][i]['dateofdeath'], test["cats"][i]['reasonfordeath'], test["cats"][i]['lastupdated'],
 			test["cats"][i]['dateadded'], test["cats"][i]['ribcage'], test["cats"][i]['leglength'], test["cats"][i]['lastvisit'], test["cats"][i]['disease'], test["cats"][i]['visible'] ))
